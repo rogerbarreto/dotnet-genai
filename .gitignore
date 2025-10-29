@@ -1,0 +1,5 @@
+syntax: glob
+
+.vs
+[Bb]in/
+[Oo]bj/

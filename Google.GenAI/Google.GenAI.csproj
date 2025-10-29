@@ -23,6 +23,7 @@
   <PropertyGroup>
     <WarningsAsErrors>$(WarningsAsErrors);CS1570</WarningsAsErrors><NoWarn>$(NoWarn);CS1591</NoWarn>
     <WarningsNotAsErrors>IDE0005</WarningsNotAsErrors>
+    <NoWarn>$(NoWarn);MEAI001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +32,7 @@
     </PackageReference>
     <PackageReference Include="System.Net.WebSockets.Client" />
     <PackageReference Include="Google.Apis.Auth" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" />
     <InternalsVisibleTo Include="Google.GenAI.Tests" />
   </ItemGroup>
 

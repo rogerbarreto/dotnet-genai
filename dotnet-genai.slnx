@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="DemoApp/GenerateContentSimpleText/GenerateContentSimpleText.csproj" />
+    <Project Path="DemoApp/GenerateContentStreamSimpleText/GenerateContentStreamSimpleText.csproj" />
+    <Project Path="DemoApp/JsonParser/JsonParser.csproj" />
+    <Project Path="DemoApp/LiveAudioToAudioRealtimeInput/LiveAudioToAudioRealtimeInput.csproj" />
+    <Project Path="DemoApp/LiveTextToTextClientContent/LiveTextToTextClientContent.csproj" />
+    <Project Path="DemoApp/LiveToolCall/LiveToolCall.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="Google.GenAI/Google.GenAI.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="Google.GenAI.E2E.Tests/Google.GenAI.E2E.Tests.csproj" />
+    <Project Path="Google.GenAI.Tests/Google.GenAI.Tests.csproj" />
+  </Folder>
+</Solution>
