@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
@@ -149,7 +146,7 @@ namespace Google.GenAI
       }
 
       using (response)
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0_OR_GREATER
       using (var stream = await response.Content.ReadAsStreamAsync())
 #else
       using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
@@ -165,32 +162,32 @@ namespace Google.GenAI
     private async Task<HttpRequestMessage> CreateHttpRequestAsync(HttpMethod httpMethod, string path,
         string requestJson, Types.HttpOptions? requestHttpOptions)
     {
-        bool queryBaseModel = httpMethod.Equals("GET") && path.StartsWith("publishers/google/models");
-        if (this.VertexAI && !path.StartsWith("projects/") && !queryBaseModel)
-        {
-            path = $"projects/{Project}/locations/{Location}/{path}";
-        }
+      bool queryBaseModel = httpMethod.Equals("GET") && path.StartsWith("publishers/google/models");
+      if (this.VertexAI && !path.StartsWith("projects/") && !queryBaseModel)
+      {
+        path = $"projects/{Project}/locations/{Location}/{path}";
+      }
 
-        Types.HttpOptions mergedHttpOptions = MergeHttpOptions(requestHttpOptions);
-        string requestUrl;
-        if (string.IsNullOrEmpty(mergedHttpOptions.ApiVersion))
-        {
-            requestUrl = $"{mergedHttpOptions.BaseUrl}/{path}";
-        }
-        else
-        {
-            requestUrl = $"{mergedHttpOptions.BaseUrl}/{mergedHttpOptions.ApiVersion}/{path}";
-        }
+      Types.HttpOptions mergedHttpOptions = MergeHttpOptions(requestHttpOptions);
+      string requestUrl;
+      if (string.IsNullOrEmpty(mergedHttpOptions.ApiVersion))
+      {
+        requestUrl = $"{mergedHttpOptions.BaseUrl}/{path}";
+      }
+      else
+      {
+        requestUrl = $"{mergedHttpOptions.BaseUrl}/{mergedHttpOptions.ApiVersion}/{path}";
+      }
 
-        var request = new HttpRequestMessage(httpMethod, requestUrl);
-        await SetHeadersAsync(request, mergedHttpOptions);
+      var request = new HttpRequestMessage(httpMethod, requestUrl);
+      await SetHeadersAsync(request, mergedHttpOptions);
 
-        if (httpMethod.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
-            httpMethod.Method.Equals("PATCH", StringComparison.OrdinalIgnoreCase))
-        {
-            request.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
-        }
-        return request;
+      if (httpMethod.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+          httpMethod.Method.Equals("PATCH", StringComparison.OrdinalIgnoreCase))
+      {
+        request.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+      }
+      return request;
     }
 
     private static async Task ThrowFromErrorResponse(HttpResponseMessage response)

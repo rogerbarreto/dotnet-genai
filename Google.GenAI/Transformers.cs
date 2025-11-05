@@ -65,7 +65,11 @@ namespace Google.GenAI
         }
         else if (model.Contains("/"))
         {
-          string[] parts = model.Split('/', 2);
+#if NETSTANDARD2_0
+          string[] parts = model.Split(new[] { '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
+#else
+          string[] parts = model.Split('/', 2, StringSplitOptions.RemoveEmptyEntries);
+#endif
           return string.Format("publishers/{0}/models/{1}", parts[0], parts[1]);
         }
         else
