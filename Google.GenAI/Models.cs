@@ -338,20 +338,6 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode FileSearchToMldev(JsonNode fromObject, JsonObject parentObject) {
-      JsonObject toObject = new JsonObject();
-
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
-        throw new NotSupportedException(" parameter is not supported in Gemini API.");
-      }
-
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
-        throw new NotSupportedException(" parameter is not supported in Gemini API.");
-      }
-
-      return toObject;
-    }
-
     internal JsonNode FunctionDeclarationToVertex(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
