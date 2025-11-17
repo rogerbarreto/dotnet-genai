@@ -562,8 +562,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "imageConfig" }) != null) {
-        Common.SetValueByPath(toObject, new string[] { "imageConfig" },
-                              Common.GetValueByPath(fromObject, new string[] { "imageConfig" }));
+        Common.SetValueByPath(
+            toObject, new string[] { "imageConfig" },
+            ImageConfigToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                   fromObject, new string[] { "imageConfig" }))),
+                               toObject));
       }
 
       return toObject;
@@ -733,8 +736,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "imageConfig" }) != null) {
-        Common.SetValueByPath(toObject, new string[] { "imageConfig" },
-                              Common.GetValueByPath(fromObject, new string[] { "imageConfig" }));
+        Common.SetValueByPath(
+            toObject, new string[] { "imageConfig" },
+            ImageConfigToVertex(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                    fromObject, new string[] { "imageConfig" }))),
+                                toObject));
       }
 
       return toObject;
@@ -1289,6 +1295,59 @@ namespace Google.GenAI {
         Common.SetValueByPath(
             toObject, new string[] { "timeRangeFilter" },
             Common.GetValueByPath(fromObject, new string[] { "timeRangeFilter" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ImageConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "aspectRatio" },
+                              Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "imageSize" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "imageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "imageSize" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "outputMimeType" }))) {
+        throw new NotSupportedException("outputMimeType parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(
+              Common.GetValueByPath(fromObject, new string[] { "outputCompressionQuality" }))) {
+        throw new NotSupportedException(
+            "outputCompressionQuality parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ImageConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "aspectRatio" },
+                              Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "imageSize" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "imageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "imageSize" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputMimeType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "imageOutputOptions", "mimeType" },
+                              Common.GetValueByPath(fromObject, new string[] { "outputMimeType" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputCompressionQuality" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "imageOutputOptions", "compressionQuality" },
+            Common.GetValueByPath(fromObject, new string[] { "outputCompressionQuality" }));
       }
 
       return toObject;
