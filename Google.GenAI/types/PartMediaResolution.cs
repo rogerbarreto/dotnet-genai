@@ -23,49 +23,38 @@ using Google.GenAI.Serialization;
 
 namespace Google.GenAI.Types {
   /// <summary>
-  /// The thinking features configuration.
+  /// Media resolution for the input media.
   /// </summary>
 
-  public record ThinkingConfig {
+  public record PartMediaResolution {
     /// <summary>
-    /// Indicates whether to include thoughts in the response. If true, thoughts are returned only
-    /// if the model supports thought and thoughts are available.
+    /// The tokenization quality used for given media.
     /// </summary>
-    [JsonPropertyName("includeThoughts")]
+    [JsonPropertyName("level")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public bool ? IncludeThoughts { get; set; }
+    public PartMediaResolutionLevel ? Level { get; set; }
 
     /// <summary>
-    /// Indicates the thinking budget in tokens. 0 is DISABLED. -1 is AUTOMATIC. The default values
-    /// and allowed ranges are model dependent.
+    /// Specifies the required sequence length for media tokenization.
     /// </summary>
-    [JsonPropertyName("thinkingBudget")]
+    [JsonPropertyName("numTokens")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int
-        ? ThinkingBudget {
+        ? NumTokens {
             get; set;
           }
 
     /// <summary>
-    /// Optional. The level of thoughts tokens that the model should generate.
-    /// </summary>
-    [JsonPropertyName("thinkingLevel")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ThinkingLevel
-        ? ThinkingLevel {
-            get; set;
-          }
-
-    /// <summary>
-    /// Deserializes a JSON string to a ThinkingConfig object.
+    /// Deserializes a JSON string to a PartMediaResolution object.
     /// </summary>
     /// <param name="jsonString">The JSON string to deserialize.</param>
     /// <param name="options">Optional JsonSerializerOptions.</param>
-    /// <returns>The deserialized ThinkingConfig object, or null if deserialization fails.</returns>
-    public static ThinkingConfig
+    /// <returns>The deserialized PartMediaResolution object, or null if deserialization
+    /// fails.</returns>
+    public static PartMediaResolution
         ? FromJson(string jsonString, JsonSerializerOptions? options = null) {
       try {
-        return JsonSerializer.Deserialize<ThinkingConfig>(jsonString, options);
+        return JsonSerializer.Deserialize<PartMediaResolution>(jsonString, options);
       } catch (JsonException e) {
         Console.Error.WriteLine($"Error deserializing JSON: {e.ToString()}");
         return null;
