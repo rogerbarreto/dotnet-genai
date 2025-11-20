@@ -148,7 +148,7 @@ public class GenerateContentWithConfig {
 ```csharp
 using System.Threading.Tasks;
 using Google.GenAI;
-using Googel.GenAI.Types;
+using Google.GenAI.Types;
 
 class GenerateContentWithSafetySettings {
   public static async Task main() {
