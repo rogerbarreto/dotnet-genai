@@ -25,6 +25,20 @@ must be written separately. Test names should be formatted as the following:
 
 Ex. `GenerateContentGenerationConfigGeminiTest`
 
+You may configure a test method to be skipped in replay mode with the following
+line at the top of the test:
+```
+[TestMethod]
+public async Task testMethod()
+{
+    if (TestServer.IsReplayMode)
+    {
+        Assert.Inconclusive("skip reason");
+    }
+    ...
+}
+```
+
 ## How to run test in record mode
 Record mode allows you to record request and response payload for new tests or
 update request response payload for existing tests.

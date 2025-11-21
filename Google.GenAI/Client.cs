@@ -28,6 +28,7 @@ namespace Google.GenAI {
     public Live Live { get; }
     public Models Models { get; }
     public Tunings Tunings { get; }
+    public Caches Caches { get; }
 
     private int _disposed = 0;
 
@@ -86,6 +87,7 @@ namespace Google.GenAI {
       Live = new Live(_apiClient);
       Models = new Models(_apiClient);
       Tunings = new Tunings(_apiClient);
+      Caches = new Caches(_apiClient);
     }
 
     static string? inferBaseUrl(bool vertexAI, Types.HttpOptions? httpOptions) {

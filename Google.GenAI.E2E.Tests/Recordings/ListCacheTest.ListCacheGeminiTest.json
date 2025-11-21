@@ -1,0 +1,315 @@
+{
+  "recordID": "ListCacheTest.ListCacheGeminiTest",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1beta/cachedContents",
+        "request": "POST /v1beta/cachedContents HTTP/1.1",
+        "headers": {
+          "Content-Length": "748",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "ListCacheTest.ListCacheGeminiTest"
+        },
+        "bodySegments": [
+          {
+            "contents": [
+              {
+                "parts": [
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "displayName": "test-list-cache-gemini-1",
+            "model": "models/gemini-2.5-flash",
+            "ttl": "600s"
+          }
+        ],
+        "previousRequest": "b4d6e60a9b97e7b98c63df9308728c5c88c0b40c398046772c63447b94608b4d",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "9271eaaa2293fd49bf2a4331a8ea4185f3e56595ecc60e6fada21800cef0e7fd",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Fri, 21 Nov 2025 04:48:25 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=1001",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "createTime": "2025-11-21T04:48:25.477127Z",
+            "displayName": "test-list-cache-gemini-1",
+            "expireTime": "2025-11-21T04:58:24.964452004Z",
+            "model": "models/gemini-2.5-flash",
+            "name": "cachedContents/0vqyt3yj1g5ytotlq0zvwykeh9szpzxml45icwnw",
+            "updateTime": "2025-11-21T04:48:25.477127Z",
+            "usageMetadata": {
+              "totalTokenCount": 1291
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1beta/cachedContents",
+        "request": "POST /v1beta/cachedContents HTTP/1.1",
+        "headers": {
+          "Content-Length": "748",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "ListCacheTest.ListCacheGeminiTest"
+        },
+        "bodySegments": [
+          {
+            "contents": [
+              {
+                "parts": [
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  },
+                  {
+                    "fileData": {
+                      "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28",
+                      "mimeType": "application/pdf"
+                    }
+                  }
+                ],
+                "role": "user"
+              }
+            ],
+            "displayName": "test-list-cache-gemini-2",
+            "model": "models/gemini-2.5-flash",
+            "ttl": "600s"
+          }
+        ],
+        "previousRequest": "9271eaaa2293fd49bf2a4331a8ea4185f3e56595ecc60e6fada21800cef0e7fd",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "8ee5e2933d14765451686166917497797d164c9f8e2370bc0848ccbda8a0434b",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Fri, 21 Nov 2025 04:48:26 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=897",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "createTime": "2025-11-21T04:48:26.368774Z",
+            "displayName": "test-list-cache-gemini-2",
+            "expireTime": "2025-11-21T04:58:25.782916110Z",
+            "model": "models/gemini-2.5-flash",
+            "name": "cachedContents/qwrpnwwz18a8nz6d87l395cpocd7l9826r4239e0",
+            "updateTime": "2025-11-21T04:48:26.368774Z",
+            "usageMetadata": {
+              "totalTokenCount": 1291
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/cachedContents",
+        "request": "GET /v1beta/cachedContents HTTP/1.1",
+        "headers": {
+          "Test-Name": "ListCacheTest.ListCacheGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "8ee5e2933d14765451686166917497797d164c9f8e2370bc0848ccbda8a0434b",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "caa6933ea8582b570078af40c3cb16e8365a21ffdbf87aa996cc74206c77486d",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Fri, 21 Nov 2025 04:48:26 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=114",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "cachedContents": [
+              {
+                "createTime": "2025-11-21T04:48:26.368774Z",
+                "displayName": "test-list-cache-gemini-2",
+                "expireTime": "2025-11-21T04:58:25.782916110Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/qwrpnwwz18a8nz6d87l395cpocd7l9826r4239e0",
+                "updateTime": "2025-11-21T04:48:26.368774Z",
+                "usageMetadata": {
+                  "totalTokenCount": 1291
+                }
+              },
+              {
+                "createTime": "2025-11-21T04:48:25.477127Z",
+                "displayName": "test-list-cache-gemini-1",
+                "expireTime": "2025-11-21T04:58:24.964452004Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/0vqyt3yj1g5ytotlq0zvwykeh9szpzxml45icwnw",
+                "updateTime": "2025-11-21T04:48:25.477127Z",
+                "usageMetadata": {
+                  "totalTokenCount": 1291
+                }
+              },
+              {
+                "createTime": "2025-11-11T23:20:09.743687Z",
+                "displayName": "test cache",
+                "expireTime": "2025-12-20T00:00:00Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/7lw22yby98guqxeozn1a4acdkysh6eidminrd2l6",
+                "updateTime": "2025-11-11T23:20:09.743687Z",
+                "usageMetadata": {
+                  "totalTokenCount": 19878
+                }
+              },
+              {
+                "createTime": "2025-11-11T22:21:45.766774Z",
+                "displayName": "test cache",
+                "expireTime": "2025-12-20T00:00:00Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/rjlj9e2heo0rw28ybl0dj03w2ddyftwq6x3q9t5a",
+                "updateTime": "2025-11-11T22:21:45.766774Z",
+                "usageMetadata": {
+                  "totalTokenCount": 19878
+                }
+              },
+              {
+                "createTime": "2025-11-11T20:22:12.442832Z",
+                "displayName": "test cache",
+                "expireTime": "2025-12-20T00:00:00Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/9k8zztnr541vutmqws55mxahtb0qo3ntaaljzzs7",
+                "updateTime": "2025-11-11T20:22:12.442832Z",
+                "usageMetadata": {
+                  "totalTokenCount": 19878
+                }
+              },
+              {
+                "createTime": "2025-11-11T20:05:40.279331Z",
+                "displayName": "test cache",
+                "expireTime": "2025-12-20T00:00:00Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/76h1dcua7zg33stye19qt1y9txjc1kyopbockfu6",
+                "updateTime": "2025-11-11T20:05:40.279331Z",
+                "usageMetadata": {
+                  "totalTokenCount": 19878
+                }
+              },
+              {
+                "createTime": "2025-11-11T19:58:38.342336Z",
+                "displayName": "test cache",
+                "expireTime": "2025-12-20T00:00:00Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/z6bjjjyzrz9oewr5mhmyozfon489dfov21xk5atd",
+                "updateTime": "2025-11-11T19:58:38.342336Z",
+                "usageMetadata": {
+                  "totalTokenCount": 19878
+                }
+              },
+              {
+                "createTime": "2025-11-11T19:47:05.793779Z",
+                "displayName": "test cache",
+                "expireTime": "2025-12-20T00:00:00Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/bscirykymryj4rujo567fip94fkhy4qpu5uftcbt",
+                "updateTime": "2025-11-11T19:47:05.793779Z",
+                "usageMetadata": {
+                  "totalTokenCount": 19878
+                }
+              },
+              {
+                "createTime": "2025-11-11T19:44:48.651917Z",
+                "displayName": "test cache",
+                "expireTime": "2025-12-20T00:00:00Z",
+                "model": "models/gemini-2.5-flash",
+                "name": "cachedContents/uw2ees8t027z8ghejy0sv7ut00s8eweja2tn7n5l",
+                "updateTime": "2025-11-11T19:44:48.651917Z",
+                "usageMetadata": {
+                  "totalTokenCount": 19878
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -20,13 +20,14 @@ using Google.Apis.Auth.OAuth2;
 using TestServerSdk;
 
 public class TestServer {
+  public static bool IsReplayMode => (System.Environment.GetEnvironmentVariable("TEST_MODE") ?? "replay") == "replay";
   public static TestServerProcess StartTestServer() {
     var _project = System.Environment.GetEnvironmentVariable("GOOGLE_CLOUD_PROJECT");
     string _apiKey = System.Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
     var options = new TestServerOptions {
       ConfigPath = Path.GetFullPath("../test-server.yml"),
       RecordingDir = Path.GetFullPath("../../Recordings"),
-      Mode = System.Environment.GetEnvironmentVariable("TEST_MODE") ?? "replay",
+      Mode = IsReplayMode ? "replay" : "record",
       BinaryPath = Path.GetFullPath("./test-server"), TestServerSecrets = $"{_project},{_apiKey}"
     };
 
@@ -49,7 +50,6 @@ public class TestServer {
   /// In record mode, returns null so the Client will use real credentials (ADC or GCE metadata).
   /// </summary>
   public static ICredential? GetCredentialForTestMode() {
-    string testMode = System.Environment.GetEnvironmentVariable("TEST_MODE") ?? "replay";
-    return testMode == "replay" ? new MockCredential() : null;
+    return IsReplayMode ? new MockCredential() : null;
   }
 }

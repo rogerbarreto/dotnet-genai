@@ -526,6 +526,134 @@ public class DeleteModelExample {
 }
 ```
 
+## Caches
+The `client.Caches` module can be used to manage cached content.
+See `Create a client` section above to initialize a client.
+
+### Create Cache
+Cacheable content can be created from Google Cloud Storage URIs when using Vertex AI, or from File URIs when using the Gemini API.
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class CreateCache {
+    public static async Task main()
+    {
+        // Example for Vertex AI with GCS URIs:
+        var vertexClient = new Client(project: project, location: location, vertexAI: true);
+        var vertexConfig = new CreateCachedContentConfig {
+            Contents = new List<Content> {
+                new Content {
+                    Role = "user",
+                    Parts = new List<Part> {
+                        new Part { FileData = new FileData { FileUri = "gs://cloud-samples-data/generative-ai/pdf/2312.11805v3.pdf", MimeType = "application/pdf" } },
+                        new Part { FileData = new FileData { FileUri = "gs://cloud-samples-data/generative-ai/pdf/2403.05530.pdf", MimeType = "application/pdf" } }
+                    }
+                }
+            },
+            DisplayName = "my-vertex-cache",
+            Ttl = "600s"
+        };
+        var vertexResponse = await vertexClient.Caches.CreateAsync(model: "gemini-2.5-flash", config: vertexConfig);
+        Console.WriteLine($"Created Vertex AI cache: {vertexResponse.Name}");
+
+        // Example for Gemini API with File URIs:
+        var geminiClient = new Client(apiKey: apiKey);
+        var geminiConfig = new CreateCachedContentConfig {
+            Contents = new List<Content> {
+                new Content {
+                    Role = "user",
+                    Parts = new List<Part> {
+                        new Part { FileData = new FileData { FileUri = "https://generativelanguage.googleapis.com/v1beta/files/file-id", MimeType = "application/pdf" } }
+                    }
+                }
+            },
+            DisplayName = "my-gemini-cache",
+            Ttl = "600s"
+        };
+        var geminiResponse = await geminiClient.Caches.CreateAsync(model: "gemini-2.5-flash", config: geminiConfig);
+        Console.WriteLine($"Created Gemini API cache: {geminiResponse.Name}");
+    }
+}
+```
+
+### Get Cache
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GetCache {
+    public static async Task main()
+    {
+        // assuming credentials are set up in environment variables as instructed above.
+        var client = new Client();
+        // Use a cache name from a previously created cache.
+        var cachedContent = await client.Caches.GetAsync(name: "cachedContents/your-cache-name", config: null);
+        Console.WriteLine($"Cache name: {cachedContent.Name}, DisplayName: {cachedContent.DisplayName}");
+    }
+}
+```
+
+### Update Cache
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class UpdateCache {
+    public static async Task main()
+    {
+        // assuming credentials are set up in environment variables as instructed above.
+        var client = new Client();
+        var updateConfig = new UpdateCachedContentConfig { Ttl = "1200s" };
+        // Use a cache name from a previously created cache.
+        var cachedContent = await client.Caches.UpdateAsync(name: "cachedContents/your-cache-name", config: updateConfig);
+        Console.WriteLine($"Cache updated. New expiration time: {cachedContent.ExpireTime}");
+    }
+}
+```
+
+### Delete Cache
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class DeleteCache {
+    public static async Task main()
+    {
+        // assuming credentials are set up in environment variables as instructed above.
+        var client = new Client();
+        // Use a cache name from a previously created cache.
+        await client.Caches.DeleteAsync(name: "cachedContents/your-cache-name", config: null);
+        Console.WriteLine("Cache deleted.");
+    }
+}
+```
+
+### List Caches
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class ListCaches {
+    public static async Task main()
+    {
+        // assuming credentials are set up in environment variables as instructed above.
+        var client = new Client();
+        var pager = await client.Caches.ListAsync(new ListCachedContentConfig { PageSize = 10 });
+
+        await foreach(var cache in pager)
+        {
+            Console.WriteLine($"Cache name: {cache.Name}, DisplayName: {cache.DisplayName}");
+        }
+    }
+}
+```
 
 ## Tunings
 The `client.Tunings` module exposes model tuning. See `Create a client`
