@@ -1,11 +1,15 @@
 <Solution>
-  <Folder Name="/samples/">
+  <Folder Name="/samples/" />
+  <Folder Name="/samples/DemoApps/">
     <Project Path="DemoApp/GenerateContentSimpleText/GenerateContentSimpleText.csproj" />
     <Project Path="DemoApp/GenerateContentStreamSimpleText/GenerateContentStreamSimpleText.csproj" />
     <Project Path="DemoApp/JsonParser/JsonParser.csproj" />
     <Project Path="DemoApp/LiveAudioToAudioRealtimeInput/LiveAudioToAudioRealtimeInput.csproj" />
     <Project Path="DemoApp/LiveTextToTextClientContent/LiveTextToTextClientContent.csproj" />
     <Project Path="DemoApp/LiveToolCall/LiveToolCall.csproj" />
+  </Folder>
+  <Folder Name="/samples/SKDemos/">
+    <Project Path="SKDemos/Concepts/Concepts.csproj" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="Google.GenAI/Google.GenAI.csproj" />
