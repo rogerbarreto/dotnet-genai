@@ -3,7 +3,7 @@
   <Import Project="../ReleaseVersion.xml" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -29,8 +29,6 @@
     <PackageReference Include="MimeTypes">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.Net.Security" />
-    <PackageReference Include="System.Net.WebSockets.Client" />
     <PackageReference Include="Google.Apis.Auth" />
     <InternalsVisibleTo Include="Google.GenAI.Tests" />
   </ItemGroup>
