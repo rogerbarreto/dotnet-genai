@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Net.Security" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Google.GenAI\Google.GenAI.csproj" />
   </ItemGroup>
 

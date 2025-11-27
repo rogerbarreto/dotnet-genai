@@ -1,0 +1,82 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.GenAI", "Google.GenAI\Google.GenAI.csproj", "{651E1CF8-8D70-3EDA-525D-AD3433E2A660}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.GenAI.E2E.Tests", "Google.GenAI.E2E.Tests\Google.GenAI.E2E.Tests.csproj", "{1A84CD19-938F-C96D-11ED-52BC5BCDE0AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.GenAI.Tests", "Google.GenAI.Tests\Google.GenAI.Tests.csproj", "{40CDBD05-89CA-7A33-C2A3-F4306E577525}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApp", "DemoApp", "{43273CFF-F5DC-451E-C15D-62C2F81FB391}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateContentSimpleText", "DemoApp\GenerateContentSimpleText\GenerateContentSimpleText.csproj", "{D57ACB52-3D4D-8A6C-7D80-EFC244AC3D37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateContentStreamSimpleText", "DemoApp\GenerateContentStreamSimpleText\GenerateContentStreamSimpleText.csproj", "{016AE21A-3909-0826-0189-E7B3ED4D4271}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonParser", "DemoApp\JsonParser\JsonParser.csproj", "{020DAEC1-4929-5346-C06C-A9DD069871C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveAudioToAudioRealtimeInput", "DemoApp\LiveAudioToAudioRealtimeInput\LiveAudioToAudioRealtimeInput.csproj", "{9245217E-BC52-BC71-07B7-879540F9BFC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveTextToTextClientContent", "DemoApp\LiveTextToTextClientContent\LiveTextToTextClientContent.csproj", "{976E5ABB-E26C-053A-3462-591503F3E67D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveToolCall", "DemoApp\LiveToolCall\LiveToolCall.csproj", "{794DEEC8-86DB-2ACD-25B9-3D360F800432}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{651E1CF8-8D70-3EDA-525D-AD3433E2A660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{651E1CF8-8D70-3EDA-525D-AD3433E2A660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{651E1CF8-8D70-3EDA-525D-AD3433E2A660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{651E1CF8-8D70-3EDA-525D-AD3433E2A660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A84CD19-938F-C96D-11ED-52BC5BCDE0AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A84CD19-938F-C96D-11ED-52BC5BCDE0AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A84CD19-938F-C96D-11ED-52BC5BCDE0AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A84CD19-938F-C96D-11ED-52BC5BCDE0AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40CDBD05-89CA-7A33-C2A3-F4306E577525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40CDBD05-89CA-7A33-C2A3-F4306E577525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40CDBD05-89CA-7A33-C2A3-F4306E577525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40CDBD05-89CA-7A33-C2A3-F4306E577525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D57ACB52-3D4D-8A6C-7D80-EFC244AC3D37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D57ACB52-3D4D-8A6C-7D80-EFC244AC3D37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D57ACB52-3D4D-8A6C-7D80-EFC244AC3D37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D57ACB52-3D4D-8A6C-7D80-EFC244AC3D37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{016AE21A-3909-0826-0189-E7B3ED4D4271}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{016AE21A-3909-0826-0189-E7B3ED4D4271}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{016AE21A-3909-0826-0189-E7B3ED4D4271}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{016AE21A-3909-0826-0189-E7B3ED4D4271}.Release|Any CPU.Build.0 = Release|Any CPU
+		{020DAEC1-4929-5346-C06C-A9DD069871C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{020DAEC1-4929-5346-C06C-A9DD069871C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{020DAEC1-4929-5346-C06C-A9DD069871C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{020DAEC1-4929-5346-C06C-A9DD069871C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9245217E-BC52-BC71-07B7-879540F9BFC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9245217E-BC52-BC71-07B7-879540F9BFC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9245217E-BC52-BC71-07B7-879540F9BFC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9245217E-BC52-BC71-07B7-879540F9BFC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{976E5ABB-E26C-053A-3462-591503F3E67D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{976E5ABB-E26C-053A-3462-591503F3E67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{976E5ABB-E26C-053A-3462-591503F3E67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{976E5ABB-E26C-053A-3462-591503F3E67D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{794DEEC8-86DB-2ACD-25B9-3D360F800432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{794DEEC8-86DB-2ACD-25B9-3D360F800432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{794DEEC8-86DB-2ACD-25B9-3D360F800432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{794DEEC8-86DB-2ACD-25B9-3D360F800432}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D57ACB52-3D4D-8A6C-7D80-EFC244AC3D37} = {43273CFF-F5DC-451E-C15D-62C2F81FB391}
+		{016AE21A-3909-0826-0189-E7B3ED4D4271} = {43273CFF-F5DC-451E-C15D-62C2F81FB391}
+		{020DAEC1-4929-5346-C06C-A9DD069871C8} = {43273CFF-F5DC-451E-C15D-62C2F81FB391}
+		{9245217E-BC52-BC71-07B7-879540F9BFC3} = {43273CFF-F5DC-451E-C15D-62C2F81FB391}
+		{976E5ABB-E26C-053A-3462-591503F3E67D} = {43273CFF-F5DC-451E-C15D-62C2F81FB391}
+		{794DEEC8-86DB-2ACD-25B9-3D360F800432} = {43273CFF-F5DC-451E-C15D-62C2F81FB391}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF6F14AC-0D9E-467F-B14D-5193AC6C0930}
+	EndGlobalSection
+EndGlobal
