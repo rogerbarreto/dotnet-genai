@@ -23,24 +23,30 @@ using System.Text.Json.Serialization;
 
 using Google.GenAI.Types;
 
-namespace Google.GenAI {
+namespace Google.GenAI
+{
 
-  public sealed class Caches {
+  public sealed class Caches
+  {
     private readonly ApiClient _apiClient;
 
-    internal JsonNode BlobToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode BlobToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "data" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "data" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "data" },
                               Common.GetValueByPath(fromObject, new string[] { "data" }));
       }
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "displayName" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "displayName" })))
+      {
         throw new NotSupportedException("displayName parameter is not supported in Gemini API.");
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "mimeType" },
                               Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
       }
@@ -48,20 +54,24 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode ContentToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode ContentToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "parts" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "parts" }) != null)
+      {
         JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "parts" });
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyArray)
+        {
           result.Add(PartToMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(toObject, new string[] { "parts" }, result);
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "role" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "role" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "role" },
                               Common.GetValueByPath(fromObject, new string[] { "role" }));
       }
@@ -70,36 +80,43 @@ namespace Google.GenAI {
     }
 
     internal JsonNode CreateCachedContentConfigToMldev(JsonNode fromObject,
-                                                       JsonObject parentObject) {
+                                                       JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "ttl" },
                               Common.GetValueByPath(fromObject, new string[] { "ttl" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "expireTime" },
                               Common.GetValueByPath(fromObject, new string[] { "expireTime" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "displayName" },
                               Common.GetValueByPath(fromObject, new string[] { "displayName" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null)
+      {
         JsonArray keyArray =
             (JsonArray)Common.GetValueByPath(fromObject, new string[] { "contents" });
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyArray)
+        {
           result.Add(ContentToMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(parentObject, new string[] { "contents" }, result);
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "systemInstruction" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "systemInstruction" }) != null)
+      {
         Common.SetValueByPath(
             parentObject, new string[] { "systemInstruction" },
             ContentToMldev(
@@ -108,17 +125,20 @@ namespace Google.GenAI {
                 toObject));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null)
+      {
         JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyArray)
+        {
           result.Add(ToolToMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(parentObject, new string[] { "tools" }, result);
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "toolConfig" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "toolConfig" }) != null)
+      {
         Common.SetValueByPath(
             parentObject, new string[] { "toolConfig" },
             ToolConfigToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
@@ -126,7 +146,8 @@ namespace Google.GenAI {
                               toObject));
       }
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "kmsKeyName" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "kmsKeyName" })))
+      {
         throw new NotSupportedException("kmsKeyName parameter is not supported in Gemini API.");
       }
 
@@ -134,52 +155,62 @@ namespace Google.GenAI {
     }
 
     internal JsonNode CreateCachedContentConfigToVertex(JsonNode fromObject,
-                                                        JsonObject parentObject) {
+                                                        JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "ttl" },
                               Common.GetValueByPath(fromObject, new string[] { "ttl" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "expireTime" },
                               Common.GetValueByPath(fromObject, new string[] { "expireTime" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "displayName" },
                               Common.GetValueByPath(fromObject, new string[] { "displayName" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null)
+      {
         Common.SetValueByPath(
             parentObject, new string[] { "contents" },
             Transformers.TContents(Common.GetValueByPath(fromObject, new string[] { "contents" })));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "systemInstruction" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "systemInstruction" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "systemInstruction" },
                               Transformers.TContent(Common.GetValueByPath(
                                   fromObject, new string[] { "systemInstruction" })));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null)
+      {
         JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyArray)
+        {
           result.Add(ToolToVertex(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(parentObject, new string[] { "tools" }, result);
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "toolConfig" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "toolConfig" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "toolConfig" },
                               Common.GetValueByPath(fromObject, new string[] { "toolConfig" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "kmsKeyName" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "kmsKeyName" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "encryption_spec", "kmsKeyName" },
                               Common.GetValueByPath(fromObject, new string[] { "kmsKeyName" }));
       }
@@ -188,17 +219,20 @@ namespace Google.GenAI {
     }
 
     internal JsonNode CreateCachedContentParametersToMldev(ApiClient apiClient, JsonNode fromObject,
-                                                           JsonObject parentObject) {
+                                                           JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "model" },
             Transformers.TCachesModel(this._apiClient,
                                       Common.GetValueByPath(fromObject, new string[] { "model" })));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null)
+      {
         _ = CreateCachedContentConfigToMldev(
             JsonNode.Parse(JsonSerializer.Serialize(
                 Common.GetValueByPath(fromObject, new string[] { "config" }))),
@@ -210,17 +244,20 @@ namespace Google.GenAI {
 
     internal JsonNode CreateCachedContentParametersToVertex(ApiClient apiClient,
                                                             JsonNode fromObject,
-                                                            JsonObject parentObject) {
+                                                            JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "model" },
             Transformers.TCachesModel(this._apiClient,
                                       Common.GetValueByPath(fromObject, new string[] { "model" })));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null)
+      {
         _ = CreateCachedContentConfigToVertex(
             JsonNode.Parse(JsonSerializer.Serialize(
                 Common.GetValueByPath(fromObject, new string[] { "config" }))),
@@ -231,10 +268,12 @@ namespace Google.GenAI {
     }
 
     internal JsonNode DeleteCachedContentParametersToMldev(ApiClient apiClient, JsonNode fromObject,
-                                                           JsonObject parentObject) {
+                                                           JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "_url", "name" },
             Transformers.TCachedContentName(
@@ -246,10 +285,12 @@ namespace Google.GenAI {
 
     internal JsonNode DeleteCachedContentParametersToVertex(ApiClient apiClient,
                                                             JsonNode fromObject,
-                                                            JsonObject parentObject) {
+                                                            JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "_url", "name" },
             Transformers.TCachedContentName(
@@ -260,10 +301,12 @@ namespace Google.GenAI {
     }
 
     internal JsonNode DeleteCachedContentResponseFromMldev(JsonNode fromObject,
-                                                           JsonObject parentObject) {
+                                                           JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "sdkHttpResponse" },
             Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
@@ -273,10 +316,12 @@ namespace Google.GenAI {
     }
 
     internal JsonNode DeleteCachedContentResponseFromVertex(JsonNode fromObject,
-                                                            JsonObject parentObject) {
+                                                            JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "sdkHttpResponse" },
             Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
@@ -285,19 +330,23 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode FileDataToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode FileDataToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "displayName" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "displayName" })))
+      {
         throw new NotSupportedException("displayName parameter is not supported in Gemini API.");
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "fileUri" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "fileUri" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "fileUri" },
                               Common.GetValueByPath(fromObject, new string[] { "fileUri" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "mimeType" },
                               Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
       }
@@ -305,65 +354,78 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode FileSearchToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode FileSearchToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" })))
+      {
         throw new NotSupportedException(" parameter is not supported in Gemini API.");
       }
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" })))
+      {
         throw new NotSupportedException(" parameter is not supported in Gemini API.");
       }
 
       return toObject;
     }
 
-    internal JsonNode FunctionCallToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode FunctionCallToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "id" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "id" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "id" },
                               Common.GetValueByPath(fromObject, new string[] { "id" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "args" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "args" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "args" },
                               Common.GetValueByPath(fromObject, new string[] { "args" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "name" },
                               Common.GetValueByPath(fromObject, new string[] { "name" }));
       }
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "partialArgs" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "partialArgs" })))
+      {
         throw new NotSupportedException("partialArgs parameter is not supported in Gemini API.");
       }
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "willContinue" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "willContinue" })))
+      {
         throw new NotSupportedException("willContinue parameter is not supported in Gemini API.");
       }
 
       return toObject;
     }
 
-    internal JsonNode FunctionCallingConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode FunctionCallingConfigToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "mode" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "mode" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "mode" },
                               Common.GetValueByPath(fromObject, new string[] { "mode" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "allowedFunctionNames" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "allowedFunctionNames" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "allowedFunctionNames" },
             Common.GetValueByPath(fromObject, new string[] { "allowedFunctionNames" }));
       }
 
       if (!Common.IsZero(
-              Common.GetValueByPath(fromObject, new string[] { "streamFunctionCallArguments" }))) {
+              Common.GetValueByPath(fromObject, new string[] { "streamFunctionCallArguments" })))
+      {
         throw new NotSupportedException(
             "streamFunctionCallArguments parameter is not supported in Gemini API.");
       }
@@ -371,40 +433,48 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode FunctionDeclarationToVertex(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode FunctionDeclarationToVertex(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "behavior" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "behavior" })))
+      {
         throw new NotSupportedException("behavior parameter is not supported in Vertex AI.");
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "description" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "description" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "description" },
                               Common.GetValueByPath(fromObject, new string[] { "description" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "name" },
                               Common.GetValueByPath(fromObject, new string[] { "name" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "parameters" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "parameters" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "parameters" },
                               Common.GetValueByPath(fromObject, new string[] { "parameters" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "parametersJsonSchema" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "parametersJsonSchema" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "parametersJsonSchema" },
             Common.GetValueByPath(fromObject, new string[] { "parametersJsonSchema" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "response" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "response" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "response" },
                               Common.GetValueByPath(fromObject, new string[] { "response" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "responseJsonSchema" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "responseJsonSchema" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "responseJsonSchema" },
             Common.GetValueByPath(fromObject, new string[] { "responseJsonSchema" }));
@@ -414,10 +484,12 @@ namespace Google.GenAI {
     }
 
     internal JsonNode GetCachedContentParametersToMldev(ApiClient apiClient, JsonNode fromObject,
-                                                        JsonObject parentObject) {
+                                                        JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "_url", "name" },
             Transformers.TCachedContentName(
@@ -428,10 +500,12 @@ namespace Google.GenAI {
     }
 
     internal JsonNode GetCachedContentParametersToVertex(ApiClient apiClient, JsonNode fromObject,
-                                                         JsonObject parentObject) {
+                                                         JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "_url", "name" },
             Transformers.TCachedContentName(
@@ -441,14 +515,17 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode GoogleMapsToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode GoogleMapsToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "authConfig" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "authConfig" })))
+      {
         throw new NotSupportedException("authConfig parameter is not supported in Gemini API.");
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "enableWidget" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "enableWidget" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "enableWidget" },
                               Common.GetValueByPath(fromObject, new string[] { "enableWidget" }));
       }
@@ -456,20 +533,24 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode GoogleSearchToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode GoogleSearchToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "excludeDomains" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "excludeDomains" })))
+      {
         throw new NotSupportedException("excludeDomains parameter is not supported in Gemini API.");
       }
 
       if (!Common.IsZero(
-              Common.GetValueByPath(fromObject, new string[] { "blockingConfidence" }))) {
+              Common.GetValueByPath(fromObject, new string[] { "blockingConfidence" })))
+      {
         throw new NotSupportedException(
             "blockingConfidence parameter is not supported in Gemini API.");
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "timeRangeFilter" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "timeRangeFilter" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "timeRangeFilter" },
             Common.GetValueByPath(fromObject, new string[] { "timeRangeFilter" }));
@@ -479,15 +560,18 @@ namespace Google.GenAI {
     }
 
     internal JsonNode ListCachedContentsConfigToMldev(JsonNode fromObject,
-                                                      JsonObject parentObject) {
+                                                      JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "_query", "pageSize" },
                               Common.GetValueByPath(fromObject, new string[] { "pageSize" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "_query", "pageToken" },
                               Common.GetValueByPath(fromObject, new string[] { "pageToken" }));
       }
@@ -496,15 +580,18 @@ namespace Google.GenAI {
     }
 
     internal JsonNode ListCachedContentsConfigToVertex(JsonNode fromObject,
-                                                       JsonObject parentObject) {
+                                                       JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "_query", "pageSize" },
                               Common.GetValueByPath(fromObject, new string[] { "pageSize" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "_query", "pageToken" },
                               Common.GetValueByPath(fromObject, new string[] { "pageToken" }));
       }
@@ -513,10 +600,12 @@ namespace Google.GenAI {
     }
 
     internal JsonNode ListCachedContentsParametersToMldev(JsonNode fromObject,
-                                                          JsonObject parentObject) {
+                                                          JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null)
+      {
         _ = ListCachedContentsConfigToMldev(
             JsonNode.Parse(JsonSerializer.Serialize(
                 Common.GetValueByPath(fromObject, new string[] { "config" }))),
@@ -527,10 +616,12 @@ namespace Google.GenAI {
     }
 
     internal JsonNode ListCachedContentsParametersToVertex(JsonNode fromObject,
-                                                           JsonObject parentObject) {
+                                                           JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null)
+      {
         _ = ListCachedContentsConfigToVertex(
             JsonNode.Parse(JsonSerializer.Serialize(
                 Common.GetValueByPath(fromObject, new string[] { "config" }))),
@@ -541,21 +632,25 @@ namespace Google.GenAI {
     }
 
     internal JsonNode ListCachedContentsResponseFromMldev(JsonNode fromObject,
-                                                          JsonObject parentObject) {
+                                                          JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "sdkHttpResponse" },
             Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "nextPageToken" },
                               Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "cachedContents" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "cachedContents" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "cachedContents" },
                               Common.GetValueByPath(fromObject, new string[] { "cachedContents" }));
       }
@@ -564,21 +659,25 @@ namespace Google.GenAI {
     }
 
     internal JsonNode ListCachedContentsResponseFromVertex(JsonNode fromObject,
-                                                           JsonObject parentObject) {
+                                                           JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "sdkHttpResponse" },
             Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "nextPageToken" },
                               Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "cachedContents" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "cachedContents" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "cachedContents" },
                               Common.GetValueByPath(fromObject, new string[] { "cachedContents" }));
       }
@@ -586,27 +685,32 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode PartToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode PartToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "mediaResolution" },
             Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "codeExecutionResult" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "codeExecutionResult" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "codeExecutionResult" },
             Common.GetValueByPath(fromObject, new string[] { "codeExecutionResult" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "executableCode" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "executableCode" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "executableCode" },
                               Common.GetValueByPath(fromObject, new string[] { "executableCode" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "fileData" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "fileData" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "fileData" },
             FileDataToMldev(JsonNode.Parse(JsonSerializer.Serialize(
@@ -614,7 +718,8 @@ namespace Google.GenAI {
                             toObject));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "functionCall" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "functionCall" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "functionCall" },
             FunctionCallToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
@@ -622,13 +727,15 @@ namespace Google.GenAI {
                                 toObject));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "functionResponse" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "functionResponse" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "functionResponse" },
             Common.GetValueByPath(fromObject, new string[] { "functionResponse" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "inlineData" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "inlineData" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "inlineData" },
             BlobToMldev(JsonNode.Parse(JsonSerializer.Serialize(
@@ -636,23 +743,27 @@ namespace Google.GenAI {
                         toObject));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "text" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "text" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "text" },
                               Common.GetValueByPath(fromObject, new string[] { "text" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "thought" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "thought" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "thought" },
                               Common.GetValueByPath(fromObject, new string[] { "thought" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "thoughtSignature" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "thoughtSignature" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "thoughtSignature" },
             Common.GetValueByPath(fromObject, new string[] { "thoughtSignature" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "videoMetadata" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "videoMetadata" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "videoMetadata" },
                               Common.GetValueByPath(fromObject, new string[] { "videoMetadata" }));
       }
@@ -660,10 +771,12 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode ToolConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode ToolConfigToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "functionCallingConfig" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "functionCallingConfig" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "functionCallingConfig" },
                               FunctionCallingConfigToMldev(
                                   JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
@@ -671,7 +784,8 @@ namespace Google.GenAI {
                                   toObject));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "retrievalConfig" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "retrievalConfig" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "retrievalConfig" },
             Common.GetValueByPath(fromObject, new string[] { "retrievalConfig" }));
@@ -680,42 +794,50 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode ToolToMldev(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode ToolToMldev(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "functionDeclarations" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "functionDeclarations" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "functionDeclarations" },
             Common.GetValueByPath(fromObject, new string[] { "functionDeclarations" }));
       }
 
-      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "retrieval" }))) {
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "retrieval" })))
+      {
         throw new NotSupportedException("retrieval parameter is not supported in Gemini API.");
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "googleSearchRetrieval" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "googleSearchRetrieval" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "googleSearchRetrieval" },
             Common.GetValueByPath(fromObject, new string[] { "googleSearchRetrieval" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "computerUse" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "computerUse" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "computerUse" },
                               Common.GetValueByPath(fromObject, new string[] { "computerUse" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "codeExecution" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "codeExecution" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "codeExecution" },
                               Common.GetValueByPath(fromObject, new string[] { "codeExecution" }));
       }
 
       if (!Common.IsZero(
-              Common.GetValueByPath(fromObject, new string[] { "enterpriseWebSearch" }))) {
+              Common.GetValueByPath(fromObject, new string[] { "enterpriseWebSearch" })))
+      {
         throw new NotSupportedException(
             "enterpriseWebSearch parameter is not supported in Gemini API.");
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "googleMaps" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "googleMaps" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "googleMaps" },
             GoogleMapsToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
@@ -723,7 +845,8 @@ namespace Google.GenAI {
                               toObject));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "googleSearch" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "googleSearch" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "googleSearch" },
             GoogleSearchToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
@@ -731,7 +854,8 @@ namespace Google.GenAI {
                                 toObject));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "urlContext" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "urlContext" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "urlContext" },
                               Common.GetValueByPath(fromObject, new string[] { "urlContext" }));
       }
@@ -739,59 +863,70 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    internal JsonNode ToolToVertex(JsonNode fromObject, JsonObject parentObject) {
+    internal JsonNode ToolToVertex(JsonNode fromObject, JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "functionDeclarations" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "functionDeclarations" }) != null)
+      {
         JsonArray keyArray =
             (JsonArray)Common.GetValueByPath(fromObject, new string[] { "functionDeclarations" });
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyArray)
+        {
           result.Add(FunctionDeclarationToVertex(JsonNode.Parse(JsonSerializer.Serialize(record)),
                                                  toObject));
         }
         Common.SetValueByPath(toObject, new string[] { "functionDeclarations" }, result);
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "retrieval" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "retrieval" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "retrieval" },
                               Common.GetValueByPath(fromObject, new string[] { "retrieval" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "googleSearchRetrieval" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "googleSearchRetrieval" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "googleSearchRetrieval" },
             Common.GetValueByPath(fromObject, new string[] { "googleSearchRetrieval" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "computerUse" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "computerUse" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "computerUse" },
                               Common.GetValueByPath(fromObject, new string[] { "computerUse" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "codeExecution" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "codeExecution" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "codeExecution" },
                               Common.GetValueByPath(fromObject, new string[] { "codeExecution" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "enterpriseWebSearch" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "enterpriseWebSearch" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "enterpriseWebSearch" },
             Common.GetValueByPath(fromObject, new string[] { "enterpriseWebSearch" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "googleMaps" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "googleMaps" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "googleMaps" },
                               Common.GetValueByPath(fromObject, new string[] { "googleMaps" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "googleSearch" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "googleSearch" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "googleSearch" },
                               Common.GetValueByPath(fromObject, new string[] { "googleSearch" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "urlContext" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "urlContext" }) != null)
+      {
         Common.SetValueByPath(toObject, new string[] { "urlContext" },
                               Common.GetValueByPath(fromObject, new string[] { "urlContext" }));
       }
@@ -800,15 +935,18 @@ namespace Google.GenAI {
     }
 
     internal JsonNode UpdateCachedContentConfigToMldev(JsonNode fromObject,
-                                                       JsonObject parentObject) {
+                                                       JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "ttl" },
                               Common.GetValueByPath(fromObject, new string[] { "ttl" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "expireTime" },
                               Common.GetValueByPath(fromObject, new string[] { "expireTime" }));
       }
@@ -817,15 +955,18 @@ namespace Google.GenAI {
     }
 
     internal JsonNode UpdateCachedContentConfigToVertex(JsonNode fromObject,
-                                                        JsonObject parentObject) {
+                                                        JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "ttl" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "ttl" },
                               Common.GetValueByPath(fromObject, new string[] { "ttl" }));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "expireTime" }) != null)
+      {
         Common.SetValueByPath(parentObject, new string[] { "expireTime" },
                               Common.GetValueByPath(fromObject, new string[] { "expireTime" }));
       }
@@ -834,17 +975,20 @@ namespace Google.GenAI {
     }
 
     internal JsonNode UpdateCachedContentParametersToMldev(ApiClient apiClient, JsonNode fromObject,
-                                                           JsonObject parentObject) {
+                                                           JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "_url", "name" },
             Transformers.TCachedContentName(
                 this._apiClient, Common.GetValueByPath(fromObject, new string[] { "name" })));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null)
+      {
         _ = UpdateCachedContentConfigToMldev(
             JsonNode.Parse(JsonSerializer.Serialize(
                 Common.GetValueByPath(fromObject, new string[] { "config" }))),
@@ -856,17 +1000,20 @@ namespace Google.GenAI {
 
     internal JsonNode UpdateCachedContentParametersToVertex(ApiClient apiClient,
                                                             JsonNode fromObject,
-                                                            JsonObject parentObject) {
+                                                            JsonObject parentObject)
+    {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null)
+      {
         Common.SetValueByPath(
             toObject, new string[] { "_url", "name" },
             Transformers.TCachedContentName(
                 this._apiClient, Common.GetValueByPath(fromObject, new string[] { "name" })));
       }
 
-      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null)
+      {
         _ = UpdateCachedContentConfigToVertex(
             JsonNode.Parse(JsonSerializer.Serialize(
                 Common.GetValueByPath(fromObject, new string[] { "config" }))),
@@ -876,34 +1023,42 @@ namespace Google.GenAI {
       return toObject;
     }
 
-    public Caches(ApiClient apiClient) {
+    public Caches(ApiClient apiClient)
+    {
       _apiClient = apiClient;
     }
 
     public async Task<CachedContent> CreateAsync(string model,
-                                                 CreateCachedContentConfig? config = null) {
+                                                 CreateCachedContentConfig? config = null)
+    {
       CreateCachedContentParameters parameter = new CreateCachedContentParameters();
 
-      if (!Common.IsZero(model)) {
+      if (!Common.IsZero(model))
+      {
         parameter.Model = model;
       }
-      if (!Common.IsZero(config)) {
+      if (!Common.IsZero(config))
+      {
         parameter.Config = config;
       }
       string jsonString = JsonSerializer.Serialize(parameter);
       JsonNode? parameterNode = JsonNode.Parse(jsonString);
-      if (parameterNode == null) {
+      if (parameterNode == null)
+      {
         throw new NotSupportedException(
             "Failed to parse CreateCachedContentParameters to JsonNode.");
       }
 
       JsonNode body;
       string path;
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         body =
             CreateCachedContentParametersToVertex(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("cachedContents", body["_url"]);
-      } else {
+      }
+      else
+      {
         body =
             CreateCachedContentParametersToMldev(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("cachedContents", body["_url"]);
@@ -919,16 +1074,19 @@ namespace Google.GenAI {
       HttpContent httpContent = response.GetEntity();
       string contentString = await httpContent.ReadAsStringAsync();
       JsonNode? httpContentNode = JsonNode.Parse(contentString);
-      if (httpContentNode == null) {
+      if (httpContentNode == null)
+      {
         throw new NotSupportedException("Failed to parse response to JsonNode.");
       }
       JsonNode responseNode = httpContentNode;
 
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         responseNode = httpContentNode;
       }
 
-      if (!this._apiClient.VertexAI) {
+      if (!this._apiClient.VertexAI)
+      {
         responseNode = httpContentNode;
       }
 
@@ -936,27 +1094,34 @@ namespace Google.GenAI {
              throw new InvalidOperationException("Failed to deserialize Task<CachedContent>.");
     }
 
-    public async Task<CachedContent> GetAsync(string name, GetCachedContentConfig? config = null) {
+    public async Task<CachedContent> GetAsync(string name, GetCachedContentConfig? config = null)
+    {
       GetCachedContentParameters parameter = new GetCachedContentParameters();
 
-      if (!Common.IsZero(name)) {
+      if (!Common.IsZero(name))
+      {
         parameter.Name = name;
       }
-      if (!Common.IsZero(config)) {
+      if (!Common.IsZero(config))
+      {
         parameter.Config = config;
       }
       string jsonString = JsonSerializer.Serialize(parameter);
       JsonNode? parameterNode = JsonNode.Parse(jsonString);
-      if (parameterNode == null) {
+      if (parameterNode == null)
+      {
         throw new NotSupportedException("Failed to parse GetCachedContentParameters to JsonNode.");
       }
 
       JsonNode body;
       string path;
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         body = GetCachedContentParametersToVertex(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("{name}", body["_url"]);
-      } else {
+      }
+      else
+      {
         body = GetCachedContentParametersToMldev(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("{name}", body["_url"]);
       }
@@ -971,16 +1136,19 @@ namespace Google.GenAI {
       HttpContent httpContent = response.GetEntity();
       string contentString = await httpContent.ReadAsStringAsync();
       JsonNode? httpContentNode = JsonNode.Parse(contentString);
-      if (httpContentNode == null) {
+      if (httpContentNode == null)
+      {
         throw new NotSupportedException("Failed to parse response to JsonNode.");
       }
       JsonNode responseNode = httpContentNode;
 
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         responseNode = httpContentNode;
       }
 
-      if (!this._apiClient.VertexAI) {
+      if (!this._apiClient.VertexAI)
+      {
         responseNode = httpContentNode;
       }
 
@@ -989,29 +1157,36 @@ namespace Google.GenAI {
     }
 
     public async Task<DeleteCachedContentResponse> DeleteAsync(
-        string name, DeleteCachedContentConfig? config = null) {
+        string name, DeleteCachedContentConfig? config = null)
+    {
       DeleteCachedContentParameters parameter = new DeleteCachedContentParameters();
 
-      if (!Common.IsZero(name)) {
+      if (!Common.IsZero(name))
+      {
         parameter.Name = name;
       }
-      if (!Common.IsZero(config)) {
+      if (!Common.IsZero(config))
+      {
         parameter.Config = config;
       }
       string jsonString = JsonSerializer.Serialize(parameter);
       JsonNode? parameterNode = JsonNode.Parse(jsonString);
-      if (parameterNode == null) {
+      if (parameterNode == null)
+      {
         throw new NotSupportedException(
             "Failed to parse DeleteCachedContentParameters to JsonNode.");
       }
 
       JsonNode body;
       string path;
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         body =
             DeleteCachedContentParametersToVertex(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("{name}", body["_url"]);
-      } else {
+      }
+      else
+      {
         body =
             DeleteCachedContentParametersToMldev(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("{name}", body["_url"]);
@@ -1027,16 +1202,19 @@ namespace Google.GenAI {
       HttpContent httpContent = response.GetEntity();
       string contentString = await httpContent.ReadAsStringAsync();
       JsonNode? httpContentNode = JsonNode.Parse(contentString);
-      if (httpContentNode == null) {
+      if (httpContentNode == null)
+      {
         throw new NotSupportedException("Failed to parse response to JsonNode.");
       }
       JsonNode responseNode = httpContentNode;
 
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         responseNode = DeleteCachedContentResponseFromVertex(httpContentNode, new JsonObject());
       }
 
-      if (!this._apiClient.VertexAI) {
+      if (!this._apiClient.VertexAI)
+      {
         responseNode = DeleteCachedContentResponseFromMldev(httpContentNode, new JsonObject());
       }
 
@@ -1046,29 +1224,36 @@ namespace Google.GenAI {
     }
 
     public async Task<CachedContent> UpdateAsync(string name,
-                                                 UpdateCachedContentConfig? config = null) {
+                                                 UpdateCachedContentConfig? config = null)
+    {
       UpdateCachedContentParameters parameter = new UpdateCachedContentParameters();
 
-      if (!Common.IsZero(name)) {
+      if (!Common.IsZero(name))
+      {
         parameter.Name = name;
       }
-      if (!Common.IsZero(config)) {
+      if (!Common.IsZero(config))
+      {
         parameter.Config = config;
       }
       string jsonString = JsonSerializer.Serialize(parameter);
       JsonNode? parameterNode = JsonNode.Parse(jsonString);
-      if (parameterNode == null) {
+      if (parameterNode == null)
+      {
         throw new NotSupportedException(
             "Failed to parse UpdateCachedContentParameters to JsonNode.");
       }
 
       JsonNode body;
       string path;
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         body =
             UpdateCachedContentParametersToVertex(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("{name}", body["_url"]);
-      } else {
+      }
+      else
+      {
         body =
             UpdateCachedContentParametersToMldev(this._apiClient, parameterNode, new JsonObject());
         path = Common.FormatMap("{name}", body["_url"]);
@@ -1079,21 +1264,29 @@ namespace Google.GenAI {
       bodyObj?.Remove("_query");
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
+#if NETSTANDARD2_0
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethodPolyfill.Patch, path, JsonSerializer.Serialize(body), requestHttpOptions);
+#else
       ApiResponse response = await this._apiClient.RequestAsync(
           HttpMethod.Patch, path, JsonSerializer.Serialize(body), requestHttpOptions);
+#endif
       HttpContent httpContent = response.GetEntity();
       string contentString = await httpContent.ReadAsStringAsync();
       JsonNode? httpContentNode = JsonNode.Parse(contentString);
-      if (httpContentNode == null) {
+      if (httpContentNode == null)
+      {
         throw new NotSupportedException("Failed to parse response to JsonNode.");
       }
       JsonNode responseNode = httpContentNode;
 
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         responseNode = httpContentNode;
       }
 
-      if (!this._apiClient.VertexAI) {
+      if (!this._apiClient.VertexAI)
+      {
         responseNode = httpContentNode;
       }
 
@@ -1102,25 +1295,31 @@ namespace Google.GenAI {
     }
 
     private async Task<ListCachedContentsResponse> PrivateListAsync(
-        ListCachedContentsConfig? config) {
+        ListCachedContentsConfig? config)
+    {
       ListCachedContentsParameters parameter = new ListCachedContentsParameters();
 
-      if (!Common.IsZero(config)) {
+      if (!Common.IsZero(config))
+      {
         parameter.Config = config;
       }
       string jsonString = JsonSerializer.Serialize(parameter);
       JsonNode? parameterNode = JsonNode.Parse(jsonString);
-      if (parameterNode == null) {
+      if (parameterNode == null)
+      {
         throw new NotSupportedException(
             "Failed to parse ListCachedContentsParameters to JsonNode.");
       }
 
       JsonNode body;
       string path;
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         body = ListCachedContentsParametersToVertex(parameterNode, new JsonObject());
         path = Common.FormatMap("cachedContents", body["_url"]);
-      } else {
+      }
+      else
+      {
         body = ListCachedContentsParametersToMldev(parameterNode, new JsonObject());
         path = Common.FormatMap("cachedContents", body["_url"]);
       }
@@ -1135,16 +1334,19 @@ namespace Google.GenAI {
       HttpContent httpContent = response.GetEntity();
       string contentString = await httpContent.ReadAsStringAsync();
       JsonNode? httpContentNode = JsonNode.Parse(contentString);
-      if (httpContentNode == null) {
+      if (httpContentNode == null)
+      {
         throw new NotSupportedException("Failed to parse response to JsonNode.");
       }
       JsonNode responseNode = httpContentNode;
 
-      if (this._apiClient.VertexAI) {
+      if (this._apiClient.VertexAI)
+      {
         responseNode = ListCachedContentsResponseFromVertex(httpContentNode, new JsonObject());
       }
 
-      if (!this._apiClient.VertexAI) {
+      if (!this._apiClient.VertexAI)
+      {
         responseNode = ListCachedContentsResponseFromMldev(httpContentNode, new JsonObject());
       }
 
@@ -1162,7 +1364,8 @@ namespace Google.GenAI {
     /// next page if there are more.</returns>
 
     public async Task<Pager<CachedContent, ListCachedContentsConfig, ListCachedContentsResponse>>
-    ListAsync(ListCachedContentsConfig? config = null) {
+    ListAsync(ListCachedContentsConfig? config = null)
+    {
       config ??= new ListCachedContentsConfig();
       var initialResponse = await PrivateListAsync(config);
 
@@ -1171,7 +1374,8 @@ namespace Google.GenAI {
           extractItems: response => response.CachedContents,
           extractNextPageToken: response => response.NextPageToken,
           extractHttpResponse: response => response.SdkHttpResponse,
-          updateConfigPageToken: (cfg, token) => {
+          updateConfigPageToken: (cfg, token) =>
+          {
             cfg.PageToken = token;
             return cfg;
           }, initialConfig: config, initialResponse: initialResponse, requestedPageSize: config.PageSize ?? 0);

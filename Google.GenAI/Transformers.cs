@@ -74,8 +74,10 @@ namespace Google.GenAI
         }
         else if (model.Contains("/"))
         {
-          string[] parts = model.Split('/', 2);
-          return string.Format("publishers/{0}/models/{1}", parts[0], parts[1]);
+          int slashIndex = model.IndexOf('/');
+          string publisher = model.Substring(0, slashIndex);
+          string modelName = model.Substring(slashIndex + 1);
+          return string.Format("publishers/{0}/models/{1}", publisher, modelName);
         }
         else
         {
@@ -400,50 +402,50 @@ namespace Google.GenAI
     /// <summary>Transforms an object to a list of Content for the embedding API.</summary>
     internal static List<object>? TContentsForEmbed(ApiClient apiClient, object origin)
     {
-        if (origin == null)
-        {
-            return null;
-        }
+      if (origin == null)
+      {
+        return null;
+      }
 
-        List<Content>? contents;
-        if (origin is List<Content> contentList)
-        {
-            contents = contentList;
-        }
-        else if (origin is JsonNode jsonNode)
-        {
-            contents = JsonSerializer.Deserialize<List<Content>>(jsonNode.ToJsonString());
-        }
-        else
-        {
-            throw new ArgumentException($"Unsupported contents type: {origin.GetType()}");
-        }
+      List<Content>? contents;
+      if (origin is List<Content> contentList)
+      {
+        contents = contentList;
+      }
+      else if (origin is JsonNode jsonNode)
+      {
+        contents = JsonSerializer.Deserialize<List<Content>>(jsonNode.ToJsonString());
+      }
+      else
+      {
+        throw new ArgumentException($"Unsupported contents type: {origin.GetType()}");
+      }
 
-        List<object> result = new List<object>();
-        if (contents != null)
+      List<object> result = new List<object>();
+      if (contents != null)
+      {
+        foreach (Content content in contents)
         {
-            foreach (Content content in contents)
+          if (!apiClient.VertexAI)
+          {
+            result.Add(content);
+          }
+          else
+          {
+            if (content.Parts != null)
             {
-                if (!apiClient.VertexAI)
+              foreach (Part part in content.Parts)
+              {
+                if (part.Text != null)
                 {
-                    result.Add(content);
+                  result.Add(part.Text);
                 }
-                else
-                {
-                    if (content.Parts != null)
-                    {
-                        foreach (Part part in content.Parts)
-                        {
-                            if (part.Text != null)
-                            {
-                                result.Add(part.Text);
-                            }
-                        }
-                    }
-                }
+              }
             }
+          }
         }
-        return result;
+      }
+      return result;
     }
 
     /// <summary>
@@ -600,26 +602,26 @@ namespace Google.GenAI
 
     internal static JsonNode TJobState(JsonNode origin)
     {
-        string? stateStr = origin.GetValue<string>();
-        switch (stateStr)
-        {
-            case "BATCH_STATE_UNSPECIFIED":
-                return JsonValue.Create("JOB_STATE_UNSPECIFIED");
-            case "BATCH_STATE_PENDING":
-                return JsonValue.Create("JOB_STATE_PENDING");
-            case "BATCH_STATE_RUNNING":
-                return JsonValue.Create("JOB_STATE_RUNNING");
-            case "BATCH_STATE_SUCCEEDED":
-                return JsonValue.Create("JOB_STATE_SUCCEEDED");
-            case "BATCH_STATE_FAILED":
-                return JsonValue.Create("JOB_STATE_FAILED");
-            case "BATCH_STATE_CANCELLED":
-                return JsonValue.Create("JOB_STATE_CANCELLED");
-            case "BATCH_STATE_EXPIRED":
-                return JsonValue.Create("JOB_STATE_EXPIRED");
-            default:
-                return origin;
-        }
+      string? stateStr = origin.GetValue<string>();
+      switch (stateStr)
+      {
+        case "BATCH_STATE_UNSPECIFIED":
+          return JsonValue.Create("JOB_STATE_UNSPECIFIED");
+        case "BATCH_STATE_PENDING":
+          return JsonValue.Create("JOB_STATE_PENDING");
+        case "BATCH_STATE_RUNNING":
+          return JsonValue.Create("JOB_STATE_RUNNING");
+        case "BATCH_STATE_SUCCEEDED":
+          return JsonValue.Create("JOB_STATE_SUCCEEDED");
+        case "BATCH_STATE_FAILED":
+          return JsonValue.Create("JOB_STATE_FAILED");
+        case "BATCH_STATE_CANCELLED":
+          return JsonValue.Create("JOB_STATE_CANCELLED");
+        case "BATCH_STATE_EXPIRED":
+          return JsonValue.Create("JOB_STATE_EXPIRED");
+        default:
+          return origin;
+      }
     }
 
     internal static JsonNode TRecvBatchJobDestination(JsonNode origin)
