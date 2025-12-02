@@ -847,8 +847,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -896,8 +900,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -958,8 +966,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -1021,8 +1033,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,12 +27,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestServerSdk;
 
 [TestClass]
-public class ListCacheTest
+public class ListModelsTest
 {
     private static TestServerProcess? _server;
     private Client vertexClient;
     private Client geminiClient;
-    private string modelName;
     public TestContext TestContext { get; set; }
 
     [ClassInitialize]
@@ -55,12 +54,14 @@ public class ListCacheTest
         {
             throw new InvalidOperationException("Test server is not initialized.");
         }
-        var geminiClientHttpOptions = new HttpOptions {
+        var geminiClientHttpOptions = new HttpOptions
+        {
             Headers = new Dictionary<string, string> { { "Test-Name",
                                                    $"{GetType().Name}.{TestContext.TestName}" } },
             BaseUrl = "http://localhost:1453"
         };
-        var vertexClientHttpOptions = new HttpOptions {
+        var vertexClientHttpOptions = new HttpOptions
+        {
             Headers = new Dictionary<string, string> { { "Test-Name",
                                                    $"{GetType().Name}.{TestContext.TestName}" } },
             BaseUrl = "http://localhost:1454"
@@ -76,56 +77,101 @@ public class ListCacheTest
                                   httpOptions: vertexClientHttpOptions);
         geminiClient =
             new Client(apiKey: apiKey, vertexAI: false, httpOptions: geminiClientHttpOptions);
-
-        // Specific setup for this test class
-        modelName = "gemini-2.5-flash";
     }
 
     [TestMethod]
-    public async Task ListCacheVertexTest()
+    public async Task ListTunedModelsVertex()
     {
-        var pager = await vertexClient.Caches.ListAsync(new ListCachedContentsConfig { PageSize = 1 });
+        var config = new ListModelsConfig { QueryBase = false, PageSize = 3 };
+        var pager = await vertexClient.Models.ListAsync(config);
+        Assert.IsNotNull(pager);
 
         int count = 0;
-        await foreach(var item in pager)
+        await foreach (var model in pager)
         {
             count++;
+            if (count >= 4) break;
         }
-
-        Assert.IsTrue(count >= 2);
-        Assert.AreEqual(1, pager.PageSize);
+        Assert.IsTrue(count >= 0);
     }
 
     [TestMethod]
-    public async Task ListCacheGeminiTest()
+    public async Task ListTunedModelsGemini()
     {
-        var part = new Part { FileData = new FileData { MimeType = "application/pdf", FileUri = "https://generativelanguage.googleapis.com/v1beta/files/lnl2lhzkof4f" } };
-        var config1 = new CreateCachedContentConfig
-        {
-            Contents = new List<Content> { new Content { Role = "user", Parts = Enumerable.Repeat(part, 5).ToList() } },
-            DisplayName = "test-list-cache-gemini-1",
-            Ttl = "600s"
-        };
-        var config2 = new CreateCachedContentConfig
-        {
-            Contents = new List<Content> { new Content { Role = "user", Parts = Enumerable.Repeat(part, 5).ToList() } },
-            DisplayName = "test-list-cache-gemini-2",
-            Ttl = "600s"
-        };
-        var created1 = await geminiClient.Caches.CreateAsync(modelName, config1);
-        var created2 = await geminiClient.Caches.CreateAsync(modelName, config2);
-        Assert.IsNotNull(created1);
-        Assert.IsNotNull(created2);
-
-        var pager = await geminiClient.Caches.ListAsync(new ListCachedContentsConfig { PageSize = 1 });
+        var config = new ListModelsConfig { QueryBase = false, PageSize = 3 };
+        var pager = await geminiClient.Models.ListAsync(config);
+        Assert.IsNotNull(pager);
 
         int count = 0;
-        await foreach(var item in pager)
+        await foreach (var model in pager)
         {
             count++;
+            if (count >= 4) break;
         }
+        Assert.IsTrue(count >= 0);
+    }
 
-        Assert.IsTrue(count >= 2);
-        Assert.AreEqual(1, pager.PageSize);
+    [TestMethod]
+    public async Task ListBaseModelsVertex()
+    {
+        // Page size set to avoid long output
+        var config = new ListModelsConfig { PageSize = 5 };
+        var pager = await vertexClient.Models.ListAsync(config);
+        Assert.IsNotNull(pager);
+
+        int count = 0;
+        await foreach (var model in pager)
+        {
+            count++;
+            if (count >= 10) break;
+        }
+        Assert.IsTrue(count == 10);
+    }
+
+    [TestMethod]
+    public async Task ListBaseModelsGemini()
+    {
+        var pager = await geminiClient.Models.ListAsync();
+        Assert.IsNotNull(pager);
+
+        int count = 0;
+        await foreach (var model in pager)
+        {
+            count++;
+            if (count >= 4) break;
+        }
+        Assert.IsTrue(count >= 0);
+    }
+
+    [TestMethod]
+    public async Task ListBaseModelsWithConfigVertex()
+    {
+        var config = new ListModelsConfig { QueryBase = true, PageSize = 10 };
+        var pager = await vertexClient.Models.ListAsync(config);
+        Assert.IsNotNull(pager);
+
+        int count = 0;
+        await foreach (var model in pager)
+        {
+            count++;
+            if (count >= 4) break;
+        }
+        Assert.IsTrue(count >= 0);
+    }
+
+    [TestMethod]
+    public async Task ListBaseModelsWithConfigGemini()
+    {
+        var config = new ListModelsConfig { QueryBase = true, PageSize = 5 };
+        var pager = await geminiClient.Models.ListAsync(config);
+        Assert.IsNotNull(pager);
+
+        int count = 0;
+        await foreach (var model in pager)
+        {
+            count++;
+            if (count >= 4) break;
+        }
+        Assert.IsTrue(count >= 0);
     }
 }

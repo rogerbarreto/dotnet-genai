@@ -221,6 +221,19 @@ namespace Google.GenAI
       return currentObject;
     }
 
+    internal static string FormatQuery(JsonObject queryParams)
+    {
+      var queryParts = new List<string>();
+      foreach (var param in queryParams)
+      {
+        if (param.Value != null)
+        {
+          queryParts.Add($"{param.Key}={Uri.EscapeDataString(param.Value.ToString())}");
+        }
+      }
+      return string.Join("&", queryParts);
+    }
+
     internal static string FormatMap(string template, JsonNode? data)
     {
       if (data is not JsonObject jsonObject)

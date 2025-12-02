@@ -301,11 +301,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
-        JsonArray keyArray =
-            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "contents" });
+        var keyList =
+            Transformers.TContents(Common.GetValueByPath(fromObject, new string[] { "contents" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ContentToMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(toObject, new string[] { "contents" }, result);
@@ -1029,10 +1029,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToMldev(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -1201,10 +1202,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToVertex(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -1283,11 +1285,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
-        JsonArray keyArray =
-            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "contents" });
+        var keyList =
+            Transformers.TContents(Common.GetValueByPath(fromObject, new string[] { "contents" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ContentToMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(toObject, new string[] { "contents" }, result);
@@ -2121,6 +2123,148 @@ namespace Google.GenAI {
       if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
         Common.SetValueByPath(toObject, new string[] { "mimeType" },
                               Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsConfigToMldev(ApiClient apiClient, JsonNode fromObject,
+                                              JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageSize" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "filter" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "filter" },
+                              Common.GetValueByPath(fromObject, new string[] { "filter" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "queryBase" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "_url", "models_url" },
+            Transformers.TModelsUrl(
+                this._apiClient, Common.GetValueByPath(fromObject, new string[] { "queryBase" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsConfigToVertex(ApiClient apiClient, JsonNode fromObject,
+                                               JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageSize" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "filter" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "filter" },
+                              Common.GetValueByPath(fromObject, new string[] { "filter" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "queryBase" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "_url", "models_url" },
+            Transformers.TModelsUrl(
+                this._apiClient, Common.GetValueByPath(fromObject, new string[] { "queryBase" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                  JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = ListModelsConfigToMldev(apiClient,
+                                    JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                        fromObject, new string[] { "config" }))),
+                                    toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                   JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = ListModelsConfigToVertex(apiClient,
+                                     JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                         fromObject, new string[] { "config" }))),
+                                     toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsResponseFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "nextPageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "_self" }) != null) {
+        JsonArray keyArray = (JsonArray)Transformers.TExtractModels(
+            Common.GetValueByPath(fromObject, new string[] { "_self" }));
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(ModelFromMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "models" }, result);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsResponseFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "nextPageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "_self" }) != null) {
+        JsonArray keyArray = (JsonArray)Transformers.TExtractModels(
+            Common.GetValueByPath(fromObject, new string[] { "_self" }));
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(ModelFromVertex(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "models" }, result);
       }
 
       return toObject;
@@ -3195,8 +3339,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3252,8 +3400,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       await foreach (ApiResponse apiResponse in this._apiClient.RequestStreamAsync(
@@ -3316,8 +3468,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3373,8 +3529,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3433,8 +3593,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3491,8 +3655,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3547,8 +3715,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3604,8 +3776,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3661,8 +3837,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3685,6 +3865,59 @@ namespace Google.GenAI {
 
       return JsonSerializer.Deserialize<Model>(responseNode.ToString()) ??
              throw new InvalidOperationException("Failed to deserialize Task<Model>.");
+    }
+
+    private async Task<ListModelsResponse> PrivateListAsync(ListModelsConfig? config) {
+      ListModelsParameters parameter = new ListModelsParameters();
+
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse ListModelsParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = ListModelsParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{models_url}", body["_url"]);
+      } else {
+        body = ListModelsParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{models_url}", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Get, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = ListModelsResponseFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = ListModelsResponseFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<ListModelsResponse>(responseNode.ToString()) ??
+             throw new InvalidOperationException("Failed to deserialize Task<ListModelsResponse>.");
     }
 
     /// <summary>
@@ -3721,8 +3954,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3778,8 +4015,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3846,8 +4087,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -3913,8 +4158,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -4099,6 +4348,43 @@ namespace Google.GenAI {
       }
 
       return await PrivateUpscaleImageAsync(model, image, upscaleFactor, apiConfig);
+    }
+
+    /// <summary>
+    /// Lists models asynchronously.
+    /// </summary>
+    /// <param name="config">A <see cref="ListModelsConfig"/> instance that specifies the
+    /// optional configuration for the list request.</param>
+    /// <returns>A Pager object that contains one page of models. When iterating over the pager,
+    /// it automatically fetches the next page if there are more.</returns>
+    public async Task<Pager<Model, ListModelsConfig, ListModelsResponse>> ListAsync(
+        ListModelsConfig? config = null) {
+      config ??= new ListModelsConfig();
+
+      if (!config.QueryBase.HasValue) {
+        config.QueryBase = true;
+      }
+
+      if (this._apiClient.VertexAI) {
+        if (!config.QueryBase.Value) {
+          if (!String.IsNullOrEmpty(config.Filter)) {
+            throw new NotSupportedException(
+                "Filtering tuned models list for Vertex AI is not currently supported");
+          }
+        }
+      }
+
+      var initialResponse = await PrivateListAsync(config);
+
+      return new Pager<Model, ListModelsConfig, ListModelsResponse>(
+          requestFunc: async cfg => await PrivateListAsync(cfg),
+          extractItems: response => response.Models,
+          extractNextPageToken: response => response.NextPageToken,
+          extractHttpResponse: response => response.SdkHttpResponse,
+          updateConfigPageToken: (cfg, token) => {
+            cfg.PageToken = token;
+            return cfg;
+          }, initialConfig: config, initialResponse: initialResponse, requestedPageSize: config.PageSize ?? 0);
     }
 
     /// <summary>

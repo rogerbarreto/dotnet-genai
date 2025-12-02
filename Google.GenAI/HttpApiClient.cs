@@ -384,6 +384,10 @@ namespace Google.GenAI
           throw new InvalidOperationException("Failed to obtain access token from credentials.");
         }
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        if (Credentials is GoogleCredential gc && !string.IsNullOrEmpty(gc.QuotaProject))
+        {
+            request.Headers.TryAddWithoutValidation("x-goog-user-project", gc.QuotaProject);
+        }
       }
     }
 
