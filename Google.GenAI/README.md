@@ -359,7 +359,7 @@ public class EditImageSimple {
       OutputMimeType = "image/jpeg",
     };
 
-    var editImageResponse = await vertexClient.Models.EditImageAsync(
+    var editImageResponse = await client.Models.EditImageAsync(
         model: "imagen-3.0-capability-001",
         prompt: "Change the colors of [1] using the mask [2]",
         referenceImages: referenceImages,
@@ -389,7 +389,7 @@ public class SegmentImageSimple {
       MaxPredictions = 1,
     };
 
-    var segmentImageResponse = await vertexClient.Models.SegmentImageAsync(
+    var segmentImageResponse = await client.Models.SegmentImageAsync(
         model: modelName,
         source: new SegmentImageSource {
           Image = Image.FromFile("path/to/image.png", "image/png"),
@@ -398,6 +398,222 @@ public class SegmentImageSimple {
 
     // Do something with the generated mask
     var mask = segmentImageResponse.GeneratedMasks.First().Mask;
+  }
+}
+```
+
+### Generate Videos
+
+#### Generate Videos (From Text)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFromText {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+    var source = new GenerateVideosSource {
+      Prompt = "Man with a dog",
+    };
+
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+    };
+
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (From Image)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFromText {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+    var source = new GenerateVideosSource {
+      // Prompt is optional if Image is provided
+      Prompt = "Man with a dog",
+      Image = Image.FromFile("images/man.png"),
+    };
+
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+    };
+
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (Frame Interpolation)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFrameInterpolation {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+    var source = new GenerateVideosSource {
+      Prompt = "At the park",
+      Image = Image.FromFile("images/man.jpg"),
+    };
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+      LastFrame = Image.FromFile("images/dog.jpg"),
+    };
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (From Reference Images)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosReferenceImages{
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+
+    var source = new GenerateVideosSource {
+      Prompt = "Chirping birds in a colorful forest",
+    };
+    List<VideoGenerationReferenceImage> referenceImages = new List<VideoGenerationReferenceImage>();
+    referenceImages.Add(new VideoGenerationReferenceImage {
+      Image = Image.FromFile("images/man.jpg"),
+      ReferenceType = VideoGenerationReferenceType.ASSET,
+    });
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+      ReferenceImages = referenceImages,
+    };
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (From Video)
+
+Gemini Developer API only accepts previously generated videos.
+Vertex accepts a Video from GCS URI.
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFromVideo {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+
+    var source1 = new GenerateVideosSource {
+      Prompt = "Man with a dog",
+    };
+    var operation1 = await client.Models.GenerateVideosAsync(
+        model: modelName, source: source1, config: new GenerateVideosConfig{
+          NumberOfVideos = 1,
+    });
+
+    while (operation1.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation1 = await client.Operations.GetAsync(operation1, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+
+    var source2 = new GenerateVideosSource {
+      Prompt = "Driving through a tunnel.",
+      Video = operation1.Response.GeneratedVideos.First().Video,
+    };
+    var operation2 = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source2, config: new GenerateVideosConfig{
+          NumberOfVideos = 1,
+    });
+
+    while (operation2.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation2 = await client.Operations.GetAsync(operation2, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+    // Do something with the generated video
+    var video = operation2.Response.GeneratedVideos.First().Video;
   }
 }
 ```

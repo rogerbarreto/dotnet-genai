@@ -1,0 +1,345 @@
+{
+  "recordID": "GenerateVideosTest.GenerateVideosSourceTextVertexTest",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1beta1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:predictLongRunning",
+        "request": "POST /v1beta1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:predictLongRunning HTTP/1.1",
+        "headers": {
+          "Content-Length": "325",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "instances": [
+              {
+                "prompt": "Man with a dog"
+              }
+            ],
+            "parameters": {
+              "aspectRatio": "16:9",
+              "compressionQuality": "LOSSLESS",
+              "durationSeconds": 6,
+              "enhancePrompt": true,
+              "fps": 24,
+              "negativePrompt": "ugly, low quality",
+              "personGeneration": "allow_adult",
+              "resolution": "720p",
+              "sampleCount": 1,
+              "seed": 1,
+              "storageUri": "gs://genai-sdk-tests/temp/videos/"
+            }
+          }
+        ],
+        "previousRequest": "b4d6e60a9b97e7b98c63df9308728c5c88c0b40c398046772c63447b94608b4d",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "b2a53f2619ef680858e7c01b7e724b21367942ce9a54771955a3f2603cf9ef2f",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:19:20 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation",
+        "request": "POST /v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation HTTP/1.1",
+        "headers": {
+          "Content-Length": "167",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "operationName": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ],
+        "previousRequest": "b2a53f2619ef680858e7c01b7e724b21367942ce9a54771955a3f2603cf9ef2f",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "80da516c38b028e4bfad8aee14ffca7fec8c83f6acab94cfde1a4e1c390b0822",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:19:30 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation",
+        "request": "POST /v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation HTTP/1.1",
+        "headers": {
+          "Content-Length": "167",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "operationName": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ],
+        "previousRequest": "80da516c38b028e4bfad8aee14ffca7fec8c83f6acab94cfde1a4e1c390b0822",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "13f31aa3f96e01b269f32caac652aef5f78d0381628731e83eace2579552ae33",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:19:40 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation",
+        "request": "POST /v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation HTTP/1.1",
+        "headers": {
+          "Content-Length": "167",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "operationName": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ],
+        "previousRequest": "13f31aa3f96e01b269f32caac652aef5f78d0381628731e83eace2579552ae33",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "005cd08a1b606d2fb9906e2b0075bbe2ba81690a5f90f201347271e62f57e568",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:19:51 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation",
+        "request": "POST /v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation HTTP/1.1",
+        "headers": {
+          "Content-Length": "167",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "operationName": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ],
+        "previousRequest": "005cd08a1b606d2fb9906e2b0075bbe2ba81690a5f90f201347271e62f57e568",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "dbde31e1ec7ce7e68847ee531d561c4e31647f1f0c2a01b7ece878a6e4912f13",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:20:01 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation",
+        "request": "POST /v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation HTTP/1.1",
+        "headers": {
+          "Content-Length": "167",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "operationName": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ],
+        "previousRequest": "dbde31e1ec7ce7e68847ee531d561c4e31647f1f0c2a01b7ece878a6e4912f13",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "b3c3ba187e1b6eb41d263503c0185a6547d8b161e4da3b1436d26e068c6f6f60",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:20:11 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation",
+        "request": "POST /v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation HTTP/1.1",
+        "headers": {
+          "Content-Length": "167",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "operationName": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ],
+        "previousRequest": "b3c3ba187e1b6eb41d263503c0185a6547d8b161e4da3b1436d26e068c6f6f60",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "b2b4e54a92bc000a851b3b25d1e151ef2b60b78d459756c2c3b28a0096c21eae",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:20:21 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation",
+        "request": "POST /v1/projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview:fetchPredictOperation HTTP/1.1",
+        "headers": {
+          "Content-Length": "167",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "operationName": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943"
+          }
+        ],
+        "previousRequest": "b2b4e54a92bc000a851b3b25d1e151ef2b60b78d459756c2c3b28a0096c21eae",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "10118fd802f6769bb515b49694a1d00e2a6a58d005f32e031214e6a90cad238e",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Tue, 02 Dec 2025 00:20:31 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "done": true,
+            "name": "projects/REDACTED/locations/us-central1/publishers/google/models/veo-3.1-generate-preview/operations/bb6f6116-15a0-4a92-8d8c-6a56e67da943",
+            "response": {
+              "@type": "type.googleapis.com/cloud.ai.large_models.vision.GenerateVideoResponse",
+              "raiMediaFilteredCount": 0,
+              "videos": [
+                {
+                  "gcsUri": "gs://genai-sdk-tests/temp/videos/16802657975300148523/sample_0.mp4",
+                  "mimeType": "video/mp4"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
