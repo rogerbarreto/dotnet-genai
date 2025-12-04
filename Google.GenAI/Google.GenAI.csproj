@@ -30,6 +30,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Net.WebSockets.Client" />
+    <PackageReference Include="System.Net.Security" />
     <PackageReference Include="Google.Apis.Auth" />
     <InternalsVisibleTo Include="Google.GenAI.Tests" />
   </ItemGroup>
