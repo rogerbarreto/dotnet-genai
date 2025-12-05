@@ -25,11 +25,21 @@ namespace Google.GenAI.Types {
 
   public record UpscaleImageResponse {
     /// <summary>
+    /// Used to retain the full HTTP response.
+    /// </summary>
+    [JsonPropertyName("sdkHttpResponse")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public HttpResponse ? SdkHttpResponse { get; set; }
+
+    /// <summary>
     /// Generated images.
     /// </summary>
     [JsonPropertyName("generatedImages")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<GeneratedImage> ? GeneratedImages { get; set; }
+    public List<GeneratedImage>
+        ? GeneratedImages {
+            get; set;
+          }
 
     /// <summary>
     /// Deserializes a JSON string to a UpscaleImageResponse object.

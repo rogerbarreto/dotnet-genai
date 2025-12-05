@@ -28,11 +28,21 @@ namespace Google.GenAI.Types {
 
   public record GenerateImagesResponse {
     /// <summary>
+    /// Used to retain the full HTTP response.
+    /// </summary>
+    [JsonPropertyName("sdkHttpResponse")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public HttpResponse ? SdkHttpResponse { get; set; }
+
+    /// <summary>
     /// List of generated images.
     /// </summary>
     [JsonPropertyName("generatedImages")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<GeneratedImage> ? GeneratedImages { get; set; }
+    public List<GeneratedImage>
+        ? GeneratedImages {
+            get; set;
+          }
 
     /// <summary>
     /// Safety attributes of the positive prompt. Only populated if ``include_safety_attributes`` is

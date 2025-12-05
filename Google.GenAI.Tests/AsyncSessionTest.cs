@@ -48,6 +48,13 @@ namespace Google.GenAI.Tests {
       return Task.FromResult<ApiResponse>(new TestApiResponse { Body = "{}" });
     }
 
+    internal override Task<ApiResponse> RequestAsync(HttpMethod httpMethod, string path,
+                                                      byte[] requestBytes,
+                                                      HttpOptions? requestHttpOptions,
+                                                      CancellationToken cancellationToken = default) {
+      return Task.FromResult<ApiResponse>(new TestApiResponse { Body = "{}" });
+    }
+
     public override IAsyncEnumerable<ApiResponse> RequestStreamAsync(
         HttpMethod httpMethod, string path, string requestJson, HttpOptions? requestHttpOptions,
         [EnumeratorCancellation] CancellationToken cancellationToken = default) {

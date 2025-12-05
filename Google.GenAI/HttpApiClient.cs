@@ -118,6 +118,30 @@ namespace Google.GenAI
       return new HttpApiResponse(response);
     }
 
+    internal override async Task<ApiResponse> RequestAsync(
+        HttpMethod httpMethod,
+        string url,
+        byte[] requestBytes,
+        Types.HttpOptions? requestHttpOptions,
+        CancellationToken cancellationToken = default)
+    {
+      HttpRequestMessage request = await CreateHttpRequestAsync(httpMethod, url, requestBytes, requestHttpOptions);
+      HttpResponseMessage response = await HttpClient.SendAsync(request, cancellationToken);
+      if (!response.IsSuccessStatusCode)
+      {
+        try
+        {
+          await ThrowFromErrorResponse(response);
+        }
+        finally
+        {
+          response.Dispose();
+        }
+      }
+
+      return new HttpApiResponse(response);
+    }
+
     public override async IAsyncEnumerable<ApiResponse> RequestStreamAsync(
         HttpMethod httpMethod,
         string path,
@@ -162,7 +186,7 @@ namespace Google.GenAI
     private async Task<HttpRequestMessage> CreateHttpRequestAsync(HttpMethod httpMethod, string path,
         string requestJson, Types.HttpOptions? requestHttpOptions)
     {
-        bool queryBaseModel = httpMethod.Equals("GET") && path.StartsWith("publishers/google/models");
+        bool queryBaseModel = httpMethod == HttpMethod.Get && path.StartsWith("publishers/google/models");
         if (this.VertexAI && !path.StartsWith("projects/") && !queryBaseModel)
         {
             path = $"projects/{Project}/locations/{Location}/{path}";
@@ -186,6 +210,23 @@ namespace Google.GenAI
             httpMethod.Method.Equals("PATCH", StringComparison.OrdinalIgnoreCase))
         {
             request.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+        }
+        return request;
+    }
+
+    private async Task<HttpRequestMessage> CreateHttpRequestAsync(HttpMethod httpMethod, string url,
+        byte[] requestBytes, Types.HttpOptions? requestHttpOptions)
+    {
+        Types.HttpOptions mergedHttpOptions = MergeHttpOptions(requestHttpOptions);
+
+        var request = new HttpRequestMessage(httpMethod, url);
+        await SetHeadersAsync(request, mergedHttpOptions);
+
+        if (httpMethod.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+            httpMethod.Method.Equals("PATCH", StringComparison.OrdinalIgnoreCase))
+        {
+            request.Content = new ByteArrayContent(requestBytes);
+            request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
         }
         return request;
     }
@@ -384,6 +425,10 @@ namespace Google.GenAI
           throw new InvalidOperationException("Failed to obtain access token from credentials.");
         }
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        if (Credentials is GoogleCredential gc && !string.IsNullOrEmpty(gc.QuotaProject))
+        {
+            request.Headers.TryAddWithoutValidation("x-goog-user-project", gc.QuotaProject);
+        }
       }
     }
 

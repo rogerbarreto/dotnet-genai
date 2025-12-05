@@ -1,0 +1,101 @@
+{
+  "recordID": "EmbedContentTest.EmbedContentMultiTextGeminiTest",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1beta/models/text-embedding-004:batchEmbedContents",
+        "request": "POST /v1beta/models/text-embedding-004:batchEmbedContents HTTP/1.1",
+        "headers": {
+          "Content-Length": "347",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "EmbedContentTest.EmbedContentMultiTextGeminiTest"
+        },
+        "bodySegments": [
+          {
+            "requests": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "What is your name?"
+                    }
+                  ]
+                },
+                "model": "models/text-embedding-004",
+                "outputDimensionality": 10,
+                "taskType": "RETRIEVAL_DOCUMENT",
+                "title": "test_title"
+              },
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "I am a model."
+                    }
+                  ]
+                },
+                "model": "models/text-embedding-004",
+                "outputDimensionality": 10,
+                "taskType": "RETRIEVAL_DOCUMENT",
+                "title": "test_title"
+              }
+            ]
+          }
+        ],
+        "previousRequest": "b4d6e60a9b97e7b98c63df9308728c5c88c0b40c398046772c63447b94608b4d",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "50128cd8a28c44e38af1b0551cc25ebf7c7af1c59953d49db45899a450dbb1bc",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Thu, 20 Nov 2025 00:35:10 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=193",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "embeddings": [
+              {
+                "values": [
+                  0.0062209684,
+                  -0.00016352482,
+                  -0.04497254,
+                  -0.024360893,
+                  0.024183987,
+                  0.027219841,
+                  0.036644667,
+                  0.028461628,
+                  -0.04021491,
+                  0.03328241
+                ]
+              },
+              {
+                "values": [
+                  -0.02997993,
+                  -0.031975683,
+                  -0.041643385,
+                  -0.01656822,
+                  0.031309083,
+                  0.025444405,
+                  0.0028291983,
+                  0.05965454,
+                  -0.014440891,
+                  0.024713816
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

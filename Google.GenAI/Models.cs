@@ -126,6 +126,80 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode ComputeTokensParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                      JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "contents" },
+            Transformers.TContents(Common.GetValueByPath(fromObject, new string[] { "contents" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ComputeTokensResponseFromVertex(JsonNode fromObject,
+                                                      JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "tokensInfo" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "tokensInfo" },
+                              Common.GetValueByPath(fromObject, new string[] { "tokensInfo" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ContentEmbeddingFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "values" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "values" },
+                              Common.GetValueByPath(fromObject, new string[] { "values" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "statistics" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "statistics" },
+                              ContentEmbeddingStatisticsFromVertex(
+                                  JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                      fromObject, new string[] { "statistics" }))),
+                                  toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ContentEmbeddingStatisticsFromVertex(JsonNode fromObject,
+                                                           JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "truncated" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "truncated" },
+                              Common.GetValueByPath(fromObject, new string[] { "truncated" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "token_count" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "tokenCount" },
+                              Common.GetValueByPath(fromObject, new string[] { "token_count" }));
+      }
+
+      return toObject;
+    }
+
     internal JsonNode ContentToMldev(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
@@ -160,6 +234,205 @@ namespace Google.GenAI {
         Common.SetValueByPath(
             toObject, new string[] { "computeControl" },
             Common.GetValueByPath(fromObject, new string[] { "enableControlImageComputation" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CountTokensConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "systemInstruction" }))) {
+        throw new NotSupportedException(
+            "systemInstruction parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "tools" }))) {
+        throw new NotSupportedException("tools parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "generationConfig" }))) {
+        throw new NotSupportedException(
+            "generationConfig parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CountTokensConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "systemInstruction" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "systemInstruction" },
+                              Transformers.TContent(Common.GetValueByPath(
+                                  fromObject, new string[] { "systemInstruction" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
+        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(ToolToVertex(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(parentObject, new string[] { "tools" }, result);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "generationConfig" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "generationConfig" },
+            GenerationConfigToVertex(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                         fromObject, new string[] { "generationConfig" }))),
+                                     toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CountTokensParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                   JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
+        var keyList =
+            Transformers.TContents(Common.GetValueByPath(fromObject, new string[] { "contents" }));
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyList) {
+          result.Add(ContentToMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "contents" }, result);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = CountTokensConfigToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                         fromObject, new string[] { "config" }))),
+                                     toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CountTokensParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                    JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "contents" },
+            Transformers.TContents(Common.GetValueByPath(fromObject, new string[] { "contents" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = CountTokensConfigToVertex(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                          fromObject, new string[] { "config" }))),
+                                      toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CountTokensResponseFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "totalTokens" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "totalTokens" },
+                              Common.GetValueByPath(fromObject, new string[] { "totalTokens" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "cachedContentTokenCount" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "cachedContentTokenCount" },
+            Common.GetValueByPath(fromObject, new string[] { "cachedContentTokenCount" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CountTokensResponseFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "totalTokens" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "totalTokens" },
+                              Common.GetValueByPath(fromObject, new string[] { "totalTokens" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode DeleteModelParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                   JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "name" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode DeleteModelParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                    JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "name" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode DeleteModelResponseFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode DeleteModelResponseFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
       }
 
       return toObject;
@@ -303,6 +576,12 @@ namespace Google.GenAI {
     internal JsonNode EditImageResponseFromVertex(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
       if (Common.GetValueByPath(fromObject, new string[] { "predictions" }) != null) {
         JsonArray keyArray =
             (JsonArray)Common.GetValueByPath(fromObject, new string[] { "predictions" });
@@ -313,6 +592,197 @@ namespace Google.GenAI {
               GeneratedImageFromVertex(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(toObject, new string[] { "generatedImages" }, result);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode EmbedContentConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "taskType" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "requests[]", "taskType" },
+                              Common.GetValueByPath(fromObject, new string[] { "taskType" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "title" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "requests[]", "title" },
+                              Common.GetValueByPath(fromObject, new string[] { "title" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputDimensionality" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "requests[]", "outputDimensionality" },
+            Common.GetValueByPath(fromObject, new string[] { "outputDimensionality" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "mimeType" }))) {
+        throw new NotSupportedException("mimeType parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "autoTruncate" }))) {
+        throw new NotSupportedException("autoTruncate parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode EmbedContentConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "taskType" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "instances[]", "task_type" },
+                              Common.GetValueByPath(fromObject, new string[] { "taskType" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "title" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "instances[]", "title" },
+                              Common.GetValueByPath(fromObject, new string[] { "title" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputDimensionality" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "parameters", "outputDimensionality" },
+            Common.GetValueByPath(fromObject, new string[] { "outputDimensionality" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "instances[]", "mimeType" },
+                              Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "autoTruncate" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "autoTruncate" },
+                              Common.GetValueByPath(fromObject, new string[] { "autoTruncate" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode EmbedContentParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                    JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "requests[]", "content" },
+            Transformers.TContentsForEmbed(
+                this._apiClient, Common.GetValueByPath(fromObject, new string[] { "contents" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = EmbedContentConfigToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                          fromObject, new string[] { "config" }))),
+                                      toObject);
+      }
+
+      Common.SetValueByPath(
+          toObject, new string[] { "requests[]", "model" },
+          Transformers.TModel(this._apiClient,
+                              Common.GetValueByPath(fromObject, new string[] { "model" })));
+
+      return toObject;
+    }
+
+    internal JsonNode EmbedContentParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                     JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "instances[]", "content" },
+            Transformers.TContentsForEmbed(
+                this._apiClient, Common.GetValueByPath(fromObject, new string[] { "contents" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = EmbedContentConfigToVertex(
+            JsonNode.Parse(JsonSerializer.Serialize(
+                Common.GetValueByPath(fromObject, new string[] { "config" }))),
+            toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode EmbedContentResponseFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "embeddings" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "embeddings" },
+                              Common.GetValueByPath(fromObject, new string[] { "embeddings" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "metadata" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "metadata" },
+                              Common.GetValueByPath(fromObject, new string[] { "metadata" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode EmbedContentResponseFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "predictions[]", "embeddings" }) !=
+          null) {
+        JsonArray keyArray = (JsonArray)Common.GetValueByPath(
+            fromObject, new string[] { "predictions[]", "embeddings" });
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(ContentEmbeddingFromVertex(JsonNode.Parse(JsonSerializer.Serialize(record)),
+                                                toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "embeddings" }, result);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "metadata" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "metadata" },
+                              Common.GetValueByPath(fromObject, new string[] { "metadata" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode EndpointFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "endpoint" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "endpoint" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "deployedModelId" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "deployedModelId" },
+            Common.GetValueByPath(fromObject, new string[] { "deployedModelId" }));
       }
 
       return toObject;
@@ -333,6 +803,72 @@ namespace Google.GenAI {
       if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
         Common.SetValueByPath(toObject, new string[] { "mimeType" },
                               Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode FileSearchToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
+        throw new NotSupportedException(" parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
+        throw new NotSupportedException(" parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode FunctionCallToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "id" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "id" },
+                              Common.GetValueByPath(fromObject, new string[] { "id" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "args" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "args" },
+                              Common.GetValueByPath(fromObject, new string[] { "args" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "partialArgs" }))) {
+        throw new NotSupportedException("partialArgs parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "willContinue" }))) {
+        throw new NotSupportedException("willContinue parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode FunctionCallingConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mode" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "mode" },
+                              Common.GetValueByPath(fromObject, new string[] { "mode" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "allowedFunctionNames" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "allowedFunctionNames" },
+            Common.GetValueByPath(fromObject, new string[] { "allowedFunctionNames" }));
+      }
+
+      if (!Common.IsZero(
+              Common.GetValueByPath(fromObject, new string[] { "streamFunctionCallArguments" }))) {
+        throw new NotSupportedException(
+            "streamFunctionCallArguments parameter is not supported in Gemini API.");
       }
 
       return toObject;
@@ -493,10 +1029,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToMldev(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -504,8 +1041,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "toolConfig" }) != null) {
-        Common.SetValueByPath(parentObject, new string[] { "toolConfig" },
-                              Common.GetValueByPath(fromObject, new string[] { "toolConfig" }));
+        Common.SetValueByPath(
+            parentObject, new string[] { "toolConfig" },
+            ToolConfigToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                  fromObject, new string[] { "toolConfig" }))),
+                              toObject));
       }
 
       if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "labels" }))) {
@@ -548,8 +1088,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "imageConfig" }) != null) {
-        Common.SetValueByPath(toObject, new string[] { "imageConfig" },
-                              Common.GetValueByPath(fromObject, new string[] { "imageConfig" }));
+        Common.SetValueByPath(
+            toObject, new string[] { "imageConfig" },
+            ImageConfigToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                   fromObject, new string[] { "imageConfig" }))),
+                               toObject));
       }
 
       return toObject;
@@ -659,10 +1202,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToVertex(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -719,8 +1263,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "imageConfig" }) != null) {
-        Common.SetValueByPath(toObject, new string[] { "imageConfig" },
-                              Common.GetValueByPath(fromObject, new string[] { "imageConfig" }));
+        Common.SetValueByPath(
+            toObject, new string[] { "imageConfig" },
+            ImageConfigToVertex(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                    fromObject, new string[] { "imageConfig" }))),
+                                toObject));
       }
 
       return toObject;
@@ -738,11 +1285,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "contents" }) != null) {
-        JsonArray keyArray =
-            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "contents" });
+        var keyList =
+            Transformers.TContents(Common.GetValueByPath(fromObject, new string[] { "contents" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ContentToMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
         }
         Common.SetValueByPath(toObject, new string[] { "contents" }, result);
@@ -793,6 +1340,12 @@ namespace Google.GenAI {
                                                        JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
       if (Common.GetValueByPath(fromObject, new string[] { "candidates" }) != null) {
         JsonArray keyArray =
             (JsonArray)Common.GetValueByPath(fromObject, new string[] { "candidates" });
@@ -831,6 +1384,12 @@ namespace Google.GenAI {
     internal JsonNode GenerateContentResponseFromVertex(JsonNode fromObject,
                                                         JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
 
       if (Common.GetValueByPath(fromObject, new string[] { "candidates" }) != null) {
         Common.SetValueByPath(toObject, new string[] { "candidates" },
@@ -1109,6 +1668,12 @@ namespace Google.GenAI {
                                                       JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
       if (Common.GetValueByPath(fromObject, new string[] { "predictions" }) != null) {
         JsonArray keyArray =
             (JsonArray)Common.GetValueByPath(fromObject, new string[] { "predictions" });
@@ -1138,6 +1703,12 @@ namespace Google.GenAI {
                                                        JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
       if (Common.GetValueByPath(fromObject, new string[] { "predictions" }) != null) {
         JsonArray keyArray =
             (JsonArray)Common.GetValueByPath(fromObject, new string[] { "predictions" });
@@ -1158,6 +1729,489 @@ namespace Google.GenAI {
                 JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
                     fromObject, new string[] { "positivePromptSafetyAttributes" }))),
                 toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "numberOfVideos" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "sampleCount" },
+                              Common.GetValueByPath(fromObject, new string[] { "numberOfVideos" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "outputGcsUri" }))) {
+        throw new NotSupportedException("outputGcsUri parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "fps" }))) {
+        throw new NotSupportedException("fps parameter is not supported in Gemini API.");
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "durationSeconds" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "parameters", "durationSeconds" },
+            Common.GetValueByPath(fromObject, new string[] { "durationSeconds" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "seed" }))) {
+        throw new NotSupportedException("seed parameter is not supported in Gemini API.");
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "aspectRatio" },
+                              Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "resolution" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "resolution" },
+                              Common.GetValueByPath(fromObject, new string[] { "resolution" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "personGeneration" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "parameters", "personGeneration" },
+            Common.GetValueByPath(fromObject, new string[] { "personGeneration" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "pubsubTopic" }))) {
+        throw new NotSupportedException("pubsubTopic parameter is not supported in Gemini API.");
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "negativePrompt" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "negativePrompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "negativePrompt" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "enhancePrompt" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "enhancePrompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "enhancePrompt" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "generateAudio" }))) {
+        throw new NotSupportedException("generateAudio parameter is not supported in Gemini API.");
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "lastFrame" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "instances[0]", "lastFrame" },
+            ImageToMldev(JsonNode.Parse(JsonSerializer.Serialize(
+                             Common.GetValueByPath(fromObject, new string[] { "lastFrame" }))),
+                         toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "referenceImages" }) != null) {
+        JsonArray keyArray =
+            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "referenceImages" });
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(VideoGenerationReferenceImageToMldev(
+              JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(parentObject, new string[] { "instances[0]", "referenceImages" },
+                              result);
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "mask" }))) {
+        throw new NotSupportedException("mask parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(
+              Common.GetValueByPath(fromObject, new string[] { "compressionQuality" }))) {
+        throw new NotSupportedException(
+            "compressionQuality parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "numberOfVideos" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "sampleCount" },
+                              Common.GetValueByPath(fromObject, new string[] { "numberOfVideos" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputGcsUri" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "storageUri" },
+                              Common.GetValueByPath(fromObject, new string[] { "outputGcsUri" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "fps" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "fps" },
+                              Common.GetValueByPath(fromObject, new string[] { "fps" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "durationSeconds" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "parameters", "durationSeconds" },
+            Common.GetValueByPath(fromObject, new string[] { "durationSeconds" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "seed" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "seed" },
+                              Common.GetValueByPath(fromObject, new string[] { "seed" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "aspectRatio" },
+                              Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "resolution" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "resolution" },
+                              Common.GetValueByPath(fromObject, new string[] { "resolution" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "personGeneration" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "parameters", "personGeneration" },
+            Common.GetValueByPath(fromObject, new string[] { "personGeneration" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pubsubTopic" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "pubsubTopic" },
+                              Common.GetValueByPath(fromObject, new string[] { "pubsubTopic" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "negativePrompt" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "negativePrompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "negativePrompt" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "enhancePrompt" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "enhancePrompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "enhancePrompt" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "generateAudio" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "generateAudio" },
+                              Common.GetValueByPath(fromObject, new string[] { "generateAudio" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "lastFrame" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "instances[0]", "lastFrame" },
+            ImageToVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                              Common.GetValueByPath(fromObject, new string[] { "lastFrame" }))),
+                          toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "referenceImages" }) != null) {
+        JsonArray keyArray =
+            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "referenceImages" });
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(VideoGenerationReferenceImageToVertex(
+              JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(parentObject, new string[] { "instances[0]", "referenceImages" },
+                              result);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mask" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "instances[0]", "mask" },
+                              VideoGenerationMaskToVertex(
+                                  JsonNode.Parse(JsonSerializer.Serialize(
+                                      Common.GetValueByPath(fromObject, new string[] { "mask" }))),
+                                  toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "compressionQuality" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "parameters", "compressionQuality" },
+            Common.GetValueByPath(fromObject, new string[] { "compressionQuality" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosOperationFromMldev(JsonNode fromObject,
+                                                       JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "metadata" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "metadata" },
+                              Common.GetValueByPath(fromObject, new string[] { "metadata" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "done" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "done" },
+                              Common.GetValueByPath(fromObject, new string[] { "done" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "error" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "error" },
+                              Common.GetValueByPath(fromObject, new string[] { "error" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "response", "generateVideoResponse" }) !=
+          null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "response" },
+            GenerateVideosResponseFromMldev(
+                JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                    fromObject, new string[] { "response", "generateVideoResponse" }))),
+                toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosOperationFromVertex(JsonNode fromObject,
+                                                        JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "metadata" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "metadata" },
+                              Common.GetValueByPath(fromObject, new string[] { "metadata" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "done" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "done" },
+                              Common.GetValueByPath(fromObject, new string[] { "done" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "error" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "error" },
+                              Common.GetValueByPath(fromObject, new string[] { "error" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "response" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "response" },
+                              GenerateVideosResponseFromVertex(
+                                  JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                      fromObject, new string[] { "response" }))),
+                                  toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                      JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "prompt" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "instances[0]", "prompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "prompt" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "image" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "instances[0]", "image" },
+            ImageToMldev(JsonNode.Parse(JsonSerializer.Serialize(
+                             Common.GetValueByPath(fromObject, new string[] { "image" }))),
+                         toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "video" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "instances[0]", "video" },
+            VideoToMldev(JsonNode.Parse(JsonSerializer.Serialize(
+                             Common.GetValueByPath(fromObject, new string[] { "video" }))),
+                         toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "source" }) != null) {
+        _ = GenerateVideosSourceToMldev(
+            JsonNode.Parse(JsonSerializer.Serialize(
+                Common.GetValueByPath(fromObject, new string[] { "source" }))),
+            toObject);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = GenerateVideosConfigToMldev(
+            JsonNode.Parse(JsonSerializer.Serialize(
+                Common.GetValueByPath(fromObject, new string[] { "config" }))),
+            toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                       JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "prompt" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "instances[0]", "prompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "prompt" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "image" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "instances[0]", "image" },
+            ImageToVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                              Common.GetValueByPath(fromObject, new string[] { "image" }))),
+                          toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "video" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "instances[0]", "video" },
+            VideoToVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                              Common.GetValueByPath(fromObject, new string[] { "video" }))),
+                          toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "source" }) != null) {
+        _ = GenerateVideosSourceToVertex(
+            JsonNode.Parse(JsonSerializer.Serialize(
+                Common.GetValueByPath(fromObject, new string[] { "source" }))),
+            toObject);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = GenerateVideosConfigToVertex(
+            JsonNode.Parse(JsonSerializer.Serialize(
+                Common.GetValueByPath(fromObject, new string[] { "config" }))),
+            toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosResponseFromMldev(JsonNode fromObject,
+                                                      JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "generatedSamples" }) != null) {
+        JsonArray keyArray =
+            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "generatedSamples" });
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(
+              GeneratedVideoFromMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "generatedVideos" }, result);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredCount" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "raiMediaFilteredCount" },
+            Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredCount" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredReasons" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "raiMediaFilteredReasons" },
+            Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredReasons" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosResponseFromVertex(JsonNode fromObject,
+                                                       JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "videos" }) != null) {
+        JsonArray keyArray =
+            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "videos" });
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(
+              GeneratedVideoFromVertex(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "generatedVideos" }, result);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredCount" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "raiMediaFilteredCount" },
+            Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredCount" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredReasons" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "raiMediaFilteredReasons" },
+            Common.GetValueByPath(fromObject, new string[] { "raiMediaFilteredReasons" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosSourceToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "prompt" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "instances[0]", "prompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "prompt" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "image" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "instances[0]", "image" },
+            ImageToMldev(JsonNode.Parse(JsonSerializer.Serialize(
+                             Common.GetValueByPath(fromObject, new string[] { "image" }))),
+                         toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "video" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "instances[0]", "video" },
+            VideoToMldev(JsonNode.Parse(JsonSerializer.Serialize(
+                             Common.GetValueByPath(fromObject, new string[] { "video" }))),
+                         toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerateVideosSourceToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "prompt" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "instances[0]", "prompt" },
+                              Common.GetValueByPath(fromObject, new string[] { "prompt" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "image" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "instances[0]", "image" },
+            ImageToVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                              Common.GetValueByPath(fromObject, new string[] { "image" }))),
+                          toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "video" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "instances[0]", "video" },
+            VideoToVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                              Common.GetValueByPath(fromObject, new string[] { "video" }))),
+                          toObject));
       }
 
       return toObject;
@@ -1243,6 +2297,197 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode GeneratedVideoFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "video" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "video" },
+            VideoFromMldev(JsonNode.Parse(JsonSerializer.Serialize(
+                               Common.GetValueByPath(fromObject, new string[] { "video" }))),
+                           toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GeneratedVideoFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "_self" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "video" },
+            VideoFromVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                                Common.GetValueByPath(fromObject, new string[] { "_self" }))),
+                            toObject));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GenerationConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "modelSelectionConfig" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "modelConfig" },
+            Common.GetValueByPath(fromObject, new string[] { "modelSelectionConfig" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "responseJsonSchema" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "responseJsonSchema" },
+            Common.GetValueByPath(fromObject, new string[] { "responseJsonSchema" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "audioTimestamp" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "audioTimestamp" },
+                              Common.GetValueByPath(fromObject, new string[] { "audioTimestamp" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "candidateCount" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "candidateCount" },
+                              Common.GetValueByPath(fromObject, new string[] { "candidateCount" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "enableAffectiveDialog" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "enableAffectiveDialog" },
+            Common.GetValueByPath(fromObject, new string[] { "enableAffectiveDialog" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "frequencyPenalty" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "frequencyPenalty" },
+            Common.GetValueByPath(fromObject, new string[] { "frequencyPenalty" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "logprobs" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "logprobs" },
+                              Common.GetValueByPath(fromObject, new string[] { "logprobs" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "maxOutputTokens" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "maxOutputTokens" },
+            Common.GetValueByPath(fromObject, new string[] { "maxOutputTokens" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "mediaResolution" },
+            Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "presencePenalty" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "presencePenalty" },
+            Common.GetValueByPath(fromObject, new string[] { "presencePenalty" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "responseLogprobs" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "responseLogprobs" },
+            Common.GetValueByPath(fromObject, new string[] { "responseLogprobs" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "responseMimeType" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "responseMimeType" },
+            Common.GetValueByPath(fromObject, new string[] { "responseMimeType" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "responseModalities" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "responseModalities" },
+            Common.GetValueByPath(fromObject, new string[] { "responseModalities" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "responseSchema" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "responseSchema" },
+                              Common.GetValueByPath(fromObject, new string[] { "responseSchema" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "routingConfig" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "routingConfig" },
+                              Common.GetValueByPath(fromObject, new string[] { "routingConfig" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "seed" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "seed" },
+                              Common.GetValueByPath(fromObject, new string[] { "seed" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "speechConfig" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "speechConfig" },
+            SpeechConfigToVertex(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                     fromObject, new string[] { "speechConfig" }))),
+                                 toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "stopSequences" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "stopSequences" },
+                              Common.GetValueByPath(fromObject, new string[] { "stopSequences" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "temperature" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "temperature" },
+                              Common.GetValueByPath(fromObject, new string[] { "temperature" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "thinkingConfig" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "thinkingConfig" },
+                              Common.GetValueByPath(fromObject, new string[] { "thinkingConfig" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "topK" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "topK" },
+                              Common.GetValueByPath(fromObject, new string[] { "topK" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "topP" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "topP" },
+                              Common.GetValueByPath(fromObject, new string[] { "topP" }));
+      }
+
+      if (!Common.IsZero(
+              Common.GetValueByPath(fromObject, new string[] { "enableEnhancedCivicAnswers" }))) {
+        throw new NotSupportedException(
+            "enableEnhancedCivicAnswers parameter is not supported in Vertex AI.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GetModelParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "name" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode GetModelParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                 JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "name" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      return toObject;
+    }
+
     internal JsonNode GoogleMapsToMldev(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
@@ -1275,6 +2520,59 @@ namespace Google.GenAI {
         Common.SetValueByPath(
             toObject, new string[] { "timeRangeFilter" },
             Common.GetValueByPath(fromObject, new string[] { "timeRangeFilter" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ImageConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "aspectRatio" },
+                              Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "imageSize" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "imageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "imageSize" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "outputMimeType" }))) {
+        throw new NotSupportedException("outputMimeType parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(
+              Common.GetValueByPath(fromObject, new string[] { "outputCompressionQuality" }))) {
+        throw new NotSupportedException(
+            "outputCompressionQuality parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ImageConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "aspectRatio" },
+                              Common.GetValueByPath(fromObject, new string[] { "aspectRatio" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "imageSize" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "imageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "imageSize" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputMimeType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "imageOutputOptions", "mimeType" },
+                              Common.GetValueByPath(fromObject, new string[] { "outputMimeType" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputCompressionQuality" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "imageOutputOptions", "compressionQuality" },
+            Common.GetValueByPath(fromObject, new string[] { "outputCompressionQuality" }));
       }
 
       return toObject;
@@ -1319,6 +2617,27 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode ImageToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "gcsUri" }))) {
+        throw new NotSupportedException("gcsUri parameter is not supported in Gemini API.");
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "imageBytes" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "bytesBase64Encoded" },
+            Transformers.TBytes(Common.GetValueByPath(fromObject, new string[] { "imageBytes" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "mimeType" },
+                              Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      return toObject;
+    }
+
     internal JsonNode ImageToVertex(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
@@ -1336,6 +2655,148 @@ namespace Google.GenAI {
       if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
         Common.SetValueByPath(toObject, new string[] { "mimeType" },
                               Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsConfigToMldev(ApiClient apiClient, JsonNode fromObject,
+                                              JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageSize" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "filter" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "filter" },
+                              Common.GetValueByPath(fromObject, new string[] { "filter" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "queryBase" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "_url", "models_url" },
+            Transformers.TModelsUrl(
+                this._apiClient, Common.GetValueByPath(fromObject, new string[] { "queryBase" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsConfigToVertex(ApiClient apiClient, JsonNode fromObject,
+                                               JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageSize" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageSize" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageSize" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "pageToken" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "pageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "pageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "filter" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "_query", "filter" },
+                              Common.GetValueByPath(fromObject, new string[] { "filter" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "queryBase" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "_url", "models_url" },
+            Transformers.TModelsUrl(
+                this._apiClient, Common.GetValueByPath(fromObject, new string[] { "queryBase" })));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                  JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = ListModelsConfigToMldev(apiClient,
+                                    JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                        fromObject, new string[] { "config" }))),
+                                    toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                   JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = ListModelsConfigToVertex(apiClient,
+                                     JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                         fromObject, new string[] { "config" }))),
+                                     toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsResponseFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "nextPageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "_self" }) != null) {
+        JsonArray keyArray = (JsonArray)Transformers.TExtractModels(
+            Common.GetValueByPath(fromObject, new string[] { "_self" }));
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(ModelFromMldev(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "models" }, result);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ListModelsResponseFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "nextPageToken" },
+                              Common.GetValueByPath(fromObject, new string[] { "nextPageToken" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "_self" }) != null) {
+        JsonArray keyArray = (JsonArray)Transformers.TExtractModels(
+            Common.GetValueByPath(fromObject, new string[] { "_self" }));
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(ModelFromVertex(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "models" }, result);
       }
 
       return toObject;
@@ -1363,12 +2824,150 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode ModelFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "displayName" },
+                              Common.GetValueByPath(fromObject, new string[] { "displayName" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "description" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "description" },
+                              Common.GetValueByPath(fromObject, new string[] { "description" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "version" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "version" },
+                              Common.GetValueByPath(fromObject, new string[] { "version" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "_self" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "tunedModelInfo" },
+                              Common.GetValueByPath(fromObject, new string[] { "_self" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "inputTokenLimit" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "inputTokenLimit" },
+            Common.GetValueByPath(fromObject, new string[] { "inputTokenLimit" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "outputTokenLimit" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "outputTokenLimit" },
+            Common.GetValueByPath(fromObject, new string[] { "outputTokenLimit" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "supportedGenerationMethods" }) !=
+          null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "supportedActions" },
+            Common.GetValueByPath(fromObject, new string[] { "supportedGenerationMethods" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "temperature" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "temperature" },
+                              Common.GetValueByPath(fromObject, new string[] { "temperature" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "maxTemperature" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "maxTemperature" },
+                              Common.GetValueByPath(fromObject, new string[] { "maxTemperature" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "topP" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "topP" },
+                              Common.GetValueByPath(fromObject, new string[] { "topP" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "topK" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "topK" },
+                              Common.GetValueByPath(fromObject, new string[] { "topK" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "thinking" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "thinking" },
+                              Common.GetValueByPath(fromObject, new string[] { "thinking" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode ModelFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "displayName" },
+                              Common.GetValueByPath(fromObject, new string[] { "displayName" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "description" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "description" },
+                              Common.GetValueByPath(fromObject, new string[] { "description" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "versionId" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "version" },
+                              Common.GetValueByPath(fromObject, new string[] { "versionId" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "deployedModels" }) != null) {
+        JsonArray keyArray =
+            (JsonArray)Common.GetValueByPath(fromObject, new string[] { "deployedModels" });
+        JsonArray result = new JsonArray();
+
+        foreach (var record in keyArray) {
+          result.Add(
+              EndpointFromVertex(JsonNode.Parse(JsonSerializer.Serialize(record)), toObject));
+        }
+        Common.SetValueByPath(toObject, new string[] { "endpoints" }, result);
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "labels" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "labels" },
+                              Common.GetValueByPath(fromObject, new string[] { "labels" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "_self" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "tunedModelInfo" },
+            TunedModelInfoFromVertex(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                         fromObject, new string[] { "_self" }))),
+                                     toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "defaultCheckpointId" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "defaultCheckpointId" },
+            Common.GetValueByPath(fromObject, new string[] { "defaultCheckpointId" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "checkpoints" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "checkpoints" },
+                              Common.GetValueByPath(fromObject, new string[] { "checkpoints" }));
+      }
+
+      return toObject;
+    }
+
     internal JsonNode PartToMldev(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "functionCall" }) != null) {
-        Common.SetValueByPath(toObject, new string[] { "functionCall" },
-                              Common.GetValueByPath(fromObject, new string[] { "functionCall" }));
+      if (Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "mediaResolution" },
+            Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }));
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "codeExecutionResult" }) != null) {
@@ -1388,6 +2987,14 @@ namespace Google.GenAI {
             FileDataToMldev(JsonNode.Parse(JsonSerializer.Serialize(
                                 Common.GetValueByPath(fromObject, new string[] { "fileData" }))),
                             toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "functionCall" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "functionCall" },
+            FunctionCallToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                    fromObject, new string[] { "functionCall" }))),
+                                toObject));
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "functionResponse" }) != null) {
@@ -1451,8 +3058,7 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "baseSteps" }) != null) {
-        Common.SetValueByPath(parentObject,
-                              new string[] { "parameters", "editConfig", "baseSteps" },
+        Common.SetValueByPath(parentObject, new string[] { "parameters", "baseSteps" },
                               Common.GetValueByPath(fromObject, new string[] { "baseSteps" }));
       }
 
@@ -1856,6 +3462,26 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode ToolConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "functionCallingConfig" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "functionCallingConfig" },
+                              FunctionCallingConfigToMldev(
+                                  JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                      fromObject, new string[] { "functionCallingConfig" }))),
+                                  toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "retrievalConfig" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "retrievalConfig" },
+            Common.GetValueByPath(fromObject, new string[] { "retrievalConfig" }));
+      }
+
+      return toObject;
+    }
+
     internal JsonNode ToolToMldev(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
@@ -1975,6 +3601,115 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode TunedModelInfoFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(
+              fromObject, new string[] { "labels", "google-vertex-llm-tuning-base-model-id" }) !=
+          null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "baseModel" },
+            Common.GetValueByPath(
+                fromObject, new string[] { "labels", "google-vertex-llm-tuning-base-model-id" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "createTime" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "createTime" },
+                              Common.GetValueByPath(fromObject, new string[] { "createTime" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "updateTime" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "updateTime" },
+                              Common.GetValueByPath(fromObject, new string[] { "updateTime" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode UpdateModelConfigToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "displayName" },
+                              Common.GetValueByPath(fromObject, new string[] { "displayName" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "description" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "description" },
+                              Common.GetValueByPath(fromObject, new string[] { "description" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "defaultCheckpointId" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "defaultCheckpointId" },
+            Common.GetValueByPath(fromObject, new string[] { "defaultCheckpointId" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode UpdateModelConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "displayName" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "displayName" },
+                              Common.GetValueByPath(fromObject, new string[] { "displayName" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "description" }) != null) {
+        Common.SetValueByPath(parentObject, new string[] { "description" },
+                              Common.GetValueByPath(fromObject, new string[] { "description" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "defaultCheckpointId" }) != null) {
+        Common.SetValueByPath(
+            parentObject, new string[] { "defaultCheckpointId" },
+            Common.GetValueByPath(fromObject, new string[] { "defaultCheckpointId" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode UpdateModelParametersToMldev(ApiClient apiClient, JsonNode fromObject,
+                                                   JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "name" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = UpdateModelConfigToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                         fromObject, new string[] { "config" }))),
+                                     toObject);
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode UpdateModelParametersToVertex(ApiClient apiClient, JsonNode fromObject,
+                                                    JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "model" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_url", "model" },
+            Transformers.TModel(this._apiClient,
+                                Common.GetValueByPath(fromObject, new string[] { "model" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "config" }) != null) {
+        _ = UpdateModelConfigToVertex(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                          fromObject, new string[] { "config" }))),
+                                      toObject);
+      }
+
+      return toObject;
+    }
+
     internal JsonNode UpscaleImageAPIConfigToVertex(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
@@ -2081,6 +3816,12 @@ namespace Google.GenAI {
     internal JsonNode UpscaleImageResponseFromVertex(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
       if (Common.GetValueByPath(fromObject, new string[] { "predictions" }) != null) {
         JsonArray keyArray =
             (JsonArray)Common.GetValueByPath(fromObject, new string[] { "predictions" });
@@ -2096,12 +3837,159 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode VideoFromMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "uri" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "uri" },
+                              Common.GetValueByPath(fromObject, new string[] { "uri" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "encodedVideo" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "videoBytes" },
+                              Transformers.TBytes(Common.GetValueByPath(
+                                  fromObject, new string[] { "encodedVideo" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "encoding" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "mimeType" },
+                              Common.GetValueByPath(fromObject, new string[] { "encoding" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode VideoFromVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "gcsUri" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "uri" },
+                              Common.GetValueByPath(fromObject, new string[] { "gcsUri" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "bytesBase64Encoded" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "videoBytes" },
+                              Transformers.TBytes(Common.GetValueByPath(
+                                  fromObject, new string[] { "bytesBase64Encoded" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "mimeType" },
+                              Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode VideoGenerationMaskToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "image" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "_self" },
+            ImageToVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                              Common.GetValueByPath(fromObject, new string[] { "image" }))),
+                          toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "maskMode" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "maskMode" },
+                              Common.GetValueByPath(fromObject, new string[] { "maskMode" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode VideoGenerationReferenceImageToMldev(JsonNode fromObject,
+                                                           JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "image" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "image" },
+            ImageToMldev(JsonNode.Parse(JsonSerializer.Serialize(
+                             Common.GetValueByPath(fromObject, new string[] { "image" }))),
+                         toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "referenceType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "referenceType" },
+                              Common.GetValueByPath(fromObject, new string[] { "referenceType" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode VideoGenerationReferenceImageToVertex(JsonNode fromObject,
+                                                            JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "image" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "image" },
+            ImageToVertex(JsonNode.Parse(JsonSerializer.Serialize(
+                              Common.GetValueByPath(fromObject, new string[] { "image" }))),
+                          toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "referenceType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "referenceType" },
+                              Common.GetValueByPath(fromObject, new string[] { "referenceType" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode VideoToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "uri" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "uri" },
+                              Common.GetValueByPath(fromObject, new string[] { "uri" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "videoBytes" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "encodedVideo" },
+            Transformers.TBytes(Common.GetValueByPath(fromObject, new string[] { "videoBytes" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "encoding" },
+                              Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode VideoToVertex(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "uri" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "gcsUri" },
+                              Common.GetValueByPath(fromObject, new string[] { "uri" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "videoBytes" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "bytesBase64Encoded" },
+            Transformers.TBytes(Common.GetValueByPath(fromObject, new string[] { "videoBytes" })));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "mimeType" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "mimeType" },
+                              Common.GetValueByPath(fromObject, new string[] { "mimeType" }));
+      }
+
+      return toObject;
+    }
+
     public Models(ApiClient apiClient) {
       _apiClient = apiClient;
     }
 
     private async Task<GenerateContentResponse> PrivateGenerateContentAsync(
-        string model, List<Content> contents, GenerateContentConfig config) {
+        string model, List<Content> contents, GenerateContentConfig? config) {
       GenerateContentParameters parameter = new GenerateContentParameters();
 
       if (!Common.IsZero(model)) {
@@ -2130,8 +4018,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -2158,7 +4050,7 @@ namespace Google.GenAI {
     }
 
     private async IAsyncEnumerable<GenerateContentResponse> PrivateGenerateContentStreamAsync(
-        string model, List<Content> contents, GenerateContentConfig config) {
+        string model, List<Content> contents, GenerateContentConfig? config) {
       GenerateContentParameters parameter = new GenerateContentParameters();
 
       if (!Common.IsZero(model)) {
@@ -2187,8 +4079,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       await foreach (ApiResponse apiResponse in this._apiClient.RequestStreamAsync(
@@ -2210,8 +4106,80 @@ namespace Google.GenAI {
       }
     }
 
+    /// <summary>
+    /// Calculates embeddings for the given contents.
+    /// </summary>
+    /// <param name="model">The model to use for embedding.</param>
+    /// <param name="contents">A <see cref="List{Content}"/> to calculate embeddings for.</param>
+    /// <param name="config">An <see cref="EmbedContentConfig"/> instance that specifies the
+    /// optional configurations.</param>
+    /// <returns>A <see cref="Task{EmbedContentResponse}"/> that represents the asynchronous
+    /// operation. The task result contains a <see cref="EmbedContentResponse"/> instance with
+    /// embeddings and other metadata.</returns>
+
+    public async Task<EmbedContentResponse> EmbedContentAsync(string model, List<Content> contents,
+                                                              EmbedContentConfig? config = null) {
+      EmbedContentParameters parameter = new EmbedContentParameters();
+
+      if (!Common.IsZero(model)) {
+        parameter.Model = model;
+      }
+      if (!Common.IsZero(contents)) {
+        parameter.Contents = contents;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse EmbedContentParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = EmbedContentParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}:predict", body["_url"]);
+      } else {
+        body = EmbedContentParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}:batchEmbedContents", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Post, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = EmbedContentResponseFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = EmbedContentResponseFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<EmbedContentResponse>(responseNode.ToString()) ??
+             throw new InvalidOperationException(
+                 "Failed to deserialize Task<EmbedContentResponse>.");
+    }
+
     private async Task<GenerateImagesResponse> PrivateGenerateImagesAsync(
-        string model, string prompt, GenerateImagesConfig config) {
+        string model, string prompt, GenerateImagesConfig? config) {
       GenerateImagesParameters parameter = new GenerateImagesParameters();
 
       if (!Common.IsZero(model)) {
@@ -2240,8 +4208,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -2269,7 +4241,7 @@ namespace Google.GenAI {
 
     private async Task<EditImageResponse> PrivateEditImageAsync(
         string model, string prompt, List<ReferenceImageAPI> referenceImages,
-        EditImageConfig config) {
+        EditImageConfig? config) {
       EditImageParameters parameter = new EditImageParameters();
 
       if (!Common.IsZero(model)) {
@@ -2300,8 +4272,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -2327,7 +4303,7 @@ namespace Google.GenAI {
     }
 
     private async Task<UpscaleImageResponse> PrivateUpscaleImageAsync(
-        string model, Image image, string upscaleFactor, UpscaleImageAPIConfig config) {
+        string model, Image image, string upscaleFactor, UpscaleImageAPIConfig? config) {
       UpscaleImageAPIParameters parameter = new UpscaleImageAPIParameters();
 
       if (!Common.IsZero(model)) {
@@ -2358,8 +4334,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -2385,9 +4365,8 @@ namespace Google.GenAI {
                  "Failed to deserialize Task<UpscaleImageResponse>.");
     }
 
-    public async Task<RecontextImageResponse> RecontextImageAsync(string model,
-                                                                  RecontextImageSource source,
-                                                                  RecontextImageConfig config) {
+    public async Task<RecontextImageResponse> RecontextImageAsync(
+        string model, RecontextImageSource source, RecontextImageConfig? config = null) {
       RecontextImageParameters parameter = new RecontextImageParameters();
 
       if (!Common.IsZero(model)) {
@@ -2415,8 +4394,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -2444,7 +4427,7 @@ namespace Google.GenAI {
 
     public async Task<SegmentImageResponse> SegmentImageAsync(string model,
                                                               SegmentImageSource source,
-                                                              SegmentImageConfig config) {
+                                                              SegmentImageConfig? config = null) {
       SegmentImageParameters parameter = new SegmentImageParameters();
 
       if (!Common.IsZero(model)) {
@@ -2472,8 +4455,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -2497,6 +4484,459 @@ namespace Google.GenAI {
       return JsonSerializer.Deserialize<SegmentImageResponse>(responseNode.ToString()) ??
              throw new InvalidOperationException(
                  "Failed to deserialize Task<SegmentImageResponse>.");
+    }
+
+    /// <summary>
+    /// Retrieves a specific model resource by its name.
+    /// </summary>
+
+    public async Task<Model> GetAsync(string model, GetModelConfig? config = null) {
+      GetModelParameters parameter = new GetModelParameters();
+
+      if (!Common.IsZero(model)) {
+        parameter.Model = model;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse GetModelParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = GetModelParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{name}", body["_url"]);
+      } else {
+        body = GetModelParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{name}", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Get, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = ModelFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = ModelFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<Model>(responseNode.ToString()) ??
+             throw new InvalidOperationException("Failed to deserialize Task<Model>.");
+    }
+
+    private async Task<ListModelsResponse> PrivateListAsync(ListModelsConfig? config) {
+      ListModelsParameters parameter = new ListModelsParameters();
+
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse ListModelsParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = ListModelsParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{models_url}", body["_url"]);
+      } else {
+        body = ListModelsParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{models_url}", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Get, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = ListModelsResponseFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = ListModelsResponseFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<ListModelsResponse>(responseNode.ToString()) ??
+             throw new InvalidOperationException("Failed to deserialize Task<ListModelsResponse>.");
+    }
+
+    /// <summary>
+    /// Updates a specific model resource.
+    /// </summary>
+    /// <param name="model">The model to update.</param>
+    /// <param name="config">An <see cref="UpdateModelConfig"/> instance that specifies parameters
+    /// to update.</param> <returns>A <see cref="Task{Model}"/> that represents the asynchronous
+    /// operation. The task result contains the updated <see cref="Model"/> instance.</returns>
+
+    public async Task<Model> UpdateAsync(string model, UpdateModelConfig? config = null) {
+      UpdateModelParameters parameter = new UpdateModelParameters();
+
+      if (!Common.IsZero(model)) {
+        parameter.Model = model;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse UpdateModelParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = UpdateModelParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}", body["_url"]);
+      } else {
+        body = UpdateModelParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{name}", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Patch, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = ModelFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = ModelFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<Model>(responseNode.ToString()) ??
+             throw new InvalidOperationException("Failed to deserialize Task<Model>.");
+    }
+
+    /// <summary>
+    /// Deletes a specific model resource by its name.
+    /// </summary>
+
+    public async Task<DeleteModelResponse> DeleteAsync(string model,
+                                                       DeleteModelConfig? config = null) {
+      DeleteModelParameters parameter = new DeleteModelParameters();
+
+      if (!Common.IsZero(model)) {
+        parameter.Model = model;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse DeleteModelParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = DeleteModelParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{name}", body["_url"]);
+      } else {
+        body = DeleteModelParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{name}", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Delete, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = DeleteModelResponseFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = DeleteModelResponseFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<DeleteModelResponse>(responseNode.ToString()) ??
+             throw new InvalidOperationException(
+                 "Failed to deserialize Task<DeleteModelResponse>.");
+    }
+
+    /// <summary>
+    /// Counts the number of tokens in the provided content.
+    /// </summary>
+    /// <param name="model">The name of the GenAI model to use for token counting.</param>
+    /// <param name="contents">A <see cref="List{Content}"/> to count tokens for.</param>
+    /// <param name="config">A <see cref="CountTokensConfig"/> instance that specifies the
+    /// optional configurations.</param>
+    /// <returns>A <see cref="Task{CountTokensResponse}"/> that represents the asynchronous
+    /// operation. The task result contains a <see cref="CountTokensResponse"/> instance with
+    /// the total token count and other metadata.</returns>
+
+    public async Task<CountTokensResponse> CountTokensAsync(string model, List<Content> contents,
+                                                            CountTokensConfig? config = null) {
+      CountTokensParameters parameter = new CountTokensParameters();
+
+      if (!Common.IsZero(model)) {
+        parameter.Model = model;
+      }
+      if (!Common.IsZero(contents)) {
+        parameter.Contents = contents;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse CountTokensParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = CountTokensParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}:countTokens", body["_url"]);
+      } else {
+        body = CountTokensParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}:countTokens", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Post, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = CountTokensResponseFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = CountTokensResponseFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<CountTokensResponse>(responseNode.ToString()) ??
+             throw new InvalidOperationException(
+                 "Failed to deserialize Task<CountTokensResponse>.");
+    }
+
+    /// <summary>
+    /// Computes the number of tokens for the given content.
+    /// </summary>
+    /// <param name="model">The name of the GenAI model to use for token computation.</param>
+    /// <param name="contents">A <see cref="List{Content}"/> to compute tokens for.</param>
+    /// <param name="config">A <see cref="ComputeTokensConfig"/> instance that specifies the
+    /// optional configurations.</param> <returns>A <see cref="Task{ComputeTokensResponse}"/> that
+    /// represents the asynchronous operation. The task result contains a <see
+    /// cref="ComputeTokensResponse"/> instance with token information.</returns> <exception
+    /// cref="NotSupportedException">Thrown when called with a non-Vertex AI client.</exception>
+
+    public async Task<ComputeTokensResponse> ComputeTokensAsync(
+        string model, List<Content> contents, ComputeTokensConfig? config = null) {
+      ComputeTokensParameters parameter = new ComputeTokensParameters();
+
+      if (!Common.IsZero(model)) {
+        parameter.Model = model;
+      }
+      if (!Common.IsZero(contents)) {
+        parameter.Contents = contents;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse ComputeTokensParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = ComputeTokensParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}:computeTokens", body["_url"]);
+      } else {
+        throw new NotSupportedException("This method is only supported in the Vertex AI client.");
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Post, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = ComputeTokensResponseFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        throw new NotSupportedException("This method is only supported in the Vertex AI client.");
+      }
+
+      return JsonSerializer.Deserialize<ComputeTokensResponse>(responseNode.ToString()) ??
+             throw new InvalidOperationException(
+                 "Failed to deserialize Task<ComputeTokensResponse>.");
+    }
+
+    private async Task<GenerateVideosOperation> PrivateGenerateVideosAsync(
+        string model, string? prompt, Image? image, Video? video, GenerateVideosSource? source,
+        GenerateVideosConfig? config) {
+      GenerateVideosParameters parameter = new GenerateVideosParameters();
+
+      if (!Common.IsZero(model)) {
+        parameter.Model = model;
+      }
+      if (!Common.IsZero(prompt)) {
+        parameter.Prompt = prompt;
+      }
+      if (!Common.IsZero(image)) {
+        parameter.Image = image;
+      }
+      if (!Common.IsZero(video)) {
+        parameter.Video = video;
+      }
+      if (!Common.IsZero(source)) {
+        parameter.Source = source;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse GenerateVideosParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = GenerateVideosParametersToVertex(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}:predictLongRunning", body["_url"]);
+      } else {
+        body = GenerateVideosParametersToMldev(this._apiClient, parameterNode, new JsonObject());
+        path = Common.FormatMap("{model}:predictLongRunning", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Post, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = GenerateVideosOperationFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = GenerateVideosOperationFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<GenerateVideosOperation>(responseNode.ToString()) ??
+             throw new InvalidOperationException(
+                 "Failed to deserialize Task<GenerateVideosOperation>.");
     }
 
     /// <summary>
@@ -2658,6 +5098,140 @@ namespace Google.GenAI {
       }
 
       return await PrivateUpscaleImageAsync(model, image, upscaleFactor, apiConfig);
+    }
+
+    /// <summary>
+    /// Lists models asynchronously.
+    /// </summary>
+    /// <param name="config">A <see cref="ListModelsConfig"/> instance that specifies the
+    /// optional configuration for the list request.</param>
+    /// <returns>A Pager object that contains one page of models. When iterating over the pager,
+    /// it automatically fetches the next page if there are more.</returns>
+    public async Task<Pager<Model, ListModelsConfig, ListModelsResponse>> ListAsync(
+        ListModelsConfig? config = null) {
+      config ??= new ListModelsConfig();
+
+      if (!config.QueryBase.HasValue) {
+        config.QueryBase = true;
+      }
+
+      if (this._apiClient.VertexAI) {
+        if (!config.QueryBase.Value) {
+          if (!String.IsNullOrEmpty(config.Filter)) {
+            throw new NotSupportedException(
+                "Filtering tuned models list for Vertex AI is not currently supported");
+          }
+        }
+      }
+
+      var initialResponse = await PrivateListAsync(config);
+
+      return new Pager<Model, ListModelsConfig, ListModelsResponse>(
+          requestFunc: async cfg => await PrivateListAsync(cfg),
+          extractItems: response => response.Models,
+          extractNextPageToken: response => response.NextPageToken,
+          extractHttpResponse: response => response.SdkHttpResponse,
+          updateConfigPageToken: (cfg, token) => {
+            cfg.PageToken = token;
+            return cfg;
+          }, initialConfig: config, initialResponse: initialResponse, requestedPageSize: config.PageSize ?? 0);
+    }
+
+    /// <summary>
+    /// Counts the number of tokens in the provided content.
+    /// </summary>
+    /// <param name="model">The name of the GenAI model to use for token counting.</param>
+    /// <param name="contents">A <see cref="Content"/> to count tokens for.</param>
+    /// <param name="config">A <see cref="CountTokensConfig"/> instance that specifies the
+    /// optional configurations.</param>
+    /// <returns>A <see cref="Task{CountTokensResponse}"/> that represents the asynchronous
+    /// operation. The task result contains a <see cref="CountTokensResponse"/> instance with
+    /// the total token count and other metadata.</returns>
+    public async Task<CountTokensResponse> CountTokensAsync(String model, Content contents,
+                                                            CountTokensConfig? config = null) {
+      List<Content> contentList = Transformers.TContents(contents) ?? new List<Content>();
+      return await CountTokensAsync(model, contentList, config);
+    }
+
+    /// <summary>
+    /// Counts the number of tokens in the provided content.
+    /// </summary>
+    /// <param name="model">The name of the GenAI model to use for token counting.</param>
+    /// <param name="contents">A text string to send to count tokens for.</param>
+    /// <param name="config">A <see cref="CountTokensConfig"/> instance that specifies the
+    /// optional configurations.</param>
+    /// <returns>A <see cref="Task{CountTokensResponse}"/> that represents the asynchronous
+    /// operation. The task result contains a <see cref="CountTokensResponse"/> instance with
+    /// the total token count and other metadata.</returns>
+    public async Task<CountTokensResponse> CountTokensAsync(String model, String contents,
+                                                            CountTokensConfig? config = null) {
+      List<Content> contentList = Transformers.TContents(contents) ?? new List<Content>();
+      return await CountTokensAsync(model, contentList, config);
+    }
+
+    /// <summary>
+    /// Computes the number of tokens for a single content item.
+    /// </summary>
+    /// <param name="model">The name of the GenAI model to use for token computation.</param>
+    /// <param name="contents">A <see cref="Content"/> instance to compute tokens for.</param>
+    /// <param name="config">A <see cref="ComputeTokensConfig"/> instance that specifies the
+    /// optional configurations.</param> <returns>A <see cref="Task{ComputeTokensResponse}"/> that
+    /// represents the asynchronous operation. The task result contains a <see
+    /// cref="ComputeTokensResponse"/> instance with token information.</returns> <exception
+    /// cref="NotSupportedException">Thrown when called with a non-Vertex AI client.</exception>
+    public async Task<ComputeTokensResponse> ComputeTokensAsync(
+        String model, Content contents, ComputeTokensConfig? config = null) {
+      List<Content> contentList = Transformers.TContents(contents) ?? new List<Content>();
+      return await ComputeTokensAsync(model, contentList, config);
+    }
+
+    /// <summary>
+    /// Computes the number of tokens for a text string.
+    /// </summary>
+    /// <param name="model">The name of the GenAI model to use for token computation.</param>
+    /// <param name="contents">A string of text to compute tokens for.</param>
+    /// <param name="config">A <see cref="ComputeTokensConfig"/> instance that specifies the
+    /// optional configurations.</param> <returns>A <see cref="Task{ComputeTokensResponse}"/> that
+    /// represents the asynchronous operation. The task result contains a <see
+    /// cref="ComputeTokensResponse"/> instance with token information.</returns> <exception
+    /// cref="NotSupportedException">Thrown when called with a non-Vertex AI client.</exception>
+    public async Task<ComputeTokensResponse> ComputeTokensAsync(
+        String model, String contents, ComputeTokensConfig? config = null) {
+      List<Content> contentList = Transformers.TContents(contents) ?? new List<Content>();
+      return await ComputeTokensAsync(model, contentList, config);
+    }
+
+    /// <summary>
+    /// Calculates embeddings for the given content. Only text is supported.
+    /// </summary>
+    /// <param name="model">The model to use.</param>
+    /// <param name="contents">The content to embed.</param>
+    /// <param name="config">Optional configuration for embeddings.</param>
+    /// <returns>A <see cref="Task{EmbedContentResponse}"/> that represents the asynchronous
+    /// operation.</returns>
+    public async Task<EmbedContentResponse> EmbedContentAsync(string model, Content contents,
+                                                              EmbedContentConfig? config = null) {
+      List<Content> contentList = Transformers.TContents(contents) ?? new List<Content>();
+      return await EmbedContentAsync(model, contentList, config);
+    }
+
+    /// <summary>
+    /// Calculates embeddings for the given text string.
+    /// </summary>
+    /// <param name="model">The model to use.</param>
+    /// <param name="contents">The text string to embed.</param>
+    /// <param name="config">Optional configuration for embeddings.</param>
+    /// <returns>A <see cref="Task{EmbedContentResponse}"/> that represents the asynchronous
+    /// operation.</returns>
+    public async Task<EmbedContentResponse> EmbedContentAsync(string model, String contents,
+                                                              EmbedContentConfig? config = null) {
+      List<Content> contentList = Transformers.TContents(contents) ?? new List<Content>();
+      return await EmbedContentAsync(model, contentList, config);
+    }
+
+    public async Task<GenerateVideosOperation> GenerateVideosAsync(
+        String model, GenerateVideosSource source, GenerateVideosConfig? config = null) {
+      return await PrivateGenerateVideosAsync(model, null, null, null, source, config);
     }
   }
 }

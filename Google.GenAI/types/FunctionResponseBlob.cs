@@ -46,6 +46,17 @@ namespace Google.GenAI.Types {
           }
 
     /// <summary>
+    /// Optional. Display name of the blob. Used to provide a label or filename to distinguish
+    /// blobs.
+    /// </summary>
+    [JsonPropertyName("displayName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string
+        ? DisplayName {
+            get; set;
+          }
+
+    /// <summary>
     /// Deserializes a JSON string to a FunctionResponseBlob object.
     /// </summary>
     /// <param name="jsonString">The JSON string to deserialize.</param>

@@ -92,6 +92,49 @@ namespace Google.GenAI {
       return toObject;
     }
 
+    internal JsonNode FileSearchToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
+        throw new NotSupportedException(" parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "" }))) {
+        throw new NotSupportedException(" parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode FunctionCallToMldev(JsonNode fromObject, JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "id" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "id" },
+                              Common.GetValueByPath(fromObject, new string[] { "id" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "args" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "args" },
+                              Common.GetValueByPath(fromObject, new string[] { "args" }));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "partialArgs" }))) {
+        throw new NotSupportedException("partialArgs parameter is not supported in Gemini API.");
+      }
+
+      if (!Common.IsZero(Common.GetValueByPath(fromObject, new string[] { "willContinue" }))) {
+        throw new NotSupportedException("willContinue parameter is not supported in Gemini API.");
+      }
+
+      return toObject;
+    }
+
     internal JsonNode FunctionDeclarationToVertex(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
@@ -528,10 +571,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToMldev(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -601,10 +645,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToVertex(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -726,10 +771,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToMldev(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -854,10 +900,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToVertex(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -951,7 +998,8 @@ namespace Google.GenAI {
       JsonObject toObject = new JsonObject();
 
       if (Common.GetValueByPath(fromObject, new string[] { "media" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "media" });
+        JsonArray keyArray = (JsonArray)Transformers.TBlobs(
+            Common.GetValueByPath(fromObject, new string[] { "media" }));
         JsonArray result = new JsonArray();
 
         foreach (var record in keyArray) {
@@ -1093,9 +1141,10 @@ namespace Google.GenAI {
     internal JsonNode PartToMldev(JsonNode fromObject, JsonObject parentObject) {
       JsonObject toObject = new JsonObject();
 
-      if (Common.GetValueByPath(fromObject, new string[] { "functionCall" }) != null) {
-        Common.SetValueByPath(toObject, new string[] { "functionCall" },
-                              Common.GetValueByPath(fromObject, new string[] { "functionCall" }));
+      if (Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "mediaResolution" },
+            Common.GetValueByPath(fromObject, new string[] { "mediaResolution" }));
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "codeExecutionResult" }) != null) {
@@ -1115,6 +1164,14 @@ namespace Google.GenAI {
             FileDataToMldev(JsonNode.Parse(JsonSerializer.Serialize(
                                 Common.GetValueByPath(fromObject, new string[] { "fileData" }))),
                             toObject));
+      }
+
+      if (Common.GetValueByPath(fromObject, new string[] { "functionCall" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "functionCall" },
+            FunctionCallToMldev(JsonNode.Parse(JsonSerializer.Serialize(Common.GetValueByPath(
+                                    fromObject, new string[] { "functionCall" }))),
+                                toObject));
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "functionResponse" }) != null) {

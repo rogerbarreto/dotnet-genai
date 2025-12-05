@@ -80,7 +80,7 @@ namespace Google.GenAI.Types {
 
       try {
         return new Image {
-          ImageBytes = File.ReadAllBytes(location),
+          ImageBytes = System.IO.File.ReadAllBytes(location),
           MimeType = mimeType,
         };
       } catch (IOException e) {

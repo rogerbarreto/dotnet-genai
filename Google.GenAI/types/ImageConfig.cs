@@ -36,6 +36,38 @@ namespace Google.GenAI.Types {
     public string ? AspectRatio { get; set; }
 
     /// <summary>
+    /// Optional. Specifies the size of generated images. Supported values are `1K`, `2K`, `4K`. If
+    /// not specified, the model will use default value `1K`.
+    /// </summary>
+    [JsonPropertyName("imageSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string
+        ? ImageSize {
+            get; set;
+          }
+
+    /// <summary>
+    /// MIME type of the generated image. This field is not supported in Gemini API.
+    /// </summary>
+    [JsonPropertyName("outputMimeType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string
+        ? OutputMimeType {
+            get; set;
+          }
+
+    /// <summary>
+    /// Compression quality of the generated image (for ``image/jpeg`` only). This field is not
+    /// supported in Gemini API.
+    /// </summary>
+    [JsonPropertyName("outputCompressionQuality")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int
+        ? OutputCompressionQuality {
+            get; set;
+          }
+
+    /// <summary>
     /// Deserializes a JSON string to a ImageConfig object.
     /// </summary>
     /// <param name="jsonString">The JSON string to deserialize.</param>

@@ -47,6 +47,16 @@ namespace Google.GenAI.Types {
           }
 
     /// <summary>
+    /// Optional. The level of thoughts tokens that the model should generate.
+    /// </summary>
+    [JsonPropertyName("thinkingLevel")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ThinkingLevel
+        ? ThinkingLevel {
+            get; set;
+          }
+
+    /// <summary>
     /// Deserializes a JSON string to a ThinkingConfig object.
     /// </summary>
     /// <param name="jsonString">The JSON string to deserialize.</param>

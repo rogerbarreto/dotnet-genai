@@ -57,6 +57,29 @@ namespace Google.GenAI.Types {
           }
 
     /// <summary>
+    /// Optional. The partial argument value of the function call. If provided, represents the
+    /// arguments/fields that are streamed incrementally. This field is not supported in Gemini API.
+    /// </summary>
+    [JsonPropertyName("partialArgs")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<PartialArg>
+        ? PartialArgs {
+            get; set;
+          }
+
+    /// <summary>
+    /// Optional. Whether this is the last part of the FunctionCall. If true, another partial
+    /// message for the current FunctionCall is expected to follow. This field is not supported in
+    /// Gemini API.
+    /// </summary>
+    [JsonPropertyName("willContinue")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool
+        ? WillContinue {
+            get; set;
+          }
+
+    /// <summary>
     /// Deserializes a JSON string to a FunctionCall object.
     /// </summary>
     /// <param name="jsonString">The JSON string to deserialize.</param>

@@ -27,6 +27,11 @@ namespace Google.GenAI {
     internal readonly ApiClient _apiClient;
     public Live Live { get; }
     public Models Models { get; }
+    public Tunings Tunings { get; }
+    public Caches Caches { get; }
+    public Batches Batches { get; }
+    public Operations Operations { get; }
+    public Files Files { get; }
 
     private int _disposed = 0;
 
@@ -84,6 +89,11 @@ namespace Google.GenAI {
         _apiClient = new HttpApiClient(apiKey, httpOptions);
       Live = new Live(_apiClient);
       Models = new Models(_apiClient);
+      Tunings = new Tunings(_apiClient);
+      Caches = new Caches(_apiClient);
+      Batches = new Batches(_apiClient);
+      Operations = new Operations(_apiClient);
+      Files = new Files(_apiClient);
     }
 
     static string? inferBaseUrl(bool vertexAI, Types.HttpOptions? httpOptions) {

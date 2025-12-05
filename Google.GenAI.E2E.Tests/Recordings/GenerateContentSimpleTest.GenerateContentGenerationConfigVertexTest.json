@@ -43,7 +43,7 @@
         "statusCode": 200,
         "headers": {
           "Content-Type": "application/json; charset=UTF-8",
-          "Date": "Tue, 26 Aug 2025 04:53:48 GMT",
+          "Date": "Fri, 05 Dec 2025 00:18:18 GMT",
           "Server": "scaffolding on HTTPServer2",
           "Vary": "Origin, X-Origin, Referer",
           "X-Content-Type-Options": "nosniff",
@@ -54,31 +54,31 @@
           {
             "candidates": [
               {
-                "avgLogprobs": -0.17967218282271405,
+                "avgLogprobs": -0.12885533332824706,
                 "content": {
                   "parts": [
                     {
-                      "text": "The sky is blue due to a phenomenon called **Rayleigh scattering**. Here's a breakdown:\n\n*   **Sunlight and its Colors:** Sunlight, which appears white to us, is actually made up of all the colors of the rainbow. These colors have different wavelengths.\n\n*   **Atmospheric Particles:** The Earth's atmosphere contains tiny particles of gas molecules (mostly nitrogen and oxygen) that are much smaller than the wavelengths of visible light.\n\n*   **Scattering:** When"
+                      "text": "The sky is blue due to a phenomenon called **Rayleigh scattering**. Here's a breakdown:\n\n*   **Sunlight and the Atmosphere:** Sunlight is actually made up of all the colors of the rainbow. When sunlight enters the Earth's atmosphere, it collides with tiny air molecules (mostly nitrogen and oxygen).\n\n*   **Scattering of Light:** This collision causes the light to scatter in different directions.\n\n*   **Rayleigh Scattering:** Rayleigh scattering is the scattering of electromagnetic"
                     }
                   ],
                   "role": "model"
                 },
                 "finishReason": "MAX_TOKENS",
-                "score": -17.607873916625977
+                "score": -12.885533332824707
               }
             ],
-            "createTime": "2025-08-26T04:53:48.230126Z",
+            "createTime": "2025-12-05T00:18:17.017315Z",
             "modelVersion": "gemini-2.0-flash",
-            "responseId": "3D2taO6FDpb9ld8PkJyYkAQ",
+            "responseId": "ySQyaaOHAbLR698PgIWzuAs",
             "usageMetadata": {
               "billablePromptUsage": {
                 "textCount": 16
               },
-              "candidatesTokenCount": 98,
+              "candidatesTokenCount": 100,
               "candidatesTokensDetails": [
                 {
                   "modality": "TEXT",
-                  "tokenCount": 98
+                  "tokenCount": 100
                 }
               ],
               "promptTokenCount": 6,
@@ -88,7 +88,7 @@
                   "tokenCount": 6
                 }
               ],
-              "totalTokenCount": 104,
+              "totalTokenCount": 106,
               "trafficType": "ON_DEMAND"
             }
           }

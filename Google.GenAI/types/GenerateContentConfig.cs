@@ -187,7 +187,8 @@ namespace Google.GenAI.Types {
     /// objects, but also primitives and arrays. Represents a select subset of an OpenAPI 3.0 schema
     /// object (https://spec.openapis.org/oas/v3.0.3#schema). If set, a compatible
     /// response_mime_type must also be set. Compatible mimetypes: `application/json`: Schema for
-    /// JSON response.
+    /// JSON response.  If `response_schema` doesn't process your schema correctly, try using
+    /// `response_json_schema` instead.
     /// </summary>
     [JsonPropertyName("responseSchema")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

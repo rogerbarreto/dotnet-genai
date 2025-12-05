@@ -107,7 +107,32 @@ namespace Google.GenAI
         }
       }
 
-      currentObject[path[path.Length - 1]] = ToJsonNode(value);
+      string finalKey = path[path.Length - 1];
+      if (finalKey.Equals("_self") && value is JsonObject selfNode)
+      {
+          foreach (var property in selfNode.ToList())
+          {
+              currentObject[property.Key] = property.Value == null ? null : JsonNode.Parse(property.Value.ToJsonString());
+          }
+          return;
+      }
+      JsonNode? newNode = ToJsonNode(value);
+
+      if (currentObject.ContainsKey(finalKey) && currentObject[finalKey] is JsonObject existingObject && newNode is JsonObject newObject)
+      {
+          foreach (KeyValuePair<string, JsonNode?> property in newObject)
+          {
+              existingObject[property.Key] = property.Value == null ? null : JsonNode.Parse(property.Value.ToJsonString());
+          }
+      }
+      else if(currentObject.ContainsKey(finalKey) && IsZero(value))
+      {
+          return;
+      }
+      else
+      {
+          currentObject[finalKey] = newNode;
+      }
     }
 
     /// <summary>
@@ -155,7 +180,7 @@ namespace Google.GenAI
                   GetValueByPath(element, keys.Skip(i + 1).ToArray());
               if (node != null)
               {
-                result.Add(node);
+                result.Add(JsonNode.Parse(node.ToJsonString()));
               }
             }
             return result;
@@ -196,6 +221,19 @@ namespace Google.GenAI
       return currentObject;
     }
 
+    internal static string FormatQuery(JsonObject queryParams)
+    {
+      var queryParts = new List<string>();
+      foreach (var param in queryParams)
+      {
+        if (param.Value != null)
+        {
+          queryParts.Add($"{param.Key}={Uri.EscapeDataString(param.Value.ToString())}");
+        }
+      }
+      return string.Join("&", queryParts);
+    }
+
     internal static string FormatMap(string template, JsonNode? data)
     {
       if (data is not JsonObject jsonObject)
@@ -213,6 +251,44 @@ namespace Google.GenAI
         }
       }
       return template;
+    }
+
+    /// <summary>
+    /// Converts a JsonObject into a URL-encoded query string.
+    /// </summary>
+    /// <param name="paramsNode">The JsonObject containing the parameters to encode.</param>
+    /// <returns>A URL-encoded string (e.g., "key1=value1&amp;key2=value2").</returns>
+    internal static string UrlEncode(JsonObject? paramsNode)
+    {
+      if (paramsNode == null || paramsNode.Count == 0)
+      {
+        return string.Empty;
+      }
+
+      var queryParts = new List<string>();
+
+      foreach (var field in paramsNode)
+      {
+        string encodedKey = Uri.EscapeDataString(field.Key);
+        var valueNode = field.Value;
+
+        if (valueNode == null)
+        {
+          queryParts.Add($"{encodedKey}=");
+        }
+        else
+        {
+          string valueStr = valueNode.GetValueKind() == JsonValueKind.String
+              ? valueNode.GetValue<string>()
+              : valueNode.ToJsonString().Trim('"');
+          // In Python (and replay files), "*" is encoded as "%2A" although it is not required.
+          // So we keep the same behavior here.
+          string encodedValue = Uri.EscapeDataString(valueStr).Replace("*", "%2A");
+          queryParts.Add($"{encodedKey}={encodedValue}");
+        }
+      }
+
+      return string.Join("&", queryParts);
     }
 
     internal static bool IsZero(object? obj)
@@ -246,6 +322,18 @@ namespace Google.GenAI
       {
         return !b;
       }
+      else if (obj is System.Collections.ICollection c)
+      {
+        return c.Count == 0;
+      }
+      else if (obj is JsonArray a)
+      {
+        return a.Count == 0;
+      }
+      else if (obj is JsonObject jo)
+      {
+        return jo.Count == 0;
+      }
 
       return false;
     }
@@ -255,6 +343,8 @@ namespace Google.GenAI
       // TODO: evaluate using System.Text.Json to handle conversion of object to JSON.
       switch (value)
       {
+        case null:
+          return null;
         case string s:
           return JsonValue.Create(s);
         case int i:
@@ -277,6 +367,140 @@ namespace Google.GenAI
         default:
           return JsonNode.Parse(JsonSerializer.Serialize(value));
       }
+    }
+
+    /// <summary>
+    /// Moves values from source paths to destination paths.
+    /// <para>Example: MoveValueByPath( {'requests': [{'content': v1}, {'content': v2}]}, {'requests[].*': 'requests[].request.*'} ) -> {'requests': [{'request': {'content': v1}}, {'request': {'content': v2}}]}</para>
+    /// </summary>
+    public static void MoveValueByPath(JsonNode data, IDictionary<string, string> paths)
+    {
+        if (data == null || paths == null)
+        {
+            return;
+        }
+
+        foreach (KeyValuePair<string, string> entry in paths)
+        {
+            string sourcePath = entry.Key;
+            string destPath = entry.Value;
+
+            string[] sourceKeys = sourcePath.Split('.');
+            string[] destKeys = destPath.Split('.');
+
+            HashSet<string> excludeKeys = new HashSet<string>();
+            int wildcardIdx = -1;
+
+            for (int i = 0; i < sourceKeys.Length; i++)
+            {
+                if (sourceKeys[i].Equals("*"))
+                {
+                    wildcardIdx = i;
+                    break;
+                }
+            }
+
+            if (wildcardIdx != -1 && destKeys.Length > wildcardIdx)
+            {
+                // Extract the intermediate key between source and dest paths
+                // Example: source=['requests[]', '*'], dest=['requests[]', 'request', '*']
+                // We want to exclude 'request'
+                for (int i = wildcardIdx; i < destKeys.Length; i++)
+                {
+                    string key = destKeys[i];
+                    if (!key.Equals("*") && !key.EndsWith("[]") && !key.EndsWith("[0]"))
+                    {
+                        excludeKeys.Add(key);
+                    }
+                }
+            }
+
+            MoveValueRecursive(data, sourceKeys, destKeys, 0, excludeKeys);
+        }
+    }
+
+    private static void MoveValueRecursive(
+        JsonNode data,
+        string[] sourceKeys,
+        string[] destKeys,
+        int keyIdx,
+        HashSet<string> excludeKeys)
+    {
+        if (keyIdx >= sourceKeys.Length || data == null)
+        {
+            return;
+        }
+
+        string key = sourceKeys[keyIdx];
+
+        if (key.EndsWith("[]"))
+        {
+            string keyName = key.Substring(0, key.Length - 2);
+            if (data is JsonObject dataObj && dataObj.ContainsKey(keyName) && dataObj[keyName] is JsonArray arrayNode)
+            {
+                foreach (JsonNode item in arrayNode)
+                {
+                    MoveValueRecursive(item, sourceKeys, destKeys, keyIdx + 1, excludeKeys);
+                }
+            }
+        }
+        else if (key.Equals("*"))
+        {
+            if (data is JsonObject objectNode)
+            {
+                List<string> keysToMove = new List<string>();
+                foreach (var property in objectNode)
+                {
+                    string fieldName = property.Key;
+                    if (!fieldName.StartsWith("_") && !excludeKeys.Contains(fieldName))
+                    {
+                        keysToMove.Add(fieldName);
+                    }
+                }
+
+                Dictionary<string, JsonNode> valuesToMove = new Dictionary<string, JsonNode>();
+                foreach (string k in keysToMove)
+                {
+                    valuesToMove.Add(k, objectNode[k]);
+                }
+
+                foreach (KeyValuePair<string, JsonNode> valueEntry in valuesToMove)
+                {
+                    string k = valueEntry.Key;
+                    JsonNode v = valueEntry.Value;
+
+                    List<string> newDestKeysList = new List<string>();
+                    for (int i = keyIdx; i < destKeys.Length; i++)
+                    {
+                        string dk = destKeys[i];
+                        if (dk.Equals("*"))
+                        {
+                            newDestKeysList.Add(k);
+                        }
+                        else
+                        {
+                            newDestKeysList.Add(dk);
+                        }
+                    }
+
+                    string[] newDestKeys = newDestKeysList.ToArray();
+                    SetValueByPath(objectNode, newDestKeys, v);
+                }
+
+                foreach (string k in keysToMove)
+                {
+                    objectNode.Remove(k);
+                }
+            }
+        }
+        else
+        {
+            if (data is JsonObject dataObj && dataObj.ContainsKey(key))
+            {
+                JsonNode nextNode = dataObj[key];
+                MoveValueRecursive(nextNode, sourceKeys, destKeys, keyIdx + 1, excludeKeys);
+            }
+        }
     }
   }
 }

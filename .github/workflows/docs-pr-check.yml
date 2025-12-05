@@ -1,0 +1,53 @@
+name: Test Docs Build
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-docs-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v5
+
+      - name: Setup .NET ⚙️
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install DocFX 🛠️
+        run: dotnet tool update -g docfx
+
+      - name: Create index.md from README.md
+        run: cp README.md index.md
+
+      - name: Generate DocFx metadata
+        run: docfx metadata docfx.json
+
+      - name: Build Documentation 📖
+        run: docfx build docfx.json --warningsAsErrors
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "./_site" ]; then
+            echo "❌ Error: _site directory not found"
+            exit 1
+          fi
+
+          # Check if index.html exists (main entry point)
+          if [ ! -f "./_site/index.html" ]; then
+            echo "❌ Error: index.html not generated"
+            exit 1
+          fi
+
+          # Check if any HTML files were generated
+          html_count=$(find ./_site -name "*.html" | wc -l)
+          if [ "$html_count" -eq 0 ]; then
+            echo "❌ Error: No HTML files generated"
+            exit 1
+          fi
+
+          echo "✅ Documentation built successfully"
+          echo "📊 Generated $html_count HTML files"

@@ -1,0 +1,102 @@
+{
+  "recordID": "EmbedContentTest.EmbedContentMultiTextVertexTest",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1beta1/projects/REDACTED/locations/us-central1/publishers/google/models/text-embedding-004:predict",
+        "request": "POST /v1beta1/projects/REDACTED/locations/us-central1/publishers/google/models/text-embedding-004:predict HTTP/1.1",
+        "headers": {
+          "Content-Length": "225",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "EmbedContentTest.EmbedContentMultiTextVertexTest"
+        },
+        "bodySegments": [
+          {
+            "instances": [
+              {
+                "content": "What is your name?",
+                "task_type": "RETRIEVAL_DOCUMENT",
+                "title": "test_title"
+              },
+              {
+                "content": "I am a model.",
+                "task_type": "RETRIEVAL_DOCUMENT",
+                "title": "test_title"
+              }
+            ],
+            "parameters": {
+              "outputDimensionality": 10
+            }
+          }
+        ],
+        "previousRequest": "b4d6e60a9b97e7b98c63df9308728c5c88c0b40c398046772c63447b94608b4d",
+        "serverAddress": "us-central1-aiplatform.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "86f5b7b26792f125ee6d51aa663d1db2af3aafc2d8efd9ecec9087267c0d497b",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Thu, 20 Nov 2025 00:35:10 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "metadata": {
+              "billableCharacterCount": 45
+            },
+            "predictions": [
+              {
+                "embeddings": {
+                  "statistics": {
+                    "token_count": 8,
+                    "truncated": false
+                  },
+                  "values": [
+                    0.006119785830378532,
+                    -0.00011146893666591495,
+                    -0.045173149555921555,
+                    -0.024283207952976227,
+                    0.0239418875426054,
+                    0.027390720322728157,
+                    0.036817517131567,
+                    0.02857659012079239,
+                    -0.04041007533669472,
+                    0.03310540318489075
+                  ]
+                }
+              },
+              {
+                "embeddings": {
+                  "statistics": {
+                    "token_count": 9,
+                    "truncated": false
+                  },
+                  "values": [
+                    -0.030047545209527016,
+                    -0.03195396438241005,
+                    -0.04135684669017792,
+                    -0.01663077436387539,
+                    0.03134505823254585,
+                    0.025405501946806908,
+                    0.002644096966832876,
+                    0.05973745882511139,
+                    -0.014495864510536194,
+                    0.024711130186915398
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

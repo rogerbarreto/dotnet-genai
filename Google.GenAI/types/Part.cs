@@ -30,13 +30,11 @@ namespace Google.GenAI.Types {
 
   public record Part {
     /// <summary>
-    /// A predicted [FunctionCall] returned from the model that contains a string representing the
-    /// [FunctionDeclaration.name] and a structured JSON object containing the parameters and their
-    /// values.
+    /// Media resolution for the input media.
     /// </summary>
-    [JsonPropertyName("functionCall")]
+    [JsonPropertyName("mediaResolution")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public FunctionCall ? FunctionCall { get; set; }
+    public PartMediaResolution ? MediaResolution { get; set; }
 
     /// <summary>
     /// Optional. Result of executing the [ExecutableCode].
@@ -65,6 +63,17 @@ namespace Google.GenAI.Types {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public FileData
         ? FileData {
+            get; set;
+          }
+
+    /// <summary>
+    /// Optional. A predicted [FunctionCall] returned from the model that contains a string
+    /// representing the [FunctionDeclaration.name] with the parameters and their values.
+    /// </summary>
+    [JsonPropertyName("functionCall")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public FunctionCall
+        ? FunctionCall {
             get; set;
           }
 

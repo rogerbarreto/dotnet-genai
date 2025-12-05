@@ -47,6 +47,18 @@ namespace Google.GenAI.Types {
           }
 
     /// <summary>
+    /// Optional. When set to true, arguments of a single function call will be streamed out in
+    /// multiple parts/contents/responses. Partial parameter results will be returned in the
+    /// [FunctionCall.partial_args] field. This field is not supported in Gemini API.
+    /// </summary>
+    [JsonPropertyName("streamFunctionCallArguments")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool
+        ? StreamFunctionCallArguments {
+            get; set;
+          }
+
+    /// <summary>
     /// Deserializes a JSON string to a FunctionCallingConfig object.
     /// </summary>
     /// <param name="jsonString">The JSON string to deserialize.</param>

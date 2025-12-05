@@ -28,11 +28,21 @@ namespace Google.GenAI.Types {
 
   public record GenerateContentResponse {
     /// <summary>
+    /// Used to retain the full HTTP response.
+    /// </summary>
+    [JsonPropertyName("sdkHttpResponse")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public HttpResponse ? SdkHttpResponse { get; set; }
+
+    /// <summary>
     /// Response variations returned by the model.
     /// </summary>
     [JsonPropertyName("candidates")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<Candidate> ? Candidates { get; set; }
+    public List<Candidate>
+        ? Candidates {
+            get; set;
+          }
 
     /// <summary>
     /// Timestamp when the request is made to the server.

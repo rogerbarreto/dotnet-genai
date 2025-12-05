@@ -118,6 +118,34 @@ public class GenerateContentStreamToolsTest {
   }
 
   [TestMethod]
+  public async Task GenerateContentStreamManualFunctionCallStreamingArgsVertexTest() {
+    await foreach (var chunk in vertexClient.Models.GenerateContentStreamAsync(
+                       model: "gemini-2.5-flash", contents: "What's the weather like in Melbourne?",
+                       config: new GoogleTypes.GenerateContentConfig {
+                         Tools = new List<GoogleTypes.Tool> { new GoogleTypes.Tool {
+                           FunctionDeclarations =
+                               new List<GoogleTypes.FunctionDeclaration> { getWeatherDeclaration }
+                         } },
+                         ToolConfig = new GoogleTypes
+                                          .ToolConfig { FunctionCallingConfig =
+                                                            new GoogleTypes.FunctionCallingConfig {
+                                                              StreamFunctionCallArguments = true
+                                                            } }
+                       })) {
+      Assert.IsNotNull(chunk.Candidates);
+      Assert.IsTrue(chunk.Candidates.Count >= 1);
+      var firstCandidate = chunk.Candidates.FirstOrDefault();
+      Assert.IsNotNull(firstCandidate);
+      Assert.IsNotNull(firstCandidate.Content);
+      Assert.IsNotNull(firstCandidate.Content.Parts);
+      Assert.IsTrue(firstCandidate.Content.Parts.Count >= 1);
+      var firstPart = firstCandidate.Content.Parts.FirstOrDefault();
+      Assert.IsNotNull(firstPart);
+      Assert.IsNotNull(firstPart.FunctionCall);
+    }
+  }
+
+  [TestMethod]
   public async Task GenerateContentStreamManualFunctionCallGeminiTest() {
     await foreach (var chunk in geminiClient.Models.GenerateContentStreamAsync(
                        model: modelName, contents: "What's the weather like in Melbourne?",

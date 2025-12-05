@@ -18,7 +18,6 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading;
 
 using Google.GenAI.Types;
 
@@ -340,15 +339,17 @@ namespace Google.GenAI
         return;
       }
 
+      using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+
       try
       {
         if (_webSocket.State == WebSocketState.Open || _webSocket.State == WebSocketState.Connecting)
         {
-          await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+          await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", timeoutCts.Token);
         }
         else if (_webSocket.State == WebSocketState.CloseReceived)
         {
-          await _webSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Acknowledging server close", CancellationToken.None);
+          await _webSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Acknowledging server close", timeoutCts.Token);
         }
         // For other states (None, CloseSent, Closed, Aborted), no action is needed.
       }
