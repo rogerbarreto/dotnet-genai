@@ -43,9 +43,9 @@
         "statusCode": 200,
         "headers": {
           "Content-Type": "application/json; charset=UTF-8",
-          "Date": "Tue, 26 Aug 2025 04:53:49 GMT",
+          "Date": "Fri, 05 Dec 2025 00:18:43 GMT",
           "Server": "scaffolding on HTTPServer2",
-          "Server-Timing": "gfet4t7; dur=919",
+          "Server-Timing": "gfet4t7; dur=1246",
           "Vary": "Origin, X-Origin, Referer",
           "X-Content-Type-Options": "nosniff",
           "X-Frame-Options": "SAMEORIGIN",
@@ -55,11 +55,11 @@
           {
             "candidates": [
               {
-                "avgLogprobs": -0.13161107472011022,
+                "avgLogprobs": -0.09990862846374511,
                 "content": {
                   "parts": [
                     {
-                      "text": "The sky is blue due to a phenomenon called **Rayleigh scattering**. Here's the breakdown:\n\n*   **Sunlight is made of all colors:** White sunlight is actually a mixture of all the colors of the rainbow.\n*   **Sunlight enters the Earth's atmosphere:** When sunlight enters the Earth's atmosphere, it collides with tiny air molecules (mostly nitrogen and oxygen).\n*   **Scattering of light:** This collision causes the light to scatter in different directions"
+                      "text": "The sky is blue because of a phenomenon called **Rayleigh scattering**. Here's the breakdown:\n\n*   **Sunlight is made of all colors:** White sunlight is actually a mixture of all the colors of the rainbow.\n\n*   **Entering the atmosphere:** When sunlight enters the Earth's atmosphere, it collides with tiny air molecules (mostly nitrogen and oxygen).\n\n*   **Scattering of light:** This collision causes the sunlight to scatter in different directions.\n\n*   **"
                     }
                   ],
                   "role": "model"
@@ -68,13 +68,13 @@
               }
             ],
             "modelVersion": "gemini-2.0-flash",
-            "responseId": "3T2taI_WAYvhz7IP99jNkAQ",
+            "responseId": "4iQyaa7nJ_a4qtsPqPTKYQ",
             "usageMetadata": {
-              "candidatesTokenCount": 98,
+              "candidatesTokenCount": 100,
               "candidatesTokensDetails": [
                 {
                   "modality": "TEXT",
-                  "tokenCount": 98
+                  "tokenCount": 100
                 }
               ],
               "promptTokenCount": 6,
@@ -84,7 +84,7 @@
                   "tokenCount": 6
                 }
               ],
-              "totalTokenCount": 104
+              "totalTokenCount": 106
             }
           }
         ]

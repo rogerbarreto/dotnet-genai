@@ -120,6 +120,13 @@ public class GenerateContentSimpleTest {
 
   [TestMethod]
   public async Task GenerateContentGenerationConfigVertexTest() {
+    #if NET6_0
+    if (TestServer.IsReplayMode)
+    {
+       Assert.Inconclusive("Skipped on .NET 6 in replay mode due to System.Text.Json 10.0 serialization differences");
+       return;
+    }
+   #endif
     var generateContentConfig =
         new GenerateContentConfig { Temperature = 0.5, TopP = 0.9, MaxOutputTokens = 100,
                                     ResponseModalities = new List<string> { "TEXT" } };
@@ -132,6 +139,13 @@ public class GenerateContentSimpleTest {
 
   [TestMethod]
   public async Task GenerateContentGenerationConfigGeminiTest() {
+    #if NET6_0
+    if (TestServer.IsReplayMode)
+    {
+       Assert.Inconclusive("Skipped on .NET 6 in replay mode due to System.Text.Json 10.0 serialization differences");
+       return;
+    }
+   #endif
     var generateContentConfig =
         new GenerateContentConfig { Temperature = 0.5, TopP = 0.9, MaxOutputTokens = 100,
                                     ResponseModalities = new List<string> { "TEXT" } };
@@ -141,6 +155,7 @@ public class GenerateContentSimpleTest {
     Assert.IsNotNull(geminiResponse.Candidates);
     Assert.IsTrue(geminiResponse.Candidates.Count >= 1);
   }
+
   [TestMethod]
   public async Task GenerateContentSafetySettingsGeminiTest() {
     var safetySettings = new List<SafetySetting> {
