@@ -221,6 +221,19 @@ namespace Google.GenAI
       return currentObject;
     }
 
+    internal static string FormatQuery(JsonObject queryParams)
+    {
+      var queryParts = new List<string>();
+      foreach (var param in queryParams)
+      {
+        if (param.Value != null)
+        {
+          queryParts.Add($"{param.Key}={Uri.EscapeDataString(param.Value.ToString())}");
+        }
+      }
+      return string.Join("&", queryParts);
+    }
+
     internal static string FormatMap(string template, JsonNode? data)
     {
       if (data is not JsonObject jsonObject)
@@ -238,6 +251,44 @@ namespace Google.GenAI
         }
       }
       return template;
+    }
+
+    /// <summary>
+    /// Converts a JsonObject into a URL-encoded query string.
+    /// </summary>
+    /// <param name="paramsNode">The JsonObject containing the parameters to encode.</param>
+    /// <returns>A URL-encoded string (e.g., "key1=value1&amp;key2=value2").</returns>
+    internal static string UrlEncode(JsonObject? paramsNode)
+    {
+      if (paramsNode == null || paramsNode.Count == 0)
+      {
+        return string.Empty;
+      }
+
+      var queryParts = new List<string>();
+
+      foreach (var field in paramsNode)
+      {
+        string encodedKey = Uri.EscapeDataString(field.Key);
+        var valueNode = field.Value;
+
+        if (valueNode == null)
+        {
+          queryParts.Add($"{encodedKey}=");
+        }
+        else
+        {
+          string valueStr = valueNode.GetValueKind() == JsonValueKind.String
+              ? valueNode.GetValue<string>()
+              : valueNode.ToJsonString().Trim('"');
+          // In Python (and replay files), "*" is encoded as "%2A" although it is not required.
+          // So we keep the same behavior here.
+          string encodedValue = Uri.EscapeDataString(valueStr).Replace("*", "%2A");
+          queryParts.Add($"{encodedKey}={encodedValue}");
+        }
+      }
+
+      return string.Join("&", queryParts);
     }
 
     internal static bool IsZero(object? obj)

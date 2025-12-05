@@ -99,7 +99,7 @@ public class ListCacheTest
     [TestMethod]
     public async Task ListCacheGeminiTest()
     {
-        var part = new Part { FileData = new FileData { MimeType = "application/pdf", FileUri = "https://generativelanguage.googleapis.com/v1beta/files/gwpix29tac28" } };
+        var part = new Part { FileData = new FileData { MimeType = "application/pdf", FileUri = "https://generativelanguage.googleapis.com/v1beta/files/lnl2lhzkof4f" } };
         var config1 = new CreateCachedContentConfig
         {
             Contents = new List<Content> { new Content { Role = "user", Parts = Enumerable.Repeat(part, 5).ToList() } },

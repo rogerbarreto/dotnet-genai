@@ -126,6 +126,13 @@ namespace Google.GenAI
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Sends an HTTP request with binary content.
+    /// </summary>
+    internal abstract Task<ApiResponse> RequestAsync(
+        HttpMethod httpMethod, string path, byte[] requestBytes, HttpOptions? requestHttpOptions,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Sends an HTTP request for streaming responses that return Server-Sent Events.
     /// </summary>
     /// <param name="httpMethod">The HTTP method to use.</param>
@@ -170,7 +177,7 @@ namespace Google.GenAI
       {
         mergedOptions.BaseUrl = optionsToApply?.BaseUrl;
       }
-      if (!string.IsNullOrEmpty(optionsToApply?.ApiVersion))
+      if (optionsToApply?.ApiVersion != null)
       {
         mergedOptions.ApiVersion = optionsToApply?.ApiVersion;
       }

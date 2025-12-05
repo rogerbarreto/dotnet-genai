@@ -359,7 +359,7 @@ public class EditImageSimple {
       OutputMimeType = "image/jpeg",
     };
 
-    var editImageResponse = await vertexClient.Models.EditImageAsync(
+    var editImageResponse = await client.Models.EditImageAsync(
         model: "imagen-3.0-capability-001",
         prompt: "Change the colors of [1] using the mask [2]",
         referenceImages: referenceImages,
@@ -389,7 +389,7 @@ public class SegmentImageSimple {
       MaxPredictions = 1,
     };
 
-    var segmentImageResponse = await vertexClient.Models.SegmentImageAsync(
+    var segmentImageResponse = await client.Models.SegmentImageAsync(
         model: modelName,
         source: new SegmentImageSource {
           Image = Image.FromFile("path/to/image.png", "image/png"),
@@ -398,6 +398,271 @@ public class SegmentImageSimple {
 
     // Do something with the generated mask
     var mask = segmentImageResponse.GeneratedMasks.First().Mask;
+  }
+}
+```
+
+### Generate Videos
+
+#### Generate Videos (From Text)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFromText {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+    var source = new GenerateVideosSource {
+      Prompt = "Man with a dog",
+    };
+
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+    };
+
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (From Image)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFromText {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+    var source = new GenerateVideosSource {
+      // Prompt is optional if Image is provided
+      Prompt = "Man with a dog",
+      Image = Image.FromFile("images/man.png"),
+    };
+
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+    };
+
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (Frame Interpolation)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFrameInterpolation {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+    var source = new GenerateVideosSource {
+      Prompt = "At the park",
+      Image = Image.FromFile("images/man.jpg"),
+    };
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+      LastFrame = Image.FromFile("images/dog.jpg"),
+    };
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (From Reference Images)
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosReferenceImages{
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+
+    var source = new GenerateVideosSource {
+      Prompt = "Chirping birds in a colorful forest",
+    };
+    List<VideoGenerationReferenceImage> referenceImages = new List<VideoGenerationReferenceImage>();
+    referenceImages.Add(new VideoGenerationReferenceImage {
+      Image = Image.FromFile("images/man.jpg"),
+      ReferenceType = VideoGenerationReferenceType.ASSET,
+    });
+    var config = new GenerateVideosConfig {
+      NumberOfVideos = 1,
+      ReferenceImages = referenceImages,
+    };
+    var operation = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await client.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+
+    // Do something with the generated video
+    var video = operation.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+#### Generate Videos (From Video)
+
+Gemini Developer API only accepts previously generated videos.
+Vertex accepts a Video from GCS URI.
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class GenerateVideosFromVideo {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+
+    var source1 = new GenerateVideosSource {
+      Prompt = "Man with a dog",
+    };
+    var operation1 = await client.Models.GenerateVideosAsync(
+        model: modelName, source: source1, config: new GenerateVideosConfig{
+          NumberOfVideos = 1,
+    });
+
+    while (operation1.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation1 = await client.Operations.GetAsync(operation1, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+
+    var source2 = new GenerateVideosSource {
+      Prompt = "Driving through a tunnel.",
+      Video = operation1.Response.GeneratedVideos.First().Video,
+    };
+    var operation2 = await client.Models.GenerateVideosAsync(
+        model: "veo-3.1-generate-preview", source: source2, config: new GenerateVideosConfig{
+          NumberOfVideos = 1,
+    });
+
+    while (operation2.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation2 = await client.Operations.GetAsync(operation2, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+    // Do something with the generated video
+    var video = operation2.Response.GeneratedVideos.First().Video;
+  }
+}
+```
+
+### Edit Video
+Editing a video is only available on Vertex
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class EditVideoOutpaint {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+
+    var source = new GenerateVideosSource {
+      Prompt = "A mountain landscape",
+      Video = new Video {
+        Uri = "gs://bucket/inputs/editing_demo.mp4",
+        MimeType = "video/mp4",
+      },
+    };
+
+    var config = new GenerateVideosConfig {
+      OutputGcsUri = outputGcsUri,
+      AspectRatio = "16:9",
+      Mask = new VideoGenerationMask {
+        Image = new Image {
+          GcsUri = "gs://bucket/inputs/video_outpaint_mask.png",
+          MimeType = "image/png",
+        },
+        MaskMode = VideoGenerationMaskMode.OUTPAINT,
+      },
+    };
+    var operation = await vertexClient.Models.GenerateVideosAsync(
+        model: "veo-2.0-generate-exp", source: source, config: config);
+
+    while (operation.Done != true) {
+      try {
+        await Task.Delay(10000);
+        operation = await vertexClient.Operations.GetAsync(operation, null);
+      } catch (TaskCanceledException) {
+        System.Console.WriteLine("Task was cancelled while waiting.");
+        break;
+      }
+    }
+    var video = operation.Response.GeneratedVideos.First().Video;
   }
 }
 ```
@@ -478,11 +743,15 @@ public class GetModelExample {
     // assuming credentials are set up in environment variables as instructed above.
     var client = new Client();
 
-    var response = await client.Models.GetAsync(
-      model: "models/your-tuned-model"
+    // get a base model
+    var baseModelResponse = await client.Models.GetAsync(
+      model: "gemini-2.5-flash"
     );
 
-    Console.WriteLine(response.DisplayName);
+    // get a tuned model
+    var tunedModelResponse = await client.Models.GetAsync(
+      model: "models/your-tuned-model"
+    );
   }
 }
 ```
@@ -522,6 +791,39 @@ public class DeleteModelExample {
     await client.Models.DeleteAsync(
       model: "models/your-tuned-model"
     );
+  }
+}
+```
+
+### List Models
+
+The `ListAsync` method returns a `Pager` object that allows you to iterate through pages of models. If `QueryBase` is set to `true` (the default) in `ListModelsConfig`, it lists base models; otherwise, it lists tuned models.
+
+```csharp
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class ListModelsExample {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+
+    // List base models with default settings
+    Console.WriteLine("Base Models:");
+    var pager = await client.Models.ListAsync();
+    await foreach(var model in pager)
+    {
+        Console.WriteLine(model.Name);
+    }
+
+    // List tuned models with a page size of 10
+    Console.WriteLine("Tuned Models:");
+    var config = new ListModelsConfig { QueryBase = false, PageSize = 10 };
+    var tunedModelsPager = await client.Models.ListAsync(config);
+    await foreach(var model in tunedModelsPager)
+    {
+        Console.WriteLine(model.Name);
+    }
   }
 }
 ```
@@ -1076,6 +1378,25 @@ public class ContinuousTuningJob {
 }
 ```
 
+### Cancel Tuning Job
+
+```csharp
+using System.Threading.Tasks;
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class CancelTuningJobExample {
+  public static async Task main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client();
+
+    // The tuning job resource name to cancel, retrieved from a created tuning job.
+    var tuningJobResourceName = "tuningJobs/your-tuning-job";
+    await client.Tunings.CancelAsync(tuningJobResourceName);
+  }
+}
+```
+
 ### List Tuning Jobs
 ```csharp
 using System.Threading.Tasks;
@@ -1095,4 +1416,96 @@ public class ListTuningJobs {
         }
     }
 }
+```
+
+## Files (Gemini API only)
+
+The Files feature are only supported for the Gemini API.
+
+### Upload File
+
+```csharp
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class Files {
+  public static async Task Main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client(vertexAI: false);
+
+    // uploading from local file path
+    var uploadResponse1 = await client.Files.UploadAsync(filtePath: "path/to/your/file.png");
+    Console.WriteLine($"Gemini API Files Upload Response: {uploadResponse1}");
+
+    // uploading from bytes
+    // using this fileBytes variable for demo purpose only
+    byte[] fileBytes = await System.IO.File.ReadAllBytesAsync("path/to/your/file.png");
+    var uploadResponse2 = await geminiClient.Files.UploadAsync(
+          bytes: fileBytes,
+          fileName: "file.png"
+      );
+      Console.WriteLine($"Gemini API Files Upload Response: {uploadResponse2}");
+  }
+}
+```
+
+### Get File
+
+```csharp
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class Files {
+  public static async Task Main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client(vertexAI: false);
+
+    // usually, pattern is similar to this example "files/s0pa54alni6w"
+    string fileName = "files/randomID";
+    var getResponse = await client.Files.GetAsync(name: fileName);
+    Console.WriteLine($"Gemini API Files Get Response: {getResponse}");
+
+  }
+}
+```
+
+### Delete File
+
+```csharp
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class Files {
+  public static async Task Main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client(vertexAI: false);
+
+    // usually, pattern is similar to this example "files/s0pa54alni6w"
+    string fileName = "files/randomID";
+    var deleteResponse = await client.Files.DeleteAsync(name: fileName);
+    Console.WriteLine($"Gemini API Files Delete Response: {deleteResponse}");
+
+  }
+}
+```
+
+### List File
+
+```csharp
+using Google.GenAI;
+using Google.GenAI.Types;
+
+public class Files {
+  public static async Task Main() {
+    // assuming credentials are set up in environment variables as instructed above.
+    var client = new Client(vertexAI: false);
+
+    var pager = await client.Files.ListAsync();
+    await foreach(var page in pager) {
+      Console.WriteLine($"Gemini API Files List Response page: {page}");
+    }
+
+  }
+}
+
 ```

@@ -28,6 +28,57 @@ namespace Google.GenAI {
   public sealed class Tunings {
     private readonly ApiClient _apiClient;
 
+    internal JsonNode CancelTuningJobParametersToMldev(JsonNode fromObject, JsonObject parentObject,
+                                                       JsonNode rootObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "_url", "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CancelTuningJobParametersToVertex(JsonNode fromObject,
+                                                        JsonObject parentObject,
+                                                        JsonNode rootObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "name" }) != null) {
+        Common.SetValueByPath(toObject, new string[] { "_url", "name" },
+                              Common.GetValueByPath(fromObject, new string[] { "name" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CancelTuningJobResponseFromMldev(JsonNode fromObject,
+                                                       JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      return toObject;
+    }
+
+    internal JsonNode CancelTuningJobResponseFromVertex(JsonNode fromObject,
+                                                        JsonObject parentObject) {
+      JsonObject toObject = new JsonObject();
+
+      if (Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }) != null) {
+        Common.SetValueByPath(
+            toObject, new string[] { "sdkHttpResponse" },
+            Common.GetValueByPath(fromObject, new string[] { "sdkHttpResponse" }));
+      }
+
+      return toObject;
+    }
+
     internal JsonNode CreateTuningJobConfigToMldev(JsonNode fromObject, JsonObject parentObject,
                                                    JsonNode rootObject) {
       JsonObject toObject = new JsonObject();
@@ -847,8 +898,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -896,8 +951,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -921,6 +980,71 @@ namespace Google.GenAI {
       return JsonSerializer.Deserialize<ListTuningJobsResponse>(responseNode.ToString()) ??
              throw new InvalidOperationException(
                  "Failed to deserialize Task<ListTuningJobsResponse>.");
+    }
+
+    /// <summary>
+    /// Cancels a tuning job resource.
+    /// </summary>
+    /// <param name="name">The resource name of the tuning job. For Vertex, this is the full
+    /// resource name or `tuningJobs/{id}`.</param> <param name="config">A <see
+    /// cref="CancelTuningJobConfig"/> for configuring the cancel request.</param>
+
+    public async Task<CancelTuningJobResponse> CancelAsync(string name,
+                                                           CancelTuningJobConfig? config = null) {
+      CancelTuningJobParameters parameter = new CancelTuningJobParameters();
+
+      if (!Common.IsZero(name)) {
+        parameter.Name = name;
+      }
+      if (!Common.IsZero(config)) {
+        parameter.Config = config;
+      }
+      string jsonString = JsonSerializer.Serialize(parameter);
+      JsonNode? parameterNode = JsonNode.Parse(jsonString);
+      if (parameterNode == null) {
+        throw new NotSupportedException("Failed to parse CancelTuningJobParameters to JsonNode.");
+      }
+
+      JsonNode body;
+      string path;
+      if (this._apiClient.VertexAI) {
+        body = CancelTuningJobParametersToVertex(parameterNode, new JsonObject(), parameterNode);
+        path = Common.FormatMap("{name}:cancel", body["_url"]);
+      } else {
+        body = CancelTuningJobParametersToMldev(parameterNode, new JsonObject(), parameterNode);
+        path = Common.FormatMap("{name}:cancel", body["_url"]);
+      }
+      JsonObject? bodyObj = body?.AsObject();
+      bodyObj?.Remove("_url");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
+      HttpOptions? requestHttpOptions = config?.HttpOptions;
+
+      ApiResponse response = await this._apiClient.RequestAsync(
+          HttpMethod.Post, path, JsonSerializer.Serialize(body), requestHttpOptions);
+      HttpContent httpContent = response.GetEntity();
+      string contentString = await httpContent.ReadAsStringAsync();
+      JsonNode? httpContentNode = JsonNode.Parse(contentString);
+      if (httpContentNode == null) {
+        throw new NotSupportedException("Failed to parse response to JsonNode.");
+      }
+      JsonNode responseNode = httpContentNode;
+
+      if (this._apiClient.VertexAI) {
+        responseNode = CancelTuningJobResponseFromVertex(httpContentNode, new JsonObject());
+      }
+
+      if (!this._apiClient.VertexAI) {
+        responseNode = CancelTuningJobResponseFromMldev(httpContentNode, new JsonObject());
+      }
+
+      return JsonSerializer.Deserialize<CancelTuningJobResponse>(responseNode.ToString()) ??
+             throw new InvalidOperationException(
+                 "Failed to deserialize Task<CancelTuningJobResponse>.");
     }
 
     private async Task<TuningJob> PrivateTuneAsync(string? baseModel, PreTunedModel? preTunedModel,
@@ -958,8 +1082,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(
@@ -1021,8 +1149,12 @@ namespace Google.GenAI {
       }
       JsonObject? bodyObj = body?.AsObject();
       bodyObj?.Remove("_url");
-      // TODO: Handle "_query" in the body (for list support).
-      bodyObj?.Remove("_query");
+      if (bodyObj != null && bodyObj.ContainsKey("_query")) {
+        path = path + "?" + Common.FormatQuery((JsonObject)bodyObj["_query"]);
+        bodyObj.Remove("_query");
+      } else {
+        bodyObj?.Remove("_query");
+      }
       HttpOptions? requestHttpOptions = config?.HttpOptions;
 
       ApiResponse response = await this._apiClient.RequestAsync(

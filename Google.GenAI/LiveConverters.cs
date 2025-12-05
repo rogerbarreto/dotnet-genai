@@ -571,10 +571,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToMldev(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -644,10 +645,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToVertex(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -769,10 +771,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToMldev(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -897,10 +900,11 @@ namespace Google.GenAI {
       }
 
       if (Common.GetValueByPath(fromObject, new string[] { "tools" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "tools" });
+        var keyList =
+            Transformers.TTools(Common.GetValueByPath(fromObject, new string[] { "tools" }));
         JsonArray result = new JsonArray();
 
-        foreach (var record in keyArray) {
+        foreach (var record in keyList) {
           result.Add(ToolToVertex(
               JsonNode.Parse(JsonSerializer.Serialize(Transformers.TTool(record))), toObject));
         }
@@ -994,7 +998,8 @@ namespace Google.GenAI {
       JsonObject toObject = new JsonObject();
 
       if (Common.GetValueByPath(fromObject, new string[] { "media" }) != null) {
-        JsonArray keyArray = (JsonArray)Common.GetValueByPath(fromObject, new string[] { "media" });
+        JsonArray keyArray = (JsonArray)Transformers.TBlobs(
+            Common.GetValueByPath(fromObject, new string[] { "media" }));
         JsonArray result = new JsonArray();
 
         foreach (var record in keyArray) {

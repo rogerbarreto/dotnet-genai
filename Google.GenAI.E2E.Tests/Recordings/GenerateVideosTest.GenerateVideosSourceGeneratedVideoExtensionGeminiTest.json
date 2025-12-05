@@ -1,0 +1,668 @@
+{
+  "recordID": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1beta/models/veo-3.1-generate-preview:predictLongRunning",
+        "request": "POST /v1beta/models/veo-3.1-generate-preview:predictLongRunning HTTP/1.1",
+        "headers": {
+          "Content-Length": "74",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          {
+            "instances": [
+              {
+                "prompt": "Man with a dog"
+              }
+            ],
+            "parameters": {
+              "sampleCount": 1
+            }
+          }
+        ],
+        "previousRequest": "b4d6e60a9b97e7b98c63df9308728c5c88c0b40c398046772c63447b94608b4d",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "18bc6d0e3b786045d838775a494c4a7ec45becea0d888cbea70e39ebd16f268a",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:52:20 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=448",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "18bc6d0e3b786045d838775a494c4a7ec45becea0d888cbea70e39ebd16f268a",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "5edc77c6253a5d4a051d73bcde10e20f0de6def4894546fb9050bdc8fb20c593",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:52:30 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=70",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "5edc77c6253a5d4a051d73bcde10e20f0de6def4894546fb9050bdc8fb20c593",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "7c59763ec7d33ae97fc6ae37e37231bdf85a8a32af8af7578d78bf0583aa3cac",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:52:41 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=69",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "7c59763ec7d33ae97fc6ae37e37231bdf85a8a32af8af7578d78bf0583aa3cac",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "d6d45bf8b197b0f89cf2ae3b5d8af13b9d8cbb4a5dfc860b280963b7d4f0a1cb",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:52:51 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=82",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "d6d45bf8b197b0f89cf2ae3b5d8af13b9d8cbb4a5dfc860b280963b7d4f0a1cb",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "8a08beb541bc2d693b8af17b5e867a691b70a2c2fd8f51e01ee343384fad4086",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:53:01 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=78",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "8a08beb541bc2d693b8af17b5e867a691b70a2c2fd8f51e01ee343384fad4086",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "95906420830bb599a280f6a8cb518d0c828dd3dea32c141200225a7eae4fe7c7",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:53:11 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=71",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "95906420830bb599a280f6a8cb518d0c828dd3dea32c141200225a7eae4fe7c7",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "77d0bfd11fa1971979e4b20411acc4c0e6b66064668836f3ebcfd2f2eb37a975",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:53:21 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=73",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "77d0bfd11fa1971979e4b20411acc4c0e6b66064668836f3ebcfd2f2eb37a975",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "2a9fd5054a6fabe4391f8b44c5a1d294ecd95ddc3e1e4217213f9be16ccec1ac",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:53:31 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=65",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "2a9fd5054a6fabe4391f8b44c5a1d294ecd95ddc3e1e4217213f9be16ccec1ac",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "0dd547b22086cf4d1e4c6c4d1eeaca917eac95284ae0eb9d1526e6664e9b5b59",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:53:41 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=74",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/k16siizccrrn HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "0dd547b22086cf4d1e4c6c4d1eeaca917eac95284ae0eb9d1526e6664e9b5b59",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "c9e2860085b93fa871630057dd6354167b226b924a6024eaae2b5e846ff6d7b0",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:53:51 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=75",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "done": true,
+            "name": "models/veo-3.1-generate-preview/operations/k16siizccrrn",
+            "response": {
+              "@type": "type.googleapis.com/google.ai.generativelanguage.v1beta.PredictLongRunningResponse",
+              "generateVideoResponse": {
+                "generatedSamples": [
+                  {
+                    "video": {
+                      "uri": "https://generativelanguage.googleapis.com/v1beta/files/xg1uaugqwi1y:download?alt=media"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/v1beta/models/veo-3.1-generate-preview:predictLongRunning",
+        "request": "POST /v1beta/models/veo-3.1-generate-preview:predictLongRunning HTTP/1.1",
+        "headers": {
+          "Content-Length": "190",
+          "Content-Type": "application/json; charset=utf-8",
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          {
+            "instances": [
+              {
+                "prompt": "Driving through a tunnel.",
+                "video": {
+                  "uri": "https://generativelanguage.googleapis.com/v1beta/files/xg1uaugqwi1y:download?alt=media"
+                }
+              }
+            ],
+            "parameters": {
+              "sampleCount": 1
+            }
+          }
+        ],
+        "previousRequest": "c9e2860085b93fa871630057dd6354167b226b924a6024eaae2b5e846ff6d7b0",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "fe760ddc3ea4ea2f2aff1fa558c7a1ddcc27f13528e3b138e2128df1f7850b7d",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:53:52 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=562",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "fe760ddc3ea4ea2f2aff1fa558c7a1ddcc27f13528e3b138e2128df1f7850b7d",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "49889856b57f474c56fbc1c54407d4e6bacdb6b5728e20985a5e90319dadf5ff",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:54:02 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=87",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "49889856b57f474c56fbc1c54407d4e6bacdb6b5728e20985a5e90319dadf5ff",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "20ae378174bb605e404e0fffc290c7deebc4ff386bf7d27ead6e820131afd8dd",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:54:12 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=140",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "20ae378174bb605e404e0fffc290c7deebc4ff386bf7d27ead6e820131afd8dd",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "d01877e31d534b205eff0f5754c63a031672f08da75274debc17bce730a86cf3",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:54:22 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=138",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "d01877e31d534b205eff0f5754c63a031672f08da75274debc17bce730a86cf3",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "2512fe6f1258ccbb93a542f9ad158a876651efb11ea475c0b463a11ab6e1e20d",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:54:32 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=145",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "2512fe6f1258ccbb93a542f9ad158a876651efb11ea475c0b463a11ab6e1e20d",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "ae72ab31c800eb799d18a60cdbb2ef332a45ef49a293732b76c7430cebd59c0d",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:54:42 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=144",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "name": "models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr",
+        "request": "GET /v1beta/models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr HTTP/1.1",
+        "headers": {
+          "Test-Name": "GenerateVideosTest.GenerateVideosSourceGeneratedVideoExtensionGeminiTest"
+        },
+        "bodySegments": [
+          null
+        ],
+        "previousRequest": "ae72ab31c800eb799d18a60cdbb2ef332a45ef49a293732b76c7430cebd59c0d",
+        "serverAddress": "generativelanguage.googleapis.com",
+        "port": 443,
+        "protocol": "https"
+      },
+      "shaSum": "bba0dcbec7f02e52c5b5cb9d7aa874af3757a7565de611d5ff4179971797e4fa",
+      "response": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Date": "Wed, 26 Nov 2025 00:54:53 GMT",
+          "Server": "scaffolding on HTTPServer2",
+          "Server-Timing": "gfet4t7; dur=142",
+          "Vary": "Origin, X-Origin, Referer",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Xss-Protection": "0"
+        },
+        "bodySegments": [
+          {
+            "done": true,
+            "name": "models/veo-3.1-generate-preview/operations/t0a1p1oh4dlr",
+            "response": {
+              "@type": "type.googleapis.com/google.ai.generativelanguage.v1beta.PredictLongRunningResponse",
+              "generateVideoResponse": {
+                "generatedSamples": [
+                  {
+                    "video": {
+                      "uri": "https://generativelanguage.googleapis.com/v1beta/files/v1t6if7g9902:download?alt=media"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

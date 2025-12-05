@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json.Nodes;
 
 namespace Google.GenAI.Tests
 {
@@ -77,6 +78,48 @@ namespace Google.GenAI.Tests
             string resourceName = "123";
             string result = Transformers.GetResourceName(geminiClient, resourceName, "cachedContents");
             Assert.AreEqual("cachedContents/123", result);
+        }
+
+        [TestMethod]
+        public void TModelsUrl_Vertex_BaseModelsNull()
+        {
+            var result = Transformers.TModelsUrl(vertexClient, null);
+            Assert.AreEqual("publishers/google/models", result);
+        }
+
+        [TestMethod]
+        public void TModelsUrl_Vertex_BaseModelsTrue()
+        {
+            var result = Transformers.TModelsUrl(vertexClient, JsonValue.Create(true));
+            Assert.AreEqual("publishers/google/models", result);
+        }
+
+        [TestMethod]
+        public void TModelsUrl_Vertex_BaseModelsFalse()
+        {
+            var result = Transformers.TModelsUrl(vertexClient, JsonValue.Create(false));
+            Assert.AreEqual("models", result);
+        }
+
+        [TestMethod]
+        public void TModelsUrl_Gemini_BaseModelsNull()
+        {
+            var result = Transformers.TModelsUrl(geminiClient, null);
+            Assert.AreEqual("models", result);
+        }
+
+        [TestMethod]
+        public void TModelsUrl_Gemini_BaseModelsTrue()
+        {
+            var result = Transformers.TModelsUrl(geminiClient, JsonValue.Create(true));
+            Assert.AreEqual("models", result);
+        }
+
+        [TestMethod]
+        public void TModelsUrl_Gemini_BaseModelsFalse()
+        {
+            var result = Transformers.TModelsUrl(geminiClient, JsonValue.Create(false));
+            Assert.AreEqual("tunedModels", result);
         }
     }
 }

@@ -104,28 +104,19 @@ namespace Google.GenAI
     /// <returns>The transformed model name</returns>
     internal static string TModelsUrl(ApiClient apiClient, object? baseModels)
     {
-      if (apiClient.VertexAI)
-      {
-        if (baseModels == null)
+        bool queryBase = true;
+        if (baseModels is JsonValue val)
         {
-          return "publishers/google/models";
+            queryBase = val.GetValue<bool>();
+        }
+        if (queryBase)
+        {
+            return apiClient.VertexAI ? "publishers/google/models" : "models";
         }
         else
         {
-          return "models";
+            return apiClient.VertexAI ? "models" : "tunedModels";
         }
-      }
-      else
-      {
-        if (baseModels == null)
-        {
-          return "models";
-        }
-        else
-        {
-          return "tunedModels";
-        }
-      }
     }
 
     /// <summary>
@@ -260,9 +251,21 @@ namespace Google.GenAI
         }
         return transformedTools;
       }
-      else if (origin is JsonObject jsonObject)
+      else if (origin is JsonArray jsonArray)
       {
-        return JsonSerializer.Deserialize<List<Tool>>(jsonObject.ToString());
+          List<Tool> toolList = new List<Tool>();
+          foreach(JsonNode? toolNode in jsonArray)
+          {
+            if(toolNode != null)
+            {
+              toolList.Add(TTool(toolNode)!);
+            }
+          }
+          return toolList;
+      }
+      else if (origin is JsonNode jsonNode)
+      {
+        return JsonSerializer.Deserialize<List<Tool>>(jsonNode.ToJsonString());
       }
 
       throw new ArgumentException($"Unsupported tools type: {origin.GetType()}");
@@ -278,16 +281,12 @@ namespace Google.GenAI
       }
       else if (origin is Tool tool)
       {
-        // TODO(b/413510963): Complete tool converter.
-        return JsonSerializer.Deserialize<Tool>(origin.ToString());
+        return tool;
       }
-      else if (origin is JsonObject jsonObject)
+      else if (origin is JsonNode jsonNode)
       {
-        // In case reflectMethods is present in the json node, call TTool to parse it and remove it
-        // from the json node.
-        return JsonSerializer.Deserialize<Tool>(origin.ToString());
+         return JsonSerializer.Deserialize<Tool>(jsonNode.ToJsonString());
       }
-
       throw new ArgumentException($"Unsupported tool type: {origin.GetType()}");
     }
 
@@ -373,6 +372,31 @@ namespace Google.GenAI
     {
       // TODO(b/389133914): Remove dummy bytes converter.
       return origin;
+    }
+
+    /// <summary>Transforms a list models response object to a list of models.</summary>
+    internal static JsonArray TExtractModels(JsonNode models)
+    {
+        if (models == null)
+        {
+            return new JsonArray();
+        }
+        if (models is JsonObject modelsObj)
+        {
+            if (modelsObj.ContainsKey("models"))
+            {
+                return (JsonArray)modelsObj["models"]!;
+            }
+            if (modelsObj.ContainsKey("tunedModels"))
+            {
+                return (JsonArray)modelsObj["tunedModels"]!;
+            }
+            if (modelsObj.ContainsKey("publisherModels"))
+            {
+                return (JsonArray)modelsObj["publisherModels"]!;
+            }
+        }
+        return new JsonArray();
     }
 
     /// <summary>Transforms an object to a cached content name for the API.</summary>
@@ -491,9 +515,32 @@ namespace Google.GenAI
       {
         return null;
       }
+      else if (origin is JsonNode jsonNode)
+      {
+        name = jsonNode.ToString();
+        name = name.Replace("\"", "");
+      }
       else
       {
         throw new ArgumentException($"Unsupported file name type: {origin.GetType()}");
+      }
+
+      if (name.StartsWith("https://"))
+      {
+        string suffix = name.Split("files/")[1];
+        Match match = Regex.Match(suffix, "[a-z0-9]+");
+        if (match.Success)
+        {
+          name = match.Value;
+        }
+        else
+        {
+          throw new ArgumentException($"Could not extract file name from {name}");
+        }
+      }
+      else if (name.StartsWith("files/"))
+      {
+        name = name.Split("files/")[1];
       }
 
       return name;

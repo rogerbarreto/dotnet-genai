@@ -91,4 +91,20 @@ public class GetModelTest {
 
     Assert.IsNotNull(geminiResponse);
   }
+
+  [TestMethod]
+  public async Task GetBaseModelVertexTest() {
+    string baseModel = "gemini-3-pro-preview";
+    var vertexResponse = await vertexClient.Models.GetAsync(model: baseModel, config: null);
+
+    Assert.IsNotNull(vertexResponse);
+  }
+
+  [TestMethod]
+  public async Task GetBaseModelGeminiTest() {
+    string baseModel = "gemini-3-pro-preview";
+    var geminiResponse = await geminiClient.Models.GetAsync(model: baseModel, config: null);
+
+    Assert.IsNotNull(geminiResponse);
+  }
 }
